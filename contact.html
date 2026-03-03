@@ -37,21 +37,7 @@
 <section class="content-section" style="background: var(--cream);">
   <div class="container">
 
-    <!-- 
-      =============================================
-      FORM SETUP INSTRUCTIONS:
-      =============================================
-      1. Go to https://formspree.io and create a free account
-      2. Create a new form and copy your form ID (looks like: xpzvqkdl)
-      3. Replace YOUR_FORM_ID below with your actual form ID
-      4. Done! Submissions will go to whatever email you used to sign up
-      
-      Free tier: 50 submissions/month
-      Paid tier: $10/month for 1,000 submissions + integrations
-      =============================================
-    -->
-
-    <form class="apply-form" id="contactForm" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+    <form class="apply-form" id="contactForm">
       <div class="form-grid">
         <div class="form-group">
           <label>First Name *</label>
@@ -108,11 +94,11 @@
         <!-- Honeypot spam field (hidden from real users) -->
         <input type="text" name="_gotcha" style="display:none">
 
-        <!-- Redirect after submission -->
-        <input type="hidden" name="_next" value="thank-you.html">
+        <!-- Form status messages -->
+        <div id="formMessage" class="form-message" style="display:none;"></div>
 
         <div class="form-submit">
-          <button type="submit">Submit Application</button>
+          <button type="submit" id="submitBtn">Submit Application</button>
         </div>
       </div>
     </form>
@@ -132,9 +118,71 @@
     <li><a href="about.html">About</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
-    <div class="footer-copy">© 2025 Ledger Trade & Capital. All rights reserved.</div>
+    <div class="footer-copy">&copy; 2025 Ledger Trade & Capital. All rights reserved.</div>
   </div>
 </footer>
+
+<script>
+document.getElementById("contactForm").addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  var form = e.target;
+  var btn = document.getElementById("submitBtn");
+  var msg = document.getElementById("formMessage");
+
+  // Check honeypot (spam bots fill this in, real users do not)
+  if (form._gotcha.value) return;
+
+  // Disable button and show loading state
+  btn.disabled = true;
+  btn.textContent = "Submitting...";
+  msg.style.display = "none";
+
+  // Collect form data and map to the field names the Netlify Function expects
+  var payload = {
+    firstName: form.first_name.value.trim(),
+    lastName: form.last_name.value.trim(),
+    email: form.email.value.trim(),
+    phone: form.phone.value.trim(),
+    company: form.company.value.trim(),
+    loanType: form.loan_type.value,
+    loanAmount: form.loan_amount.value.trim(),
+    experience: form.experience.value,
+    propertyAddress: form.property_address.value.trim(),
+    projectOverview: form.project_overview.value.trim(),
+    pageUrl: window.location.href
+  };
+
+  try {
+    var response = await fetch("/.netlify/functions/submit-form", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    var result = await response.json();
+
+    if (response.ok && result.success) {
+      // Success - redirect to thank you page
+      window.location.href = "thank-you.html";
+    } else {
+      // Server returned an error
+      msg.textContent = result.error || "Something went wrong. Please try again.";
+      msg.className = "form-message form-message-error";
+      msg.style.display = "block";
+      btn.disabled = false;
+      btn.textContent = "Submit Application";
+    }
+  } catch (err) {
+    // Network error or function unreachable
+    msg.textContent = "Unable to submit. Please check your connection and try again.";
+    msg.className = "form-message form-message-error";
+    msg.style.display = "block";
+    btn.disabled = false;
+    btn.textContent = "Submit Application";
+  }
+});
+</script>
 
 </body>
 </html>
