@@ -88,7 +88,7 @@ async function findOrCreateCompany(companyName) {
     filterGroups: [{
       filters: [{ propertyName: "name", operator: "EQ", value: companyName.trim() }]
     }],
-    properties: ["name", "hubspot_owner_id"],
+    properties: ["name", "coverage"],
   });
 
   if (search.total > 0) {
@@ -134,10 +134,10 @@ async function determineTicketOwner(contactResult, companyResult) {
     return contactResult.contact.properties.hubspot_owner_id;
   }
 
-  // Priority 2: Existing company's owner
-  if (companyResult.company && !companyResult.isNew && companyResult.company.properties.hubspot_owner_id) {
-    console.log(`Ticket owner from existing company: ${companyResult.company.properties.hubspot_owner_id}`);
-    return companyResult.company.properties.hubspot_owner_id;
+  // Priority 2: Existing company's owner (stored in "coverage" property)
+  if (companyResult.company && !companyResult.isNew && companyResult.company.properties.coverage) {
+    console.log(`Ticket owner from existing company coverage: ${companyResult.company.properties.coverage}`);
+    return companyResult.company.properties.coverage;
   }
 
   // Priority 3: Default owner (Russell)
