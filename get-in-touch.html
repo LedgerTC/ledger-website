@@ -131,21 +131,9 @@
 <section class="content-section" style="background: var(--cream);">
   <div class="container">
 
-    <!-- 
-      =============================================
-      FORM SETUP INSTRUCTIONS:
-      =============================================
-      1. Go to https://formspree.io and create a free account
-      2. Create a new form and copy your form ID (looks like: xpzvqkdl)
-      3. Replace YOUR_FORM_ID below with your actual form ID
-      4. Done! Submissions will go to whatever email you used to sign up
-      
-      Free tier: 50 submissions/month
-      Paid tier: $10/month for 1,000 submissions + integrations
-      =============================================
-    -->
+    <div id="formError" style="display:none; background: #fef2f2; border: 1px solid #fca5a5; color: #991b1b; padding: 1rem 1.25rem; border-radius: 8px; margin-bottom: 1.5rem; font-size: 0.9rem;"></div>
 
-    <form class="apply-form" id="contactForm" action="/.netlify/functions/submit-form" method="POST">
+    <form class="apply-form" id="contactForm">
       <div class="form-grid">
         <div class="form-group">
           <label>First Name *</label>
@@ -202,9 +190,6 @@
         <!-- Honeypot spam field (hidden from real users) -->
         <input type="text" name="website" style="display:none" tabindex="-1" autocomplete="off">
 
-        <!-- Redirect after submission -->
-        <input type="hidden" name="_next" value="thank-you.html">
-
         <div class="form-submit">
           <button type="submit">Submit Application</button>
         </div>
@@ -228,6 +213,50 @@
     <div class="footer-copy" style="text-align: center;">&copy; 2026 Ledger Trade &amp; Capital. All rights reserved.</div>
   </div>
 </footer>
+
+<!-- Form submission handler -->
+<script>
+(function(){
+  var form = document.getElementById('contactForm');
+  var errorBox = document.getElementById('formError');
+  var submitBtn = form.querySelector('button[type="submit"]');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    errorBox.style.display = 'none';
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting…';
+
+    var formData = new URLSearchParams(new FormData(form));
+
+    fetch('/.netlify/functions/submit-form', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: formData.toString()
+    })
+    .then(function(res) {
+      return res.json().then(function(data) { return { ok: res.ok, status: res.status, data: data }; });
+    })
+    .then(function(result) {
+      if (result.ok && result.data.success) {
+        window.location.href = 'thank-you.html';
+      } else {
+        var msg = result.data.error || 'Something went wrong. Please try again or contact us directly at Info@ledgertc.com.';
+        errorBox.textContent = msg;
+        errorBox.style.display = 'block';
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit Application';
+      }
+    })
+    .catch(function() {
+      errorBox.textContent = 'A network error occurred. Please check your connection and try again.';
+      errorBox.style.display = 'block';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit Application';
+    });
+  });
+})();
+</script>
 
 <!-- HubSpot tracking -->
 <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/46107229.js"></script>
