@@ -245,11 +245,13 @@ section { padding: clamp(4rem, 5vw, 7rem) clamp(1.5rem, 3vw, 4rem); }
 
 /* ─── CTA BAND ─── */
 .cta-band { text-align: center; padding: clamp(3.5rem, 4.5vw, 6rem) clamp(1.5rem, 3vw, 4rem); background: var(--green); position: relative; }
+.cta-band::before { content: ''; position: absolute; top: 0; left: 20%; right: 20%; height: 1px; background: rgba(255,255,255,0.12); }
 .cta-band .section-title { margin-bottom: 1.5rem; color: var(--white); }
 .cta-band .btn-primary { background: var(--gold); color: var(--white); }
 
 /* ─── FOOTER ─── */
-.footer { background: var(--green); padding: clamp(2rem, 3vw, 4rem) clamp(1.5rem, 3vw, 4rem); }
+.footer { background: var(--green); padding: clamp(2rem, 3vw, 4rem) clamp(1.5rem, 3vw, 4rem); position: relative; }
+.footer::before { content: ''; position: absolute; top: 0; left: 20%; right: 20%; height: 1px; background: rgba(255,255,255,0.12); }
 .footer-content { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1.5rem; }
 .footer-logo { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; font-size: clamp(1rem, 0.95rem + 0.2vw, 1.15rem); color: var(--white); }
 .footer-logo span { color: var(--gold-light); }
