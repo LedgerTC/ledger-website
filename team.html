@@ -28,15 +28,16 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 .team-grid {
-  max-width: 1100px; margin: 0 auto;
-  display: flex; flex-wrap: wrap; justify-content: center;
+  width: max(1200px, 90vw); max-width: 96vw; margin: 0 auto;
+  display: grid;
   gap: clamp(1.5rem, 2vw, 2.5rem);
 }
+.team-grid-5 { grid-template-columns: repeat(5, 1fr); }
+.team-grid-6 { grid-template-columns: repeat(6, 1fr); }
 .team-card {
   text-align: center; padding: clamp(1.5rem, 2vw, 2rem) clamp(1rem, 1.5vw, 1.5rem);
   background: var(--white); border: 1px solid var(--gray-100); border-radius: 16px;
   transition: all 0.3s;
-  flex: 1 1 280px; max-width: 340px;
 }
 .team-card:hover { box-shadow: 0 10px 30px rgba(0,0,0,0.06); transform: translateY(-4px); }
 .team-photo {
@@ -81,15 +82,15 @@
 .team-section-divider {
   margin-top: clamp(3.5rem, 5vw, 5rem);
 }
-@media (min-width: 1400px) {
-  .team-grid { max-width: 1300px; }
-  .team-card { max-width: 290px; }
+@media (max-width: 1024px) {
+  .team-grid-5 { grid-template-columns: repeat(3, 1fr); }
+  .team-grid-6 { grid-template-columns: repeat(3, 1fr); }
 }
-@media (min-width: 2200px) {
-  .team-grid { max-width: 1400px; }
+@media (max-width: 768px) {
+  .team-grid-5, .team-grid-6 { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 480px) {
-  .team-card { flex-basis: 100%; max-width: 100%; }
+  .team-grid-5, .team-grid-6 { grid-template-columns: 1fr; }
 }
 </style>
 <script type="application/ld+json">
@@ -198,7 +199,7 @@
   <div class="team-section-label">
     <h2>Leadership</h2>
   </div>
-  <div class="team-grid">
+  <div class="team-grid team-grid-5">
 
     <div class="team-card">
       <img src="team/tyler.png" alt="Tyler Van Wagoner, CEO of Ledger Trade & Capital" class="team-photo">
@@ -250,7 +251,7 @@
   <div class="team-section-label team-section-divider">
     <h2>Originations</h2>
   </div>
-  <div class="team-grid">
+  <div class="team-grid team-grid-6">
 
     <div class="team-card">
       <img src="team/umang.png" alt="Umang Shah, Head of Sales at Ledger Trade & Capital" class="team-photo">
@@ -310,28 +311,6 @@
 
 </section>
 
-<section class="stats" id="stats-banner">
-  <div class="container">
-    <div class="stats-row">
-      <div class="stats-heading">Capital that Keeps Up.</div>
-      <div class="stats-grid">
-        <div class="stat">
-          <div class="stat-number" data-target="70" data-suffix="+">0</div>
-          <div class="stat-label">Collective Years Experience</div>
-        </div>
-        <div class="stat">
-          <div class="stat-number" data-prefix="$" data-target="1.4" data-suffix="B" data-decimals="1">0</div>
-          <div class="stat-label">in Closed Transactions</div>
-        </div>
-        <div class="stat">
-          <div class="stat-number" data-prefix="$" data-target="20" data-suffix="B">0</div>
-          <div class="stat-label">in Sourced Opportunities</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <div class="cta-band">
   <div class="container">
     <h2 class="section-title" style="color: var(--white);">Ready to Work Together?</h2>
@@ -353,57 +332,6 @@
     <div class="footer-copy" style="text-align: center;">&copy; 2026 Ledger Trade &amp; Capital. All rights reserved.</div>
   </div>
 </footer>
-
-<!-- Stats count-up animation -->
-<script>
-(function () {
-  const duration = 2000; // ms
-  let animated = false;
-
-  function animateCounters() {
-    if (animated) return;
-    animated = true;
-
-    document.querySelectorAll('.stat-number[data-target]').forEach(function (el) {
-      const target = parseFloat(el.getAttribute('data-target'));
-      const decimals = parseInt(el.getAttribute('data-decimals') || '0', 10);
-      const prefix = el.getAttribute('data-prefix') || '';
-      const suffix = el.getAttribute('data-suffix') || '';
-      const start = performance.now();
-
-      function update(now) {
-        const elapsed = now - start;
-        const progress = Math.min(elapsed / duration, 1);
-        // ease-out quad
-        const eased = 1 - (1 - progress) * (1 - progress);
-        const current = eased * target;
-
-        el.textContent = prefix + current.toFixed(decimals) + suffix;
-
-        if (progress < 1) {
-          requestAnimationFrame(update);
-        } else {
-          el.textContent = prefix + target.toFixed(decimals) + suffix;
-        }
-      }
-
-      requestAnimationFrame(update);
-    });
-  }
-
-  var observer = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry) {
-      if (entry.isIntersecting) {
-        animateCounters();
-        observer.disconnect();
-      }
-    });
-  }, { threshold: 0.3 });
-
-  var statsSection = document.getElementById('stats-banner');
-  if (statsSection) observer.observe(statsSection);
-})();
-</script>
 
 <!-- HubSpot tracking -->
 <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/46107229.js"></script>
