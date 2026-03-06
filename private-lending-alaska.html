@@ -5,7 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-P2E61PRS60"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-P2E61PRS60');</script>
+<script>
+window.dataLayer=window.dataLayer||[];
+function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());
+gtag('config','G-P2E61PRS60');
+gtag('config','AW-17993082803');
+</script>
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
@@ -68,8 +74,14 @@
   color: var(--gold-dark); letter-spacing: 0.02em;
 }
 .state-products-grid {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  display: grid; grid-template-columns: repeat(5, 1fr);
   gap: 1.25rem; max-width: 1200px; margin: 0 auto;
+}
+@media (max-width: 1023px) {
+  .state-products-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 639px) {
+  .state-products-grid { grid-template-columns: 1fr; }
 }
 .state-product-card {
   background: var(--white); border: 1px solid var(--gray-100); border-radius: 16px;
@@ -92,7 +104,7 @@
 <body>
 
 <nav class="nav">
-  <a href="index.html" class="nav-logo"><img src="logo-color.png" alt="Ledger Trade &amp; Capital" class="nav-logo-img"></a>
+  <a href="index.html" class="nav-logo"><img src="logo-color.png" alt="Ledger Trade &amp; Capital" class="nav-logo-img" width="269" height="67"></a>
   <ul class="nav-links">
     <li class="dropdown">
       <a href="#">Loan Products ▾</a>
@@ -227,7 +239,7 @@
 
 <footer class="footer">
   <div class="footer-content" style="text-align: center; align-items: center;">
-    <div class="footer-logo"><img src="logo-inverse.png" alt="Ledger Trade &amp; Capital" style="height: 52px; width: auto; display: block; margin: 0 auto;"></div>
+    <div class="footer-logo"><img src="logo-inverse.png" alt="Ledger Trade &amp; Capital" width="269" height="67" style="height: 52px; width: auto; display: block; margin: 0 auto;"></div>
     <div style="color: rgba(255,255,255,0.6); font-size: 0.85rem; line-height: 1.8; margin-top: 1rem; text-align: center;">
       60 Broad Street, Suite 2428, New York, NY 10004<br>
       <a href="tel:201-749-1691" style="color: rgba(255,255,255,0.6); text-decoration: none;">201-749-1691</a>
@@ -241,7 +253,7 @@
 </footer>
 
 <!-- HubSpot tracking -->
-<script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/46107229.js"></script>
+<script type="text/javascript" id="hs-script-loader" defer src="//js.hs-scripts.com/46107229.js"></script>
 
 </body>
 </html>
