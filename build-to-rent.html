@@ -15,26 +15,44 @@
 <meta property="og:site_name" content="Ledger Trade & Capital">
 <meta property="og:title" content="Build to Rent | RTL Investment Loans | Ledger Trade & Capital">
 <meta property="og:description" content="Build to rent financing for investors constructing or renovating single-family rental properties. Full lifecycle lending from acquisition through stabilized DSCR refinance.">
-<meta property="og:url" content="https://ledgertc.co/build-to-rent.html">
+<meta property="og:url" content="https://ledgertc.com/build-to-rent.html">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Build to Rent | RTL Investment Loans | Ledger Trade & Capital">
 <meta name="twitter:description" content="Build to rent financing for investors constructing or renovating single-family rental properties. Full lifecycle lending from acquisition through stabilized DSCR refinance.">
-<meta name="twitter:image" content="https://ledgertc.co/icon-color.png">
-<meta property="og:image" content="https://ledgertc.co/icon-color.png">
+<meta name="twitter:image" content="https://ledgertc.com/icon-color.png">
+<meta property="og:image" content="https://ledgertc.com/icon-color.png">
 <meta property="og:image:width" content="900">
 <meta property="og:image:height" content="900">
-<link rel="canonical" href="https://ledgertc.co/build-to-rent.html">
+<link rel="canonical" href="https://ledgertc.com/build-to-rent.html">
 <link rel="stylesheet" href="style.css">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "FinancialProduct",
+  "@type": "LoanOrCredit",
   "name": "Build to Rent Loans",
   "description": "Full lifecycle financing for build-to-rent investors. Construction or renovation financing on the front end with a DSCR cash-out refinance on the backend.",
-  "provider": {"@id": "https://ledgertc.co/#organization"},
-  "url": "https://ledgertc.co/build-to-rent.html",
-  "category": "Build to Rent Loan"
+  "provider": {
+    "@id": "https://ledgertc.com/#organization"
+  },
+  "url": "https://ledgertc.com/build-to-rent.html",
+  "category": "Build to Rent Loan",
+  "loanType": "Build to Rent Loan",
+  "currency": "USD",
+  "loanTerm": {
+    "@type": "QuantitativeValue",
+    "description": "15-18 months (short-term) / 30 years (DSCR)"
+  },
+  "amount": {
+    "@type": "MonetaryAmount",
+    "currency": "USD",
+    "minValue": 125000,
+    "maxValue": 3000000
+  },
+  "areaServed": {
+    "@type": "Country",
+    "name": "United States"
+  }
 }
 </script>
 <script type="application/ld+json">
@@ -46,13 +64,61 @@
       "@type": "ListItem",
       "position": 1,
       "name": "Home",
-      "item": "https://ledgertc.co/"
+      "item": "https://ledgertc.com/"
     },
     {
       "@type": "ListItem",
       "position": 2,
       "name": "Build to Rent",
-      "item": "https://ledgertc.co/build-to-rent.html"
+      "item": "https://ledgertc.com/build-to-rent.html"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How does the full lifecycle work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The BTR lifecycle starts with a short-term loan (construction, bridge, or fix-and-flip) to fund acquisition and improvements. Once the property is completed and leased, you refinance into a 30-year DSCR loan. The DSCR refinance can include a cash-out component, allowing you to pull equity and deploy it into your next project."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What experience is required?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Experience requirements depend on the front-end product. Construction and bridge loans require 3 or more completed projects in the last 3 years. Fix-and-flip loans have no minimum experience requirement. The DSCR refinance on the backend qualifies based on property cash flow, not borrower experience."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is non-recourse financing available?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Non-recourse options are available on construction, bridge, and fix-and-flip front-end products. DSCR loans on the backend are also available with non-recourse structures for qualifying borrowers and properties."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I refinance a property I built with another lender?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. While we offer the most seamless experience for borrowers who use our short-term products on the front end, our DSCR refinance program is available to any investor with a stabilized rental property, regardless of who financed the original construction or renovation."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What property types qualify?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Single-family residences, 2-4 unit properties, and townhomes are eligible. Condos and apartments are not eligible. Properties must be non-owner-occupied investment properties intended for rental income."
+      }
     }
   ]
 }

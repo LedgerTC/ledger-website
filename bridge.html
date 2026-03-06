@@ -15,26 +15,44 @@
 <meta property="og:site_name" content="Ledger Trade & Capital">
 <meta property="og:title" content="Bridge Loan | Ledger Trade & Capital">
 <meta property="og:description" content="Short-term bridge financing for real estate investors. Close fast and bridge to your next move. $100K to $20MM.">
-<meta property="og:url" content="https://ledgertc.co/bridge.html">
+<meta property="og:url" content="https://ledgertc.com/bridge.html">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Bridge Loan | Ledger Trade & Capital">
 <meta name="twitter:description" content="Short-term bridge financing for real estate investors. Close fast and bridge to your next move. $100K to $20MM.">
-<meta name="twitter:image" content="https://ledgertc.co/icon-color.png">
-<meta property="og:image" content="https://ledgertc.co/icon-color.png">
+<meta name="twitter:image" content="https://ledgertc.com/icon-color.png">
+<meta property="og:image" content="https://ledgertc.com/icon-color.png">
 <meta property="og:image:width" content="900">
 <meta property="og:image:height" content="900">
-<link rel="canonical" href="https://ledgertc.co/bridge.html">
+<link rel="canonical" href="https://ledgertc.com/bridge.html">
 <link rel="stylesheet" href="style.css">
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "FinancialProduct",
-  "name": "Bridge Loan",
+  "@type": "LoanOrCredit",
+  "name": "Bridge Loans",
   "description": "Short-term bridge financing for real estate investors. Close fast and bridge to your next move.",
-  "provider": {"@id": "https://ledgertc.co/#organization"},
-  "url": "https://ledgertc.co/bridge.html",
-  "category": "Bridge Loan"
+  "provider": {
+    "@id": "https://ledgertc.com/#organization"
+  },
+  "url": "https://ledgertc.com/bridge.html",
+  "category": "Bridge Loan",
+  "loanType": "Bridge Loan",
+  "currency": "USD",
+  "loanTerm": {
+    "@type": "QuantitativeValue",
+    "description": "15-18 months"
+  },
+  "amount": {
+    "@type": "MonetaryAmount",
+    "currency": "USD",
+    "minValue": 125000,
+    "maxValue": 5000000
+  },
+  "areaServed": {
+    "@type": "Country",
+    "name": "United States"
+  }
 }
 </script>
 <script type="application/ld+json">
@@ -53,6 +71,46 @@
       "position": 2,
       "name": "Bridge Loan",
       "item": "https://ledgertc.com/bridge"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is the maximum LTC or LTV on a bridge loan?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Bridge loans are available up to 85% of the loan-to-cost (LTC) or loan-to-value (LTV). Leverage depends on property type, borrower experience, and overall deal structure. Higher leverage may be available for repeat borrowers with strong track records."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What credit score do I need for a bridge loan?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The minimum credit score for bridge loan programs is 680. Credit score is one factor in underwriting alongside deal quality, borrower experience, and exit strategy."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much experience do I need?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Bridge loan borrowers should have completed at least 3 real estate investment projects within the last 3 years. This can include flips, new construction, or other investment properties."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are non-recourse bridge loans available?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, non-recourse options are available on bridge loans for qualifying borrowers and properties. Standard carve-outs apply. Speak with our team to discuss non-recourse structuring for your specific deal."
+      }
     }
   ]
 }
