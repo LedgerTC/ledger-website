@@ -15,7 +15,11 @@
       "WebFetch(domain:ledgertc.com)",
       "WebFetch(domain:web.archive.org)",
       "Bash(unzip -o \"C:/Users/bulla/Downloads/state-pages-updated.zip\" \"private-lending-*.html\" -d .)",
-      "Bash(ls \"C:/Users/bulla/ClaudeCode/ledger-mockup\"/private-lending-*.html)"
+      "Bash(ls \"C:/Users/bulla/ClaudeCode/ledger-mockup\"/private-lending-*.html)",
+      "Bash(unzip -o \"C:/Users/bulla/Downloads/all-pages-cta-updated.zip\" -d .)",
+      "Bash(unzip -l \"C:/Users/bulla/Downloads/all-pages-cta-updated.zip\")",
+      "Bash(unzip -l \"C:/Users/bulla/Downloads/content-updates.zip\")",
+      "Bash(unzip -o \"C:/Users/bulla/Downloads/content-updates.zip\" -d .)"
     ]
   }
 }
