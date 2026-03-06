@@ -11,6 +11,10 @@
 /landing-page-2    /index.html     301
 /refund_returns/   /index.html     301
 /refund_returns    /index.html     301
+/portfolio-acquisitions/   /what-we-do.html  301
+/portfolio-acquisitions    /what-we-do.html  301
+/investment-sales-brokerage/  /what-we-do.html  301
+/investment-sales-brokerage   /what-we-do.html  301
 /sitemap/        /sitemap.xml      301
 # Old filenames redirect to new names
 /construction.html  /vertical-construction-loans.html  301
