@@ -133,9 +133,11 @@
 @media (min-width: 768px) {
   .hero-preview { margin-top: 0; }
 }
-@media (min-width: 1400px) {
-  .hero { padding-left: clamp(2rem, -2.5rem + 7.1vw, 6rem); padding-right: clamp(2rem, -2.5rem + 7.1vw, 6rem); }
-  .hero-content { max-width: none; }
+@media (min-width: 1024px) {
+  .hero { padding-left: 0; padding-right: 0; }
+  .hero-content { display: flex; justify-content: center; gap: clamp(3rem, 6vw, 8rem); padding: 0 clamp(2rem, 8vw, 12rem); max-width: none; align-items: center; }
+  .hero-text { flex: 0 1 600px; max-width: 600px; }
+  .hero-preview { flex: 0 1 700px; max-width: 700px; }
 }
 .hero-preview a.product-card { text-decoration: none; display: block; color: inherit; }
 .hero-preview .product-card p { margin-bottom: 0; }
