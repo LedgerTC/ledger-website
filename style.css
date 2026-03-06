@@ -144,7 +144,7 @@ section { padding: clamp(4rem, 5vw, 7rem) clamp(1.5rem, 3vw, 4rem); }
   font-family: 'Plus Jakarta Sans', sans-serif; font-size: clamp(2.2rem, 1.8rem + 1.5vw, 3.5rem); font-weight: 800;
   color: var(--white); letter-spacing: -0.02em; margin-bottom: 1rem;
 }
-.page-hero p { font-size: clamp(1rem, 0.95rem + 0.2vw, 1.15rem); color: rgba(255,255,255,0.75); max-width: 600px; margin: 0 auto; line-height: 1.7; }
+.page-hero p { font-size: clamp(1rem, 0.95rem + 0.2vw, 1.15rem); color: rgba(255,255,255,0.75); max-width: 750px; margin: 0 auto; line-height: 1.7; }
 
 /* ─── CONTENT SECTIONS ─── */
 .content-section { padding: clamp(3.5rem, 4.5vw, 6rem) clamp(1.5rem, 3vw, 4rem); }

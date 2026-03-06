@@ -207,6 +207,120 @@ async function determineTicketOwner(contactResult, companyResult) {
   return null;
 }
 
+// ─── Broker Partner: Build ticket description ────────────────────
+function buildBrokerTicketDescription(formData) {
+  const lines = [
+    "━━━ Contact Information ━━━",
+    `Name: ${formData.firstName} ${formData.lastName}`,
+    `Email: ${formData.email}`,
+    `Phone: ${formData.phone}`,
+    `Company: ${formData.company}`,
+    "",
+    "━━━ Broker Details ━━━",
+  ];
+
+  if (formData.states) lines.push(`States: ${formData.states}`);
+  if (formData.monthlyVolume) lines.push(`Monthly Volume: ${formData.monthlyVolume}`);
+  if (formData.loanProducts) lines.push(`Loan Products of Interest: ${formData.loanProducts}`);
+
+  if (formData.notes) {
+    lines.push("");
+    lines.push("━━━ Notes ━━━");
+    lines.push(formData.notes);
+  }
+
+  lines.push("");
+  lines.push(`Submitted: ${new Date().toLocaleString("en-US", { timeZone: "America/New_York" })}`);
+  lines.push(`Source: ${formData.pageUrl || "ledgertc.com/broker-partner"}`);
+
+  return lines.join("\n");
+}
+
+// ─── Broker Partner: Create ticket ───────────────────────────────
+async function createBrokerTicket(formData, contactId, companyId) {
+  const description = buildBrokerTicketDescription(formData);
+  const ticketName = `Broker Inquiry - ${formData.firstName} ${formData.lastName} (${formData.company})`;
+  const priority = formData.monthlyVolume === "10+ loans/month" ? "HIGH" : "MEDIUM";
+
+  const properties = {
+    subject: ticketName,
+    content: description,
+    hs_pipeline: process.env.HUBSPOT_PIPELINE_ID,
+    hs_pipeline_stage: "1",
+    hs_ticket_priority: priority,
+    hs_ticket_category: "Broker Inquiry",
+    hubspot_owner_id: "67722106",
+  };
+
+  const ticket = await hubspot("POST", "/crm/v3/objects/tickets", { properties });
+
+  if (ticket.error) {
+    throw new Error(`Failed to create broker ticket: ${JSON.stringify(ticket.data)}`);
+  }
+
+  console.log(`Broker ticket created: ${ticket.id} (priority: ${priority})`);
+
+  // Associate ticket to contact
+  if (contactId) {
+    await hubspot(
+      "PUT",
+      `/crm/v4/objects/tickets/${ticket.id}/associations/contacts/${contactId}`,
+      [{ associationCategory: "HUBSPOT_DEFINED", associationTypeId: 16 }]
+    );
+    console.log(`Broker ticket ${ticket.id} associated to contact ${contactId}`);
+  }
+
+  // Associate ticket to company
+  if (companyId) {
+    await hubspot(
+      "PUT",
+      `/crm/v4/objects/tickets/${ticket.id}/associations/companies/${companyId}`,
+      [{ associationCategory: "HUBSPOT_DEFINED", associationTypeId: 26 }]
+    );
+    console.log(`Broker ticket ${ticket.id} associated to company ${companyId}`);
+  }
+
+  return ticket;
+}
+
+// ─── Broker Partner: Send notification email ─────────────────────
+async function sendBrokerNotificationEmail(formData, ticketId) {
+  const subject = `New Broker Inquiry - ${formData.firstName} ${formData.lastName} | ${formData.company}`;
+  const body = [
+    `A new broker partner inquiry has been submitted.`,
+    "",
+    `Ticket ID: ${ticketId}`,
+    "",
+    "━━━ Contact Information ━━━",
+    `Name: ${formData.firstName} ${formData.lastName}`,
+    `Email: ${formData.email}`,
+    `Phone: ${formData.phone}`,
+    `Company: ${formData.company}`,
+    "",
+    "━━━ Broker Details ━━━",
+    `States: ${formData.states || "—"}`,
+    `Monthly Volume: ${formData.monthlyVolume || "—"}`,
+    `Loan Products of Interest: ${formData.loanProducts || "—"}`,
+    `Notes: ${formData.notes || "—"}`,
+  ].join("\n");
+
+  try {
+    await fetch("https://api.mailchannels.net/tx/v1/send", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        personalizations: [{ to: [{ email: "Russell@ledgertc.com" }] }],
+        from: { email: "noreply@ledgertc.com", name: "Ledger TC Website" },
+        subject,
+        content: [{ type: "text/plain", value: body }],
+      }),
+    });
+    console.log("Broker notification email sent to Russell@ledgertc.com");
+  } catch (err) {
+    console.error("Failed to send broker notification email:", err);
+  }
+}
+
 // ─── Step 5: Build ticket summary ────────────────────────────────
 function buildTicketSummary(formData) {
   const lines = [
@@ -244,19 +358,17 @@ function buildTicketSummary(formData) {
 // ─── Step 6: Create Ticket ───────────────────────────────────────
 async function createTicket(formData, ownerId, contactId, companyId) {
   const summary = buildTicketSummary(formData);
-  const ticketName = `Inbound Inquiry — ${formData.firstName} ${formData.lastName}`;
-  if (formData.company) {
-    // Include company in ticket name for quick scanning
-  }
+  const ticketName = formData.company
+    ? `Inbound Inquiry - ${formData.firstName} ${formData.lastName} (${formData.company})`
+    : `Inbound Inquiry - ${formData.firstName} ${formData.lastName}`;
 
   const properties = {
-    subject: formData.company
-      ? `${ticketName} (${formData.company})`
-      : ticketName,
+    subject: ticketName,
     content: summary,
     hs_pipeline: process.env.HUBSPOT_PIPELINE_ID,
     hs_pipeline_stage: "1",  // "New" stage — update this if your stage ID differs
     hs_ticket_priority: "MEDIUM",
+    hs_ticket_category: "General Inquiry",
   };
 
   if (ownerId) {
@@ -402,34 +514,74 @@ exports.handler = async function (event) {
 
     console.log(`Processing submission from ${formData.email}`);
 
-    // Step 1: Contact
-    const contactResult = await findOrCreateContact(formData);
-    const contactId = contactResult.contact.id;
+    // ── Broker Partner flow ─────────────────────────────────────
+    if (raw.form_source === "broker-partner") {
+      // Map broker-specific fields
+      formData.states = raw.states || "";
+      formData.monthlyVolume = raw.monthly_volume || "";
+      formData.loanProducts = raw.loan_products || "";
+      formData.notes = raw.notes || "";
 
-    // Step 2: Company
-    const companyResult = await findOrCreateCompany(formData.company);
-    const companyId = companyResult.company ? companyResult.company.id : null;
+      // Step 1: Contact
+      const contactResult = await findOrCreateContact(formData);
+      const contactId = contactResult.contact.id;
 
-    // Step 3: Associate Contact <-> Company (only if company is NEW)
-    if (companyId && companyResult.isNew && contactId) {
-      await associateContactToCompany(contactId, companyId);
+      // Step 2: Company
+      const companyResult = await findOrCreateCompany(formData.company);
+      const companyId = companyResult.company ? companyResult.company.id : null;
+
+      // Step 3: Associate Contact <-> Company (only if company is NEW)
+      if (companyId && companyResult.isNew && contactId) {
+        await associateContactToCompany(contactId, companyId);
+      }
+
+      // Step 4: Create broker ticket (owner always Russell — 67722106)
+      const ticket = await createBrokerTicket(formData, contactId, companyId);
+
+      // Step 5: Send notification email
+      await sendBrokerNotificationEmail(formData, ticket.id);
+
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify({
+          success: true,
+          message: "Your broker partner inquiry has been submitted. Our team will follow up within one business day.",
+          ticketId: ticket.id,
+        }),
+      };
+
+    // ── Standard contact form flow ──────────────────────────────
+    } else {
+      // Step 1: Contact
+      const contactResult = await findOrCreateContact(formData);
+      const contactId = contactResult.contact.id;
+
+      // Step 2: Company
+      const companyResult = await findOrCreateCompany(formData.company);
+      const companyId = companyResult.company ? companyResult.company.id : null;
+
+      // Step 3: Associate Contact <-> Company (only if company is NEW)
+      if (companyId && companyResult.isNew && contactId) {
+        await associateContactToCompany(contactId, companyId);
+      }
+
+      // Step 4: Determine ticket owner
+      const ownerId = await determineTicketOwner(contactResult, companyResult);
+
+      // Step 5 & 6: Create ticket with summary and associations
+      const ticket = await createTicket(formData, ownerId, contactId, companyId);
+
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify({
+          success: true,
+          message: "Your application has been submitted. Our team will follow up within one business day.",
+          ticketId: ticket.id,
+        }),
+      };
     }
-
-    // Step 4: Determine ticket owner
-    const ownerId = await determineTicketOwner(contactResult, companyResult);
-
-    // Step 5 & 6: Create ticket with summary and associations
-    const ticket = await createTicket(formData, ownerId, contactId, companyId);
-
-    return {
-      statusCode: 200,
-      headers,
-      body: JSON.stringify({
-        success: true,
-        message: "Your application has been submitted. Our team will follow up within one business day.",
-        ticketId: ticket.id,
-      }),
-    };
 
   } catch (err) {
     console.error("Error processing form submission:", err);
