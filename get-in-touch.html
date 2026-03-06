@@ -190,14 +190,14 @@ gtag('config','AW-17993082803');
         </div>
         <div class="form-group">
           <label>Loan Amount Requested</label>
-          <input type="text" name="loan_amount" placeholder="$500,000 - $3,000,000">
+          <input type="text" name="loan_amount" placeholder="$500,000 - $5,000,000">
         </div>
         <div class="form-group">
           <label>Experience Level</label>
           <select name="experience">
             <option value="" disabled selected>Select experience</option>
-            <option value="New (0-3 projects)">New Investor (0-3 projects)</option>
-            <option value="Experienced (4-10 projects)">Experienced (4-10 projects)</option>
+            <option value="New (0-2 projects)">New Investor (0-2 projects)</option>
+            <option value="Experienced (3-9 projects)">Experienced (3-9 projects)</option>
             <option value="Professional (10+ projects)">Professional (10+ projects)</option>
           </select>
         </div>
@@ -247,12 +247,24 @@ gtag('config','AW-17993082803');
   </div>
 </section>
 
-<section class="stats">
+<section class="stats" id="stats-banner-contact" style="background: var(--cream);">
   <div class="container">
-    <div class="stats-grid">
-      <div><div class="stat-number">70+</div><div class="stat-label">Collective Years Experience</div></div>
-      <div><div class="stat-number">$1.4B</div><div class="stat-label">in Closed Transactions</div></div>
-      <div><div class="stat-number">$20B</div><div class="stat-label">in Sourced Opportunities</div></div>
+    <div class="stats-row">
+      <div class="stats-heading" style="color: var(--green);">Capital that Keeps Up.</div>
+      <div class="stats-grid">
+        <div class="stat">
+          <div class="stat-number" style="color: var(--gold-dark);" data-target="70" data-suffix="+">0</div>
+          <div class="stat-label" style="color: var(--gray-600);">Collective Years Experience</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number" style="color: var(--gold-dark);" data-prefix="$" data-target="1.4" data-suffix="B" data-decimals="1">0</div>
+          <div class="stat-label" style="color: var(--gray-600);">in Closed Transactions</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number" style="color: var(--gold-dark);" data-prefix="$" data-target="20" data-suffix="B">0</div>
+          <div class="stat-label" style="color: var(--gray-600);">in Sourced Opportunities</div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -324,5 +336,41 @@ gtag('config','AW-17993082803');
 <!-- HubSpot tracking -->
 <script type="text/javascript" id="hs-script-loader" defer src="//js.hs-scripts.com/46107229.js"></script>
 
+
+<script>
+(function(){
+  var els = document.querySelectorAll('#stats-banner-contact .stat-number[data-target]');
+  if (!els.length) return;
+  var animated = false;
+  function animateCounters() {
+    if (animated) return;
+    animated = true;
+    els.forEach(function(el) {
+      var target = parseFloat(el.getAttribute('data-target'));
+      var prefix = el.getAttribute('data-prefix') || '';
+      var suffix = el.getAttribute('data-suffix') || '';
+      var decimals = parseInt(el.getAttribute('data-decimals') || '0');
+      var start = 0, duration = 1800, startTime = null;
+      function step(timestamp) {
+        if (!startTime) startTime = timestamp;
+        var progress = Math.min((timestamp - startTime) / duration, 1);
+        var ease = 1 - Math.pow(1 - progress, 3);
+        var current = start + (target - start) * ease;
+        el.textContent = prefix + (decimals ? current.toFixed(decimals) : Math.floor(current)) + suffix;
+        if (progress < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    });
+  }
+  var section = document.getElementById('stats-banner-contact');
+  if (section && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function(entries) {
+      if (entries[0].isIntersecting) animateCounters();
+    }, { threshold: 0.3 }).observe(section);
+  } else {
+    animateCounters();
+  }
+})();
+</script>
 </body>
 </html>
