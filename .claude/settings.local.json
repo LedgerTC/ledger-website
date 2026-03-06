@@ -9,7 +9,9 @@
       "Bash(git push)",
       "Bash(git add team.html get-in-touch.html)",
       "Bash(git add index.html style.css team.html thank-you.html)",
-      "mcp__Claude_Preview__preview_start"
+      "mcp__Claude_Preview__preview_start",
+      "Bash(python -c \":*)",
+      "Bash(node -e \":*)"
     ]
   }
 }
