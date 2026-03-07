@@ -37,13 +37,12 @@ gtag('config','AW-17993082803');
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"></noscript>
 <style>
 .team-grid {
-  width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 clamp(1.5rem, 3vw, 4rem);
+  width: max(1200px, 90vw); max-width: 96vw; margin: 0 auto; padding: 0 clamp(1rem, 2vw, 2rem); box-sizing: border-box;
   display: grid;
   gap: clamp(1.5rem, 2vw, 2.5rem);
-  justify-content: center;
 }
-.team-grid-5 { grid-template-columns: repeat(5, minmax(150px, 220px)); }
-.team-grid-6 { grid-template-columns: repeat(6, minmax(120px, 200px)); }
+.team-grid-5 { grid-template-columns: repeat(5, 1fr); }
+.team-grid-6 { grid-template-columns: repeat(6, 1fr); }
 .team-card {
   text-align: center; padding: clamp(1.5rem, 2vw, 2rem) clamp(1rem, 1.5vw, 1.5rem);
   background: var(--white); border: 1px solid var(--gray-100); border-radius: 16px;
@@ -56,7 +55,6 @@ gtag('config','AW-17993082803');
   border: 3px solid var(--gray-100); filter: grayscale(100%);
   transition: filter 0.3s;
 }
-.team-grid-5 .team-photo { width: 140px; height: 140px; }
 .team-card:hover .team-photo { filter: grayscale(0%); }
 .team-placeholder {
   width: 120px; height: 120px; border-radius: 50%;
@@ -93,8 +91,8 @@ gtag('config','AW-17993082803');
 .team-section-divider {
   margin-top: clamp(3.5rem, 5vw, 5rem);
 }
-@media (max-width: 1400px) {
-  .team-grid-5 { grid-template-columns: repeat(3, minmax(150px, 220px)); justify-content: center; }
+@media (max-width: 1024px) {
+  .team-grid-5 { grid-template-columns: repeat(3, 1fr); }
   .team-grid-6 { grid-template-columns: repeat(3, 1fr); }
 }
 @media (max-width: 768px) {
