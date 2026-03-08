@@ -420,6 +420,21 @@ gtag('config','AW-17993082803');
     }
   }
 
+  function formatPhoneRealtime(e) {
+    var input = e.target;
+    var digits = input.value.replace(/\D/g, '').substring(0, 10);
+    var formatted = '';
+    if (digits.length > 6) {
+      formatted = '(' + digits.substring(0,3) + ') ' + digits.substring(3,6) + '-' + digits.substring(6);
+    } else if (digits.length > 3) {
+      formatted = '(' + digits.substring(0,3) + ') ' + digits.substring(3);
+    } else if (digits.length > 0) {
+      formatted = '(' + digits;
+    }
+    input.value = formatted;
+  }
+  phoneInput.addEventListener('input', formatPhoneRealtime);
+
   phoneInput.addEventListener('blur', validatePhone);
   window._brokerPhoneValidation = validatePhone;
   window._brokerPhoneFormat = formatPhoneE164;
