@@ -29,8 +29,8 @@ body {
   font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
   line-height: 1.6;
 }
-html, body { max-width: 100%; }
-body { overflow-x: hidden; }
+html { max-width: 100%; overflow-x: hidden; }
+body { max-width: 100%; }
 
 /* ─── NAV ─── */
 .nav {
