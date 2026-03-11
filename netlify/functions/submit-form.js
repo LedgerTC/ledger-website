@@ -359,7 +359,7 @@ function buildTicketSummary(formData) {
 }
 
 // ─── Step 6: Create Ticket ───────────────────────────────────────
-async function createTicket(formData, ownerId, contactId, companyId) {
+async function createTicket(formData, ownerId, contactId, companyId, ticketCategory) {
   const summary = buildTicketSummary(formData);
   const ticketName = formData.company
     ? `Inbound Inquiry - ${formData.firstName} ${formData.lastName} (${formData.company})`
@@ -371,7 +371,7 @@ async function createTicket(formData, ownerId, contactId, companyId) {
     hs_pipeline: process.env.HUBSPOT_PIPELINE_ID,
     hs_pipeline_stage: "1",  // "New" stage — update this if your stage ID differs
     hs_ticket_priority: "MEDIUM",
-    hs_ticket_category: "GENERAL_INQUIRY",
+    hs_ticket_category: ticketCategory || "GENERAL_INQUIRY",
   };
 
   if (ownerId) {
@@ -440,8 +440,8 @@ exports.handler = async function (event) {
 
     // Map snake_case form field names to camelCase
     const formData = {
-      firstName: raw.first_name || "",
-      lastName: raw.last_name || "",
+      firstName: raw.first_name || raw.firstname || "",
+      lastName: raw.last_name || raw.lastname || "",
       email: raw.email || "",
       phone: raw.phone || "",
       company: raw.company || "",
@@ -449,7 +449,7 @@ exports.handler = async function (event) {
       loanAmount: raw.loan_amount || "",
       experience: raw.experience || "",
       propertyAddress: raw.property_address || "",
-      projectOverview: raw.project_overview || "",
+      projectOverview: raw.project_overview || raw.details || "",
       website: raw.website || "",
       pageUrl: raw.page_url || "",
     };
@@ -576,7 +576,8 @@ exports.handler = async function (event) {
       const ownerId = await determineTicketOwner(contactResult, companyResult);
 
       // Step 5 & 6: Create ticket with summary and associations
-      const ticket = await createTicket(formData, ownerId, contactId, companyId);
+      const ticketCategory = raw.form_source === "construction-landing-page-google-ads" ? "Campaign" : "GENERAL_INQUIRY";
+      const ticket = await createTicket(formData, ownerId, contactId, companyId, ticketCategory);
 
       return {
         statusCode: 200,

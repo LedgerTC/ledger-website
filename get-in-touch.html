@@ -341,6 +341,7 @@ gtag('config','AW-17993082803');
     })
     .then(function(result) {
       if (result.ok && result.data.success) {
+        gtag('event', 'form_submit', { 'form_id': 'get-in-touch' });
         window.location.href = 'thank-you.html';
       } else {
         var msg = result.data.error || 'Something went wrong. Please try again or contact us directly at Info@ledgertc.com.';

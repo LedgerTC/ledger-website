@@ -415,6 +415,7 @@ gtag('config','AW-17993082803');
       if (result.ok && result.data.success) {
         form.style.display = 'none';
         document.getElementById('constructionFormSuccess').classList.add('show');
+        gtag('event', 'form_submit', { 'form_id': 'construction-apply' });
       } else {
         var msg = result.data.error || 'Something went wrong. Please try again or contact us directly at Info@ledgertc.com.';
         alert(msg);
