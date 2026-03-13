@@ -282,6 +282,7 @@ if (window.location.hostname === 'ledgertc.com') {
           </div>
           <input type="hidden" name="form_source" value="construction-loan">
           <input type="text" name="website" style="display:none" tabindex="-1" autocomplete="off">
+          <input type="hidden" name="form_loaded_at" id="form_loaded_at">
           <div>
             <button type="submit" style="width: 100%; background: var(--gold); color: var(--white); padding: 1rem; border-radius: 8px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: 1rem; border: none; cursor: pointer; transition: all 0.2s;">Apply Now</button>
           </div>
@@ -404,6 +405,7 @@ if (window.location.hostname === 'ledgertc.com') {
     if (digits.length === 10) phoneInput.value = '+1(' + digits.substring(0,3) + ') ' + digits.substring(3,6) + '-' + digits.substring(6);
 
     var formData = new URLSearchParams(new FormData(form));
+    formData.set('page_url', window.location.href);
 
     fetch('/.netlify/functions/submit-form', {
       method: 'POST',
@@ -434,5 +436,6 @@ if (window.location.hostname === 'ledgertc.com') {
 })();
 </script>
 
+<script>document.getElementById('form_loaded_at').value = Date.now();</script>
 </body>
 </html>
