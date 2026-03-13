@@ -848,6 +848,7 @@
           <!-- Honeypot -->
           <div style="position:absolute;left:-9999px;"><input type="text" name="website" tabindex="-1" autocomplete="off"></div>
           <input type="hidden" name="form_source" value="construction-landing-page-google-ads">
+          <input type="hidden" name="form_loaded_at" id="form_loaded_at">
 
           <button type="submit" class="form-submit">Get My Rate &rarr;</button>
           <p class="form-note">No obligation. No credit pull. Just a conversation.</p>
@@ -1130,6 +1131,7 @@
       formData.append('phone', form.querySelector('[name="phone"]').value);
       formData.append('details', form.querySelector('[name="details"]').value);
       formData.append('form_source', 'construction-landing-page-google-ads');
+      formData.append('page_url', window.location.href);
 
       fetch('/.netlify/functions/submit-form', {
         method: 'POST',
@@ -1159,5 +1161,6 @@
   })();
   </script>
 
+<script>document.getElementById('form_loaded_at').value = Date.now();</script>
 </body>
 </html>

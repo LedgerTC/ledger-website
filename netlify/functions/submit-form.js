@@ -433,6 +433,12 @@ exports.handler = async function (event) {
     };
   }
 
+  // ── Referer check (block if present and doesn't match) ────────
+  const referer = event.headers["referer"] || event.headers["Referer"] || "";
+  if (referer && !referer.includes("ledgertc.com") && !referer.includes("ledgertc.co")) {
+    return { statusCode: 403, headers, body: JSON.stringify({ error: "Forbidden" }) };
+  }
+
   try {
     // Parse URL-encoded form data
     const params = new URLSearchParams(event.body);
@@ -461,6 +467,17 @@ exports.handler = async function (event) {
         statusCode: 200,
         headers,
         body: JSON.stringify({ success: true, message: "Thank you for your submission." }),
+      };
+    }
+
+    // ── Timestamp check (reject if present and under 3 seconds) ─
+    const formLoadedAt = raw.form_loaded_at;
+    if (formLoadedAt && (Date.now() - Number(formLoadedAt)) < 3000) {
+      console.log("Timestamp check failed — submission too fast");
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ error: "Submission too fast" }),
       };
     }
 
