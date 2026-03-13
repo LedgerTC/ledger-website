@@ -1,0 +1,1847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GUC Playbook — Ledger Trade & Capital</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal-dark: #1C3134;
+    --teal-mid: #3D5C5E;
+    --gold: #D9A842;
+    --cream: #DDD5C5;
+    --off-white: #F2F0EB;
+    --black: #111111;
+    --gold-light: rgba(217,168,66,0.10);
+    --gold-mid: rgba(217,168,66,0.25);
+    --card-shadow: 0 2px 12px rgba(28,49,52,0.07);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--off-white);
+    font-family: 'DM Sans', sans-serif;
+    color: var(--teal-dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ─── HEADER ─── */
+  header {
+    background: var(--teal-dark);
+    position: relative; overflow: hidden;
+  }
+  .header-brand-graphic {
+    position: absolute;
+    top: -55px; right: -30px;
+    width: 350px; height: auto;
+    opacity: 0.07;
+    pointer-events: none;
+  }
+  .hero-brand-graphic {
+    position: absolute;
+    bottom: -80px; left: -50px;
+    width: 440px; height: auto;
+    opacity: 0.05;
+    pointer-events: none;
+  }
+  .header-inner {
+    max-width: 1340px; margin: 0 auto; padding: 28px 48px 24px;
+    display: flex; align-items: flex-end; justify-content: space-between; gap: 24px;
+    position: relative; z-index: 1;
+  }
+  .logo-area { display: flex; align-items: center; }
+  .logo-area img { height: 48px; width: auto; display: block; }
+  .header-meta { text-align: right; }
+  .header-meta .doc-label {
+    font-family: 'DM Mono', monospace; font-size: 10px;
+    letter-spacing: 2px; color: var(--gold); text-transform: uppercase; margin-bottom: 4px;
+  }
+  .header-meta .doc-title {
+    font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700;
+    color: #fff; letter-spacing: 1px;
+  }
+  .header-meta .doc-sub { font-size: 11px; color: var(--cream); margin-top: 5px; letter-spacing: 1px; }
+  .gold-bar {
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold) 0%, rgba(217,168,66,0.2) 70%, transparent 100%);
+  }
+
+  /* ─── HERO ─── */
+  .hero { background: var(--teal-dark); padding: 16px 48px 32px; position: relative; overflow: hidden; }
+  .hero-inner {
+    max-width: 1340px; margin: 0 auto;
+    display: flex; align-items: center; gap: 44px;
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif; font-size: 60px; font-weight: 900;
+    color: #fff; line-height: 0.95; letter-spacing: -1px; flex-shrink: 0;
+  }
+  .hero-title span { color: var(--gold); }
+  .hero-divider { width: 2px; height: 72px; background: rgba(217,168,66,0.35); flex-shrink: 0; }
+  .hero-desc { color: var(--cream); font-size: 16px; line-height: 1.7; flex: 1; }
+  .hero-desc strong { color: var(--gold); font-weight: 600; }
+  /* hero-nav removed — nav lives in footer */
+  .step-pill { display: none; }
+
+  /* ─── LAYOUT ─── */
+  .page-wrap {
+    max-width: 1340px; margin: 0 auto;
+    padding: 44px 48px 64px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+
+  /* ─── TOC SIDEBAR ─── */
+  .toc-panel {
+    background: var(--teal-dark); border-radius: 14px; padding: 28px 24px;
+    position: sticky; top: 24px;
+    display: none;
+  }
+  .toc-panel h3 {
+    font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 20px;
+  }
+  .toc-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 11px 10px; border-radius: 8px; cursor: pointer;
+    transition: background 0.18s; margin-bottom: 2px;
+  }
+  .toc-item:hover { background: rgba(255,255,255,0.05); }
+  .toc-item.active { background: rgba(217,168,66,0.12); }
+  .toc-item.active .toc-idx { background: var(--gold); color: var(--teal-dark); }
+  .toc-item.active .toc-lbl { color: #fff; font-weight: 500; }
+  .toc-idx {
+    font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500;
+    color: var(--gold); background: rgba(217,168,66,0.12);
+    border-radius: 5px; width: 24px; height: 24px; min-width: 24px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 1px; transition: all 0.18s;
+  }
+  .toc-lbl { font-size: 12.5px; color: var(--cream); line-height: 1.4; transition: color 0.18s; }
+
+  /* ─── SECTION PANELS ─── */
+  .section-panel { display: none; }
+  .section-panel.active { display: block; animation: fadeIn 0.3s ease; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .section-header {
+    display: flex; align-items: center; gap: 16px; margin-bottom: 10px;
+  }
+  .section-num {
+    background: var(--teal-dark); color: var(--gold);
+    font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500;
+    width: 36px; height: 36px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    letter-spacing: 1px; flex-shrink: 0;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif; font-size: 25px;
+    font-weight: 700; letter-spacing: 0.5px; color: var(--teal-dark);
+  }
+  .section-line { flex: 1; height: 1px; background: var(--cream); }
+  .section-note {
+    font-size: 12.5px; color: var(--teal-mid); font-style: italic;
+    margin-bottom: 28px; margin-top: 10px; line-height: 1.65; padding-left: 52px;
+  }
+
+  /* ─── CARDS ─── */
+  .card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .card-grid.two-col { grid-template-columns: repeat(2, 1fr); }
+
+  .card {
+    background: #fff; border-radius: 12px; padding: 24px;
+    border: 1px solid rgba(28,49,52,0.08);
+    position: relative; overflow: hidden;
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+  }
+  .card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--gold); transform: scaleX(0); transform-origin: left;
+    transition: transform 0.28s ease;
+  }
+  .card:hover { transform: translateY(-3px); box-shadow: 0 14px 36px rgba(28,49,52,0.11); }
+  .card:hover::before { transform: scaleX(1); }
+  .card.span2 { grid-column: span 2; }
+  .card.span3 { grid-column: span 3; }
+
+  .card-num {
+    font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500;
+    color: var(--gold); letter-spacing: 1px; margin-bottom: 8px; text-transform: uppercase;
+  }
+  .card-title {
+    font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700;
+    color: var(--teal-dark); line-height: 1.3; margin-bottom: 12px;
+  }
+  .card-divider { height: 1px; background: var(--cream); margin-bottom: 12px; }
+  .card-body { font-size: 12.5px; color: var(--teal-mid); line-height: 1.65; }
+  .card-tag {
+    display: inline-block; margin-top: 14px;
+    background: var(--gold-light); border: 1px solid rgba(217,168,66,0.28);
+    border-radius: 4px; padding: 3px 9px;
+    font-family: 'DM Mono', monospace; font-size: 9.5px; color: #7a5e14; letter-spacing: 0.5px;
+  }
+  .card-watermark {
+    position: absolute; bottom: -14px; right: 10px;
+    font-family: 'Playfair Display', serif; font-size: 72px; font-weight: 900;
+    color: rgba(28,49,52,0.03); line-height: 1; pointer-events: none; user-select: none;
+  }
+  .card-list { list-style: none; margin-top: 8px; }
+  .card-list li {
+    font-size: 12.5px; color: var(--teal-mid); line-height: 1.6;
+    padding: 4px 0 4px 16px; position: relative;
+  }
+  .card-list li::before {
+    content: ''; position: absolute; left: 0; top: 12px;
+    width: 5px; height: 5px; border-radius: 50%; background: var(--gold);
+  }
+
+  /* ─── STYLED TABLE ─── */
+  .styled-table {
+    width: 100%; border-collapse: collapse;
+    background: #fff; border-radius: 12px; overflow: hidden;
+    border: 1px solid rgba(28,49,52,0.08); box-shadow: var(--card-shadow);
+  }
+  .styled-table thead tr { background: var(--teal-dark); }
+  .styled-table thead th {
+    font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--cream);
+    padding: 14px 20px; text-align: left;
+  }
+  .styled-table thead th:first-child { color: var(--gold); width: 200px; }
+  .styled-table tbody tr { border-bottom: 1px solid rgba(28,49,52,0.06); }
+  .styled-table tbody tr:last-child { border-bottom: none; }
+  .styled-table tbody tr:hover { background: rgba(217,168,66,0.04); }
+  .styled-table td {
+    padding: 16px 20px; font-size: 12.5px; color: var(--teal-mid);
+    line-height: 1.65; vertical-align: top;
+  }
+  .styled-table td:first-child { font-weight: 600; color: var(--teal-dark); font-size: 13px; }
+  .table-tag {
+    display: inline-block; margin-top: 6px;
+    background: var(--gold-light); border: 1px solid rgba(217,168,66,0.25);
+    border-radius: 3px; padding: 2px 7px;
+    font-family: 'DM Mono', monospace; font-size: 9px; color: #7a5e14;
+  }
+
+  /* ─── THREE-COLUMN CLOSING PACKAGE ─── */
+  .closing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .closing-col {
+    background: #fff; border-radius: 12px; padding: 24px;
+    border: 1px solid rgba(28,49,52,0.08); box-shadow: var(--card-shadow);
+  }
+  .closing-col-head {
+    background: var(--teal-dark); color: var(--gold);
+    font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase;
+    padding: 8px 14px; border-radius: 6px; margin-bottom: 18px; text-align: center;
+  }
+  .closing-doc { padding: 10px 0; border-bottom: 1px solid rgba(28,49,52,0.06); }
+  .closing-doc:last-child { border-bottom: none; }
+  .closing-doc-num {
+    font-family: 'DM Mono', monospace; font-size: 9px; color: var(--gold);
+    letter-spacing: 1px; margin-bottom: 3px;
+  }
+  .closing-doc-title { font-size: 13px; font-weight: 600; color: var(--teal-dark); margin-bottom: 4px; }
+  .closing-doc-desc { font-size: 11.5px; color: var(--teal-mid); line-height: 1.55; }
+  .disc-list { list-style: none; }
+  .disc-list li {
+    padding: 7px 0 7px 14px; position: relative;
+    font-size: 12px; color: var(--teal-mid); line-height: 1.5;
+    border-bottom: 1px solid rgba(28,49,52,0.05);
+  }
+  .disc-list li:last-child { border-bottom: none; }
+  .disc-list li::before {
+    content: ''; position: absolute; left: 0; top: 13px;
+    width: 4px; height: 4px; border-radius: 50%; background: var(--gold);
+  }
+
+  /* ─── TWO-COL GRID ─── */
+  .two-col-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+
+  /* ─── DRAW TABLE ─── */
+  .draw-table {
+    width: 100%; border-collapse: collapse;
+    background: #fff; border-radius: 12px; overflow: hidden;
+    border: 1px solid rgba(28,49,52,0.08); box-shadow: var(--card-shadow);
+  }
+  .draw-table thead tr { background: var(--teal-dark); }
+  .draw-table thead th {
+    font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--cream);
+    padding: 14px 20px; text-align: left;
+  }
+  .draw-table thead th:first-child { color: var(--gold); width: 200px; }
+  .draw-table tbody tr { border-bottom: 1px solid rgba(28,49,52,0.06); }
+  .draw-table tbody tr:last-child { border-bottom: none; }
+  .draw-table tbody tr:hover { background: rgba(217,168,66,0.04); }
+  .draw-table td {
+    padding: 14px 20px; font-size: 12.5px; color: var(--teal-mid);
+    line-height: 1.6; vertical-align: top;
+  }
+  .draw-table td:first-child { font-weight: 600; color: var(--teal-dark); font-size: 12.5px; white-space: nowrap; }
+
+  /* ─── COST ALLOCATION ─── */
+  .cost-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+
+  .disburse-box {
+    background: var(--teal-dark); border-radius: 10px; padding: 18px 20px; margin-top: 16px;
+  }
+  .disburse-box .db-title {
+    font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2.5px;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 10px;
+  }
+  .disburse-table { width: 100%; border-collapse: collapse; }
+  .disburse-table th {
+    font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px;
+    color: var(--cream); text-align: left; padding: 5px 10px;
+    border-bottom: 1px solid rgba(217,168,66,0.2);
+  }
+  .disburse-table td { padding: 8px 10px; font-size: 13px; color: #fff; }
+  .disburse-table td:last-child { color: var(--gold); font-weight: 600; }
+
+  .important-badge {
+    display: inline-block; background: rgba(217,168,66,0.15);
+    border: 1px solid var(--gold); border-radius: 4px;
+    padding: 2px 8px; font-size: 10px; font-weight: 600;
+    color: var(--gold); letter-spacing: 0.5px; margin-bottom: 8px;
+  }
+
+  /* ─── FOOTER ─── */
+  /* ─── FOOTER ─── */
+  footer {
+    border-top: 1px solid var(--cream); padding: 18px 48px;
+    max-width: 1340px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  footer .foot-note { font-style: italic; font-size: 11px; color: var(--teal-mid); }
+  footer .foot-page {
+    font-family: 'DM Mono', monospace; font-size: 10px; color: var(--gold); letter-spacing: 2px;
+  }
+  /* ─── HERO NAV BAR ─── */
+  .hero-nav-bar {
+    border-top: 1px solid rgba(217,168,66,0.15);
+    margin-top: 24px;
+  }
+  .hero-nav-inner {
+    max-width: 1340px; margin: 0 auto;
+    padding: 14px 48px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* ── PRIMARY ROW: Deal Process + Credit Box ── */
+  .nav-primary-row {
+    display: flex;
+    gap: 10px;
+    padding-bottom: 10px;
+    align-items: center;
+  }
+  .nav-primary-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px; letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: rgba(217,168,66,0.7);
+    font-weight: 600;
+    margin-right: 4px;
+    flex-shrink: 0;
+  }
+
+  /* ── SUB-ROW: steps 03–09, nested under Deal Process ── */
+  .nav-sub-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 8px 0 12px 0;
+    margin-left: 2px;
+    border-top: 1px solid rgba(217,168,66,0.10);
+    position: relative;
+  }
+  /* Left bracket connecting sub-items to Deal Process Overview */
+  .nav-sub-row::before {
+    content: '';
+    position: absolute;
+    left: -24px;
+    top: 0; bottom: 12px;
+    width: 2px;
+    background: linear-gradient(to bottom, rgba(217,168,66,0.4), rgba(217,168,66,0.08));
+    border-radius: 1px;
+  }
+  .nav-sub-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 7.5px; letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(217,168,66,0.7);
+    font-weight: 600;
+    align-self: center;
+    margin-right: 4px;
+    flex-shrink: 0;
+  }
+
+  /* ── PRIMARY pills (Deal Process Overview & Credit Box) ── */
+  .step-pill {
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(217,168,66,0.18);
+    padding: 8px 16px; border-radius: 8px;
+    cursor: pointer; transition: all 0.2s;
+    white-space: nowrap; text-decoration: none;
+  }
+  .step-pill:hover {
+    background: rgba(217,168,66,0.12);
+    border-color: rgba(217,168,66,0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+  .step-pill .nav-num {
+    font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 1.5px;
+    color: rgba(217,168,66,0.5); transition: color 0.2s; flex-shrink: 0;
+  }
+  .step-pill .nav-lbl {
+    font-size: 11.5px; font-weight: 500; letter-spacing: 0.2px;
+    color: rgba(221,213,197,0.6); transition: color 0.2s;
+  }
+  .step-pill.active {
+    background: rgba(217,168,66,0.15);
+    border-color: var(--gold);
+    box-shadow: 0 0 0 1px rgba(217,168,66,0.25), 0 4px 14px rgba(0,0,0,0.25);
+    transform: translateY(-2px);
+  }
+  .step-pill.active .nav-num { color: var(--gold); }
+  .step-pill.active .nav-lbl { color: #fff; font-weight: 600; }
+
+  /* Primary pills get extra weight */
+  .step-pill--primary {
+    padding: 10px 20px;
+    border-width: 1.5px;
+  }
+  .step-pill--primary .nav-num {
+    font-size: 10px;
+  }
+  .step-pill--primary .nav-lbl {
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(221,213,197,0.8);
+  }
+  .step-pill--primary:hover .nav-lbl { color: #fff; }
+  .step-pill--primary.active .nav-lbl { font-size: 13px; }
+
+  /* Sub-step pills: smaller, more muted */
+  .step-pill--sub {
+    padding: 5px 12px;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.02);
+    border-color: rgba(217,168,66,0.11);
+  }
+  .step-pill--sub .nav-num {
+    font-size: 8px; color: rgba(217,168,66,0.35);
+  }
+  .step-pill--sub .nav-lbl {
+    font-size: 10.5px; font-weight: 400;
+    color: rgba(221,213,197,0.45);
+  }
+  .step-pill--sub:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+  }
+  .step-pill--sub.active {
+    background: rgba(217,168,66,0.12);
+    border-color: rgba(217,168,66,0.6);
+    box-shadow: 0 0 0 1px rgba(217,168,66,0.2), 0 3px 10px rgba(0,0,0,0.2);
+    transform: translateY(-1px);
+  }
+  .step-pill--sub.active .nav-num { color: var(--gold); }
+  .step-pill--sub.active .nav-lbl { color: rgba(255,255,255,0.9); font-weight: 500; }
+
+  /* When Deal Process Overview is the active parent, show sub-row connector more prominently */
+  .nav-sub-row.parent-active::before {
+    background: linear-gradient(to bottom, rgba(217,168,66,0.65), rgba(217,168,66,0.12));
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 1100px) {
+    .page-wrap { grid-template-columns: 1fr; }
+    .toc-panel { position: static; display: flex; flex-wrap: wrap; gap: 6px; padding: 18px; }
+    .toc-panel h3 { width: 100%; margin-bottom: 8px; }
+    .toc-item { flex: none; border-radius: 20px; padding: 8px 14px; }
+    .toc-lbl { font-size: 11.5px; }
+
+  }
+  @media (max-width: 800px) {
+    .card-grid, .card-grid.two-col, .closing-grid, .two-col-grid, .cost-grid {
+      grid-template-columns: 1fr;
+    }
+    .card.span2, .card.span3 { grid-column: span 1; }
+    .header-inner, .hero-inner, .page-wrap, footer { padding-left: 20px; padding-right: 20px; }
+    .hero-title { font-size: 40px; }
+    .hero { padding: 16px 20px 28px; }
+  }
+
+  /* ─── DEAL PROCESS FLOW ─── */
+
+  /* Outer wrapper — vertical spine with step rows */
+  .process-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: 32px;
+    position: relative;
+  }
+
+  /* Continuous vertical connector line running down the left */
+  .process-flow::before {
+    content: '';
+    position: absolute;
+    left: 31px;
+    top: 32px;
+    bottom: 32px;
+    width: 2px;
+    background: linear-gradient(to bottom,
+      var(--gold) 0%,
+      rgba(217,168,66,0.3) 100%);
+    z-index: 0;
+  }
+
+  /* Each step row = step-node (circle) + connector arrow + card */
+  .process-step {
+    display: grid;
+    grid-template-columns: 64px 36px 1fr;
+    align-items: start;
+    position: relative;
+    margin-bottom: 20px;
+  }
+  .process-step:last-child { margin-bottom: 0; }
+
+  /* Step circle node */
+  .process-node {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--teal-dark);
+    border: 3px solid var(--gold);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    box-shadow: 0 0 0 6px rgba(217,168,66,0.08);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .process-step:hover .process-node {
+    transform: scale(1.07);
+    box-shadow: 0 0 0 8px rgba(217,168,66,0.15);
+  }
+  .process-node-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 1.5px;
+    color: rgba(217,168,66,0.6);
+    line-height: 1;
+    margin-bottom: 2px;
+  }
+  .process-node svg {
+    width: 18px; height: 18px;
+    color: var(--gold);
+  }
+
+  /* Horizontal connector arrow pointing right into card */
+  .process-connector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 64px;
+    color: var(--gold);
+    opacity: 0.55;
+  }
+  .process-connector svg { width: 20px; height: 20px; }
+
+  /* The card itself */
+  .process-card {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid rgba(28,49,52,0.1);
+    border-left: 3px solid var(--gold);
+    padding: 24px 26px 22px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .process-card:hover {
+    box-shadow: 0 8px 28px rgba(28,49,52,0.12);
+    transform: translateX(3px);
+  }
+
+  /* Step number + title inline header */
+  .process-card-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  .process-step-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+  .process-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--teal-dark);
+  }
+  .process-divider {
+    height: 1px;
+    background: rgba(28,49,52,0.1);
+    margin-bottom: 14px;
+  }
+
+  /* Two-column layout inside the card for desc + list side by side */
+  .process-card-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+  .process-card-body.single {
+    grid-template-columns: 1fr;
+  }
+  .process-desc {
+    font-size: 13px;
+    color: #444;
+    line-height: 1.7;
+    margin: 0;
+  }
+  .process-list {
+    list-style: none;
+    margin: 0; padding: 0;
+  }
+  .process-list li {
+    font-size: 12px;
+    color: var(--teal-dark);
+    padding: 5px 0 5px 16px;
+    position: relative;
+    border-top: 1px solid rgba(28,49,52,0.06);
+    line-height: 1.4;
+  }
+  .process-list li:first-child { border-top: none; }
+  .process-list li::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 50%;
+    transform: translateY(-50%);
+    width: 5px; height: 5px;
+    background: var(--gold);
+    border-radius: 50%;
+  }
+  .process-list-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--teal-mid);
+    margin-bottom: 6px;
+  }
+  .process-compliance {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(217,168,66,0.25);
+  }
+  .process-compliance-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .process-icon {
+    width: 40px; height: 40px;
+    background: rgba(217,168,66,0.12);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 14px;
+    color: var(--gold);
+  }
+  .process-icon svg { width: 20px; height: 20px; }
+  .process-step-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .process-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--teal-dark);
+    margin-bottom: 10px;
+  }
+  .process-divider {
+    height: 1px;
+    background: rgba(28,49,52,0.1);
+    margin-bottom: 12px;
+  }
+  .process-desc {
+    font-size: 13px;
+    color: #444;
+    line-height: 1.7;
+    margin: 0 0 10px;
+  }
+  .process-list {
+    list-style: none;
+    margin: 0; padding: 0;
+    margin-top: auto;
+  }
+  .process-list li {
+    font-size: 12px;
+    color: var(--teal-dark);
+    padding: 5px 0 5px 16px;
+    position: relative;
+    border-top: 1px solid rgba(28,49,52,0.06);
+    line-height: 1.4;
+  }
+  .process-list li::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 50%;
+    transform: translateY(-50%);
+    width: 5px; height: 5px;
+    background: var(--gold);
+    border-radius: 50%;
+  }
+  .process-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 6px;
+    color: var(--gold);
+    opacity: 0.6;
+    flex-shrink: 0;
+  }
+  .process-arrow svg { width: 20px; height: 20px; }
+  @media (max-width: 900px) {
+    .process-flow::before { left: 27px; }
+    .process-step { grid-template-columns: 56px 28px 1fr; }
+    .process-node { width: 56px; height: 56px; }
+    .process-card-body { grid-template-columns: 1fr; gap: 12px; }
+  }
+
+
+  /* ─── CREDIT BOX ─── */
+  .cb-section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px; letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--teal-mid);
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--cream);
+  }
+
+  /* Program Tiers */
+  .cb-tiers-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 4px;
+  }
+  .cb-tier {
+    border-radius: 10px;
+    padding: 20px 24px;
+  }
+  .cb-tier--teal {
+    background: var(--teal-dark);
+  }
+  .cb-tier--gold {
+    background: var(--gold);
+  }
+  .cb-tier-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px; font-weight: 700;
+    margin-bottom: 6px;
+    color: #fff;
+  }
+  .cb-tier--gold .cb-tier-name { color: var(--teal-dark); }
+  .cb-tier-desc {
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: rgba(255,255,255,0.75);
+  }
+  .cb-tier--gold .cb-tier-desc { color: rgba(28,49,52,0.8); }
+
+  /* Tables */
+  .cb-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden;
+    font-size: 13px;
+    box-shadow: 0 1px 4px rgba(28,49,52,0.07);
+  }
+  .cb-table thead tr {
+    background: var(--teal-dark);
+    color: var(--gold);
+  }
+  .cb-table thead th {
+    padding: 10px 16px;
+    font-family: 'DM Mono', monospace;
+    font-size: 9.5px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 500;
+    text-align: left;
+  }
+  .cb-table thead th:first-child { width: 160px; }
+  .cb-table tbody td {
+    padding: 11px 16px;
+    color: var(--teal-dark);
+    border-bottom: 1px solid rgba(28,49,52,0.06);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  .cb-table tbody tr:last-child td { border-bottom: none; }
+  .cb-row-alt { background: var(--off-white); }
+  .cb-row-label {
+    font-weight: 600;
+    font-size: 12px;
+    color: var(--teal-dark) !important;
+    white-space: nowrap;
+  }
+  .cb-footnotes {
+    margin-top: 8px;
+    font-size: 11px;
+    color: var(--teal-mid);
+    line-height: 1.6;
+    font-style: italic;
+    padding-left: 4px;
+  }
+  .cb-footnotes div { margin-bottom: 2px; }
+
+  /* Geo grid */
+  .cb-geo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .cb-geo-card {
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid rgba(28,49,52,0.1);
+    overflow: hidden;
+  }
+  .cb-geo-card--full { grid-column: 1 / -1; }
+  .cb-geo-card--eligible { border-top: 3px solid var(--teal-dark); }
+  .cb-geo-card--ineligible { border-top: 3px solid var(--gold); }
+  .cb-geo-head {
+    background: var(--teal-dark);
+    color: var(--gold);
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 8px 16px;
+  }
+  .cb-geo-card--eligible .cb-geo-head { background: var(--teal-dark); color: #fff; }
+  .cb-geo-card--ineligible .cb-geo-head { background: rgba(217,168,66,0.12); color: var(--teal-dark); }
+  .cb-geo-body {
+    padding: 14px 16px;
+    font-size: 13px;
+    color: var(--teal-dark);
+    line-height: 1.6;
+  }
+  .cb-geo-list {
+    list-style: none;
+    margin: 0; padding: 10px 16px 14px;
+  }
+  .cb-geo-list li {
+    font-size: 12.5px;
+    color: var(--teal-dark);
+    padding: 5px 0 5px 14px;
+    position: relative;
+    border-top: 1px solid rgba(28,49,52,0.06);
+    line-height: 1.5;
+  }
+  .cb-geo-list li:first-child { border-top: none; }
+  .cb-geo-list li::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 50%;
+    transform: translateY(-50%);
+    width: 5px; height: 5px;
+    background: var(--gold);
+    border-radius: 50%;
+  }
+
+  @media (max-width: 800px) {
+    .cb-tiers-grid, .cb-geo-grid { grid-template-columns: 1fr; }
+    .cb-geo-card--full { grid-column: 1; }
+  }
+
+
+  /* Closing Package stacked column */
+  .closing-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    height: 100%;
+  }
+  .closing-stack .card {
+    flex: 0 0 auto;
+  }
+  .closing-stack .card:last-child {
+    flex: 1 1 0;
+    min-height: 0;
+  }
+
+/* ─── RESPONSIVE ADDITIONS ─── */
+@media (max-width: 768px) {
+  .header-inner { padding: 20px; flex-direction: column; align-items: flex-start; gap: 16px; }
+  .header-meta { text-align: left; }
+  .hero { padding: 16px 20px 24px; }
+  .hero-inner { flex-direction: column; gap: 20px; }
+  .hero-divider { display: none; }
+  .hero-title { font-size: 44px; }
+  .hero-nav-bar .hero-nav-inner { padding: 14px 20px 0; }
+  .nav-primary-row { flex-wrap: wrap; }
+  .nav-sub-row { margin-left: 0; }
+  .nav-sub-row::before { display: none; }
+  .page-wrap { padding: 24px 20px 48px; }
+  .card-grid { grid-template-columns: 1fr; }
+  .card-grid.two-col { grid-template-columns: 1fr; }
+  .card.span2, .card.span3 { grid-column: span 1; }
+  .closing-grid { grid-template-columns: 1fr; }
+  .two-col-grid { grid-template-columns: 1fr; }
+  .cost-grid { grid-template-columns: 1fr; }
+  .cb-tiers-grid { grid-template-columns: 1fr; }
+  .cb-geo-grid { grid-template-columns: 1fr; }
+  footer { padding: 16px 20px; flex-direction: column; gap: 8px; text-align: center; }
+}
+@media (min-width: 1600px) {
+  .page-wrap { max-width: 1500px; }
+  .header-inner, .hero-inner, .hero-nav-inner { max-width: 1500px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header>
+<div class="header-brand-graphic" aria-hidden="true"><?xml version="1.0" encoding="UTF-8"?><svg id="Layer_2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 326.7 458.557"><g id="Components"><g id="_0cf97491-fc1d-49aa-8ebd-56ebb4778964_16"><path d="M53.54,230.3176v-51.6097L0,125.1672v105.1788l16.8376,16.1551v-82.8635l19.8648,19.8647v82.0584l16.8376,16.1551,103.013.0045-51.4027-51.4027h-51.6103ZM53.54,267.0208v-20.5129l46.0995.0068,20.4357,20.5061H53.54Z" style="fill:#e1a521; stroke-width:0px;"/><path d="M75.5479,168.7141h30.6296v51.753l51.4015,51.4016-.0037-103.1546-16.1548-16.8374H59.3618l-19.8645-19.8647h82.8635l-16.155-16.8374H.8846l53.5396,53.5396h21.1237ZM142.2825,168.7141l.5973,66.5355-20.5062-20.4356-.0178-46.1h19.9267Z" style="fill:#e1a521; stroke-width:0px;"/><path d="M170.0263,115.143v-51.6097L116.4864,9.9926v105.1788l16.8376,16.1551V48.4631l19.8648,19.8647v82.0584l16.8376,16.1551,103.013.0045-51.4027-51.4027h-51.6103ZM170.0263,151.8463v-20.5129l46.0995.0068,20.4357,20.5061h-66.5352Z" style="fill:#e1a521; stroke-width:0px;"/><path d="M192.0342,53.5396h30.6296v51.753l51.4015,51.4016-.0037-103.1546-16.1548-16.8374h-82.0586l-19.8645-19.8647h82.8635L222.6921,0h-105.3211l53.5396,53.5396h21.1237ZM258.7689,53.5396l.5973,66.5355-20.5062-20.4356-.0178-46.1h19.9267Z" style="fill:#e1a521; stroke-width:0px;"/><path d="M106.1747,407.1542v-51.6097l-53.54-53.5407v105.1788l16.8376,16.1551v-82.8635l19.8648,19.8647v82.0584l16.8376,16.1551,103.013.0045-51.4027-51.4027h-51.6103ZM106.1747,443.8575v-20.5129l46.0995.0068,20.4357,20.5061h-66.5352Z" style="fill:#e1a521; stroke-width:0px;"/><path d="M128.1826,345.5508h30.6296v51.753l51.4015,51.4016-.0037-103.1546-16.1548-16.8374h-82.0586l-19.8645-19.8647h82.8635l-16.155-16.8374H53.5193l53.5396,53.5396h21.1237ZM194.9173,345.5508l.5973,66.5355-20.5062-20.4356-.0178-46.1h19.9267Z" style="fill:#e1a521; stroke-width:0px;"/><path d="M222.6611,291.9797v-51.6097l-53.54-53.5407v105.1788l16.8376,16.1551v-82.8635l19.8648,19.8647v82.0584l16.8376,16.1551,103.013.0045-51.4027-51.4027h-51.6103ZM222.6611,328.6829v-20.5129l46.0995.0068,20.4357,20.5061h-66.5352Z" style="fill:#e1a521; stroke-width:0px;"/><path d="M244.6689,230.3762h30.6296v51.753l51.4015,51.4016-.0037-103.1546-16.1548-16.8374h-82.0586l-19.8645-19.8647h82.8635l-16.155-16.8374h-105.3211l53.5396,53.5396h21.1237ZM311.4036,230.3762l.5973,66.5355-20.5062-20.4356-.0178-46.1h19.9267Z" style="fill:#e1a521; stroke-width:0px;"/></g></g></svg></div>
+  <div class="header-inner">
+    <div class="logo-area">
+      <?xml version="1.0" encoding="UTF-8"?><svg id="Layer_2" style="height:44px;width:auto;display:block;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1594.5059 392.5455"><g id="Components"><g id="_26d9133c-1bc8-4ae3-9c53-1d936bd8e505_5"><path d="M495.1425,307.3337v6.9485h-23.2511v76.8249h-8.39v-76.8249h-23.3712v-6.9485h55.0122Z" style="fill:#fff; stroke-width:0px;"/><path d="M567.0517,391.1071l-20.7347-34.9952h-15.4586v34.9952h-8.39v-83.7734h25.1668c9.3509,0,16.4411,2.2361,21.2737,6.7114,4.8356,4.4753,7.2534,10.3458,7.2534,17.6177,0,6.0707-1.7402,11.2451-5.2145,15.5202-3.4773,4.2751-8.6117,7.0502-15.4001,8.3284l21.5724,35.5958h-10.0686ZM530.8584,349.2804h16.897c6.5512,0,11.4854-1.5985,14.8026-4.7956,3.3141-3.194,4.9742-7.469,4.9742-12.8221,0-5.5132-1.5985-9.7698-4.7956-12.7636-3.194-2.9969-8.2298-4.4968-15.1013-4.4968h-16.7769v34.8781Z" style="fill:#fff; stroke-width:0px;"/><path d="M655.3774,371.2133h-38.1121l-7.3089,19.8938h-8.8705l30.563-82.6954h9.468l30.4398,82.6954h-8.8674l-7.312-19.8938ZM652.8611,364.2617l-16.5397-45.304-16.5397,45.304h33.0794Z" style="fill:#fff; stroke-width:0px;"/><path d="M747.6609,312.3664c6.6313,3.3541,11.7041,8.1898,15.2215,14.5007,3.5143,6.314,5.273,13.8231,5.273,22.5334,0,8.6271-1.7587,16.0808-5.273,22.3517-3.5174,6.274-8.5902,11.0665-15.2215,14.3806-6.6313,3.3172-14.5808,4.9742-23.8486,4.9742h-24.8095v-83.7734h24.8095c9.2678,0,17.2173,1.6755,23.8486,5.0328ZM750.4792,374.9863c6.1108-6.1108,9.1661-14.6393,9.1661-25.5857,0-11.0265-3.0554-19.6351-9.1661-25.829-6.1138-6.1908-15.0028-9.2893-26.6668-9.2893h-16.4196v69.8733h16.4196c11.664,0,20.553-3.0554,26.6668-9.1692Z" style="fill:#fff; stroke-width:0px;"/><path d="M806.0304,314.1621v31.2837h31.7581v6.9485h-31.7581v31.7612h35.3555v6.9516h-43.7455v-83.8935h43.7455v6.9485h-35.3555Z" style="fill:#fff; stroke-width:0px;"/><path d="M982.5616,391.1071l-11.3837-11.624c-4.0779,4.4753-8.4331,7.7709-13.0654,9.8869-4.6354,2.116-9.8684,3.1755-15.6989,3.1755-5.5933,0-10.5491-1.0595-14.8611-3.1755-4.3151-2.116-7.6723-5.0944-10.0686-8.929-2.3963-3.8346-3.5944-8.2698-3.5944-13.3026,0-5.9136,1.6755-11.0665,5.0328-15.4617,3.3541-4.3921,8.2698-7.8294,14.741-10.3057-2.7967-3.117-4.8356-6.0122-6.1108-8.6918-1.2813-2.6735-1.9189-5.5718-1.9189-8.6887,0-5.35,1.9189-9.6867,5.7535-13.0038,3.8346-3.3141,8.9475-4.9742,15.3385-4.9742,5.9937,0,10.8663,1.7217,14.6239,5.156,3.7545,3.4342,5.5132,7.9095,5.273,13.4227h-8.39c.0801-3.5975-1.0195-6.4311-3.2956-8.5101-2.2761-2.0759-5.1344-3.117-8.5686-3.117-3.6775,0-6.6528,1.0195-8.929,3.0585-2.2792,2.0359-3.4157,4.6539-3.4157,7.8479,0,2.5595.6992,5.0358,2.0975,7.4321,1.3952,2.3963,3.6129,5.233,6.6498,8.5101l27.5662,27.9234c1.118-1.5154,2.6365-3.9147,4.5553-7.1918l7.6692-12.8221h8.9937l-9.1138,15.6989c-2.156,3.7576-4.3151,7.1148-6.4711,10.0686l17.5007,17.6177h-10.9094ZM955.0571,382.4769c3.7145-1.8357,7.2504-4.7124,10.6076-8.6271l-26.7284-27.0857c-11.1065,4.0749-16.6598,10.7862-16.6598,20.1341,0,3.5174.8593,6.6498,2.578,9.4064,1.7187,2.7566,4.0933,4.9342,7.1302,6.5327,3.0369,1.5985,6.5112,2.3963,10.4289,2.3963,4.7124,0,8.929-.9178,12.6435-2.7566Z" style="fill:#fff; stroke-width:0px;"/><path d="M1067.4161,327.0489c3.5913-6.5112,8.507-11.587,14.741-15.2215,6.2278-3.6344,13.1825-5.4547,20.8517-5.4547,9.3509,0,17.359,2.2176,24.0303,6.6528,6.6713,4.4352,11.5254,10.6877,14.5623,18.7573h-9.8253c-2.4024-5.6734-6.0553-10.1086-10.971-13.3057-4.9095-3.194-10.8417-4.7925-17.7963-4.7925-6.1539,0-11.6856,1.4384-16.6013,4.3151-4.9095,2.8767-8.7657,7.0101-11.5624,12.4032-2.7967,5.3931-4.195,11.6455-4.195,18.7573s1.3983,13.3426,4.195,18.6957c2.7967,5.3531,6.6528,9.468,11.5624,12.3447,4.9157,2.8767,10.4474,4.3151,16.6013,4.3151,6.9547,0,12.8868-1.577,17.7963-4.734,4.9157-3.157,8.5686-7.5306,10.971-13.124h9.8253c-3.0369,7.9896-7.9095,14.1835-14.6239,18.5756-6.7083,4.3952-14.6978,6.5912-23.9687,6.5912-7.6692,0-14.6239-1.8141-20.8517-5.4516-6.234-3.6344-11.1497-8.6887-14.741-15.1599-3.5975-6.4742-5.3962-13.8231-5.3962-22.0529s1.7987-15.6003,5.3962-22.1115Z" style="fill:#fff; stroke-width:0px;"/><path d="M1220.8195,371.2133h-38.1121l-7.312,19.8938h-8.8705l30.5661-82.6954h9.468l30.4367,82.6954h-8.8643l-7.312-19.8938ZM1218.3001,364.2617l-16.5397-45.304-16.5397,45.304h33.0794Z" style="fill:#fff; stroke-width:0px;"/><path d="M1310.947,348.8c-4.7124,4.3952-11.7842,6.5912-21.209,6.5912h-16.9031v35.7159h-8.39v-83.7734h25.2931c9.3448,0,16.398,2.1961,21.1536,6.5912,4.7494,4.3952,7.1272,10.2287,7.1272,17.4976,0,7.1918-2.3531,12.9854-7.0717,17.3775ZM1309.3886,331.4225c0-5.5933-1.5523-9.8283-4.6693-12.7051-3.117-2.8767-8.1128-4.3151-14.9812-4.3151h-16.9031v33.8001h16.9031c13.1024,0,19.6505-5.5933,19.6505-16.7799Z" style="fill:#fff; stroke-width:0px;"/><path d="M1354.4492,307.3337v83.7734h-8.39v-83.7734h8.39Z" style="fill:#fff; stroke-width:0px;"/><path d="M1436.544,307.3337v6.9485h-23.248v76.8249h-8.39v-76.8249h-23.3712v-6.9485h55.0091Z" style="fill:#fff; stroke-width:0px;"/><path d="M1512.4111,371.2133h-38.1121l-7.312,19.8938h-8.8643l30.5599-82.6954h9.468l30.4429,82.6954h-8.8705l-7.312-19.8938ZM1509.8978,364.2617l-16.5397-45.304-16.5397,45.304h33.0794Z" style="fill:#fff; stroke-width:0px;"/><path d="M1564.4202,384.2756h30.0856v6.8315h-38.4756v-83.7734h8.39v76.9419Z" style="fill:#fff; stroke-width:0px;"/><polygon points="1012.898 242.9252 1012.898 242.9015 1012.8728 242.9252 1012.898 242.9252" style="fill:#fff; stroke-width:0px;"/><polygon points="1262.0085 141.4365 1360.1577 141.4365 1360.1577 97.6963 1262.0085 97.6963 1262.0085 47.2838 1370.1754 47.2838 1370.1754 3.2148 1211.269 3.2148 1211.269 242.9281 1372.513 242.9281 1372.513 198.862 1262.0085 198.862 1262.0085 141.4365" style="fill:#fff; stroke-width:0px;"/><polygon points="483.6418 197.0606 483.6418 3.2177 432.9026 3.2177 432.9026 242.9281 581.5028 242.9163 539.3096 197.0606 483.6418 197.0606" style="fill:#fff; stroke-width:0px;"/><polygon points="627.0854 141.4336 725.2345 141.4336 725.2345 97.6963 627.0854 97.6963 627.0854 47.2809 735.2519 47.2809 735.2519 3.2148 576.3455 3.2148 576.3455 200.9419 614.9789 242.9281 737.5895 242.9281 737.5895 198.862 627.0854 198.862 627.0854 141.4336" style="fill:#fff; stroke-width:0px;"/><path d="M914.2689,0l-151.1397.3052v242.6229l152.0148-.003c13.0864,0,25.5766-5.4694,34.451-15.0867,7.9893-8.6574,12.4254-20.008,12.4257-31.7882l.0044-148.3872c.0007-26.3603-21.3964-47.7133-47.7563-47.663ZM917.0547,197.9524h-100.7561V45.281h78.1256c12.4957,0,22.6304,10.1329,22.6304,22.6301v130.0414Z" style="fill:#fff; stroke-width:0px;"/><path d="M1085.384,152.9678h55.7608v35.9598c0,4.9835-4.0406,9.0248-9.0248,9.0248h-82.7069c-4.9842,0-9.0248-4.0413-9.0248-9.0248V57.8078c0-6.9182,5.6075-12.5239,12.5242-12.5239h65.6066c12.4957,0,22.6256,10.1299,22.6256,22.6241v15.7652h44.9757v-36.0102C1186.1205,21.3028,1164.7226-.0503,1138.3623.0031l-108.9109.2192c-23.3382.0474-42.2325,18.9799-42.2325,42.3151v155.5987c0,11.2587,4.2394,22.1027,11.8743,30.3779,8.4796,9.1877,20.4139,14.4141,32.9177,14.4141l124.1494-.003c16.5437,0,29.9549-13.4098,29.9549-29.9542v-60.0032h.2152v-40.7507h-100.9464v40.7507Z" style="fill:#fff; stroke-width:0px;"/><path d="M1531.0921,150.4465c34.0629-11.3506,54.0971-37.0531,54.0971-69.4427,0-49.7458-35.0547-77.786-95.4852-77.786h-93.8142v239.7104h50.7406V45.2839h40.7366c30.7182,0,47.0697,12.0143,47.0697,35.7198,0,23.3797-16.3515,35.3939-47.0697,35.3939h-35.6876l26.6091,41.7284h.0656l54.0834,84.802h60.4305l-61.776-92.4817Z" style="fill:#fff; stroke-width:0px;"/><path d="M124.972,272.5292v-120.4664L0,27.0892v245.5064l39.302,37.709V116.8862l46.3681,46.3677v191.539l39.302,37.709,240.451.0106-119.9833-119.9833h-120.4677ZM124.972,358.2012v-47.8808l107.6046.0159,47.7006,47.8648H124.972Z" style="fill:#fff; stroke-width:0px;"/><path d="M247.8373,128.7356v120.8009l119.9803,119.9806-.0086-240.7815-37.7083-39.3016h-191.5397l-46.3674-46.3677h193.4183L247.9033,3.7646H2.0648l124.971,124.971h120.8015ZM332.1131,128.7356l1.3942,155.3059-47.8652-47.7003-.0415-107.6056h46.5124Z" style="fill:#fff; stroke-width:0px;"/></g></g></svg>
+    </div>
+    <div class="header-meta">
+      <div class="doc-label">GUC Playbook</div>
+      <div class="doc-title">Ground-Up Construction Lending</div>
+      <div class="doc-sub">Prepared for Lord Abbett Private Real Estate Advisor, LLC</div>
+    </div>
+  </div>
+  <div class="gold-bar"></div>
+</header>
+
+<!-- ═══ HERO ═══ -->
+<div class="hero">
+  <div class="hero-brand-graphic" aria-hidden="true"><?xml version="1.0" encoding="UTF-8"?><svg id="Layer_2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 326.7 458.557"><g id="Components"><g id="_0cf97491-fc1d-49aa-8ebd-56ebb4778964_16"><path d="M53.54,230.3176v-51.6097L0,125.1672v105.1788l16.8376,16.1551v-82.8635l19.8648,19.8647v82.0584l16.8376,16.1551,103.013.0045-51.4027-51.4027h-51.6103ZM53.54,267.0208v-20.5129l46.0995.0068,20.4357,20.5061H53.54Z" style="fill:#e1a521; stroke-width:0px;"/><path d="M75.5479,168.7141h30.6296v51.753l51.4015,51.4016-.0037-103.1546-16.1548-16.8374H59.3618l-19.8645-19.8647h82.8635l-16.155-16.8374H.8846l53.5396,53.5396h21.1237ZM142.2825,168.7141l.5973,66.5355-20.5062-20.4356-.0178-46.1h19.9267Z" style="fill:#e1a521; stroke-width:0px;"/><path d="M170.0263,115.143v-51.6097L116.4864,9.9926v105.1788l16.8376,16.1551V48.4631l19.8648,19.8647v82.0584l16.8376,16.1551,103.013.0045-51.4027-51.4027h-51.6103ZM170.0263,151.8463v-20.5129l46.0995.0068,20.4357,20.5061h-66.5352Z" style="fill:#e1a521; stroke-width:0px;"/><path d="M192.0342,53.5396h30.6296v51.753l51.4015,51.4016-.0037-103.1546-16.1548-16.8374h-82.0586l-19.8645-19.8647h82.8635L222.6921,0h-105.3211l53.5396,53.5396h21.1237ZM258.7689,53.5396l.5973,66.5355-20.5062-20.4356-.0178-46.1h19.9267Z" style="fill:#e1a521; stroke-width:0px;"/><path d="M106.1747,407.1542v-51.6097l-53.54-53.5407v105.1788l16.8376,16.1551v-82.8635l19.8648,19.8647v82.0584l16.8376,16.1551,103.013.0045-51.4027-51.4027h-51.6103ZM106.1747,443.8575v-20.5129l46.0995.0068,20.4357,20.5061h-66.5352Z" style="fill:#e1a521; stroke-width:0px;"/><path d="M128.1826,345.5508h30.6296v51.753l51.4015,51.4016-.0037-103.1546-16.1548-16.8374h-82.0586l-19.8645-19.8647h82.8635l-16.155-16.8374H53.5193l53.5396,53.5396h21.1237ZM194.9173,345.5508l.5973,66.5355-20.5062-20.4356-.0178-46.1h19.9267Z" style="fill:#e1a521; stroke-width:0px;"/><path d="M222.6611,291.9797v-51.6097l-53.54-53.5407v105.1788l16.8376,16.1551v-82.8635l19.8648,19.8647v82.0584l16.8376,16.1551,103.013.0045-51.4027-51.4027h-51.6103ZM222.6611,328.6829v-20.5129l46.0995.0068,20.4357,20.5061h-66.5352Z" style="fill:#e1a521; stroke-width:0px;"/><path d="M244.6689,230.3762h30.6296v51.753l51.4015,51.4016-.0037-103.1546-16.1548-16.8374h-82.0586l-19.8645-19.8647h82.8635l-16.155-16.8374h-105.3211l53.5396,53.5396h21.1237ZM311.4036,230.3762l.5973,66.5355-20.5062-20.4356-.0178-46.1h19.9267Z" style="fill:#e1a521; stroke-width:0px;"/></g></g></svg></div>
+  <div class="hero-inner">
+    <h1 class="hero-title">PLAY<br><span>BOOK</span></h1>
+    <div class="hero-divider"></div>
+    <p class="hero-desc">
+      A complete reference guide covering <strong>submission</strong>, <strong>underwriting</strong>,
+      <strong>closing</strong>, <strong>servicing</strong>, and <strong>draw</strong> processes
+      for ground-up construction lending transactions.
+    </p>
+
+  </div>
+  <div class="hero-nav-bar">
+    <div class="hero-nav-inner">
+
+      <!-- PRIMARY ROW -->
+      <div class="nav-primary-row">
+        <span class="nav-primary-label">Sections</span>
+        <span class="step-pill step-pill--primary active" data-section="1" data-primary="true">
+          <span class="nav-num">01</span><span class="nav-lbl">Deal Process Overview</span>
+        </span>
+        <span class="step-pill step-pill--primary" data-section="9">
+          <span class="nav-num">02</span><span class="nav-lbl">Credit Box</span>
+        </span>
+      </div>
+
+      <!-- SUB-ROW: steps that belong under Deal Process Overview -->
+      <div class="nav-sub-row parent-active" id="dealSubRow">
+        <span class="nav-sub-label">Deal Process</span>
+        <span class="step-pill step-pill--sub" data-section="2"><span class="nav-num">03</span><span class="nav-lbl">Submission Package</span></span>
+        <span class="step-pill step-pill--sub" data-section="3"><span class="nav-num">04</span><span class="nav-lbl">Underwriting Diligence</span></span>
+        <span class="step-pill step-pill--sub" data-section="4"><span class="nav-num">05</span><span class="nav-lbl">Closing Deliverables</span></span>
+        <span class="step-pill step-pill--sub" data-section="5"><span class="nav-num">06</span><span class="nav-lbl">Closing Package</span></span>
+        <span class="step-pill step-pill--sub" data-section="6"><span class="nav-num">07</span><span class="nav-lbl">Loan Servicing</span></span>
+        <span class="step-pill step-pill--sub" data-section="7"><span class="nav-num">08</span><span class="nav-lbl">Draw Submissions</span></span>
+        <span class="step-pill step-pill--sub" data-section="8"><span class="nav-num">09</span><span class="nav-lbl">Cost Allocation</span></span>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══ MAIN ═══ -->
+<div class="page-wrap">
+
+  <!-- CONTENT -->
+  <div id="contentArea">
+
+
+    <!-- ── SECTION 9 ── Credit Box -->
+    <div class="section-panel" id="sec9">
+      <div class="section-header">
+        <div class="section-num">02</div>
+        <h2 class="section-title">Credit Box</h2>
+        <div class="section-line"></div>
+      </div>
+      <p class="section-note">Ground-up construction credit parameters and eligibility guidelines. Effective March 2026. All transactions subject to underwriter review and IC approval.</p>
+
+      <!-- Program Tiers -->
+      <div class="cb-section-label">Program Tiers</div>
+      <div class="cb-tiers-grid">
+        <div class="cb-tier cb-tier--teal">
+          <div class="cb-tier-name">Standard GUC</div>
+          <div class="cb-tier-desc">1–9 residential units &nbsp;·&nbsp; Loan &lt; $5M &nbsp;·&nbsp; Project costs &lt; $5M</div>
+        </div>
+        <div class="cb-tier cb-tier--gold">
+          <div class="cb-tier-name">Large Development Project</div>
+          <div class="cb-tier-desc">10+ units, any MF/mixed-use, OR loan &gt; $7M, OR project costs &gt; $10M (all phases)</div>
+        </div>
+      </div>
+
+      <!-- Sizing & Loan Metrics -->
+      <div class="cb-section-label" style="margin-top:32px;">Sizing &amp; Loan Metrics</div>
+      <table class="cb-table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Max LTC</th>
+            <th>Max LTARV</th>
+            <th>Max LTAIV</th>
+            <th>Min Equity</th>
+            <th>Max Loan</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="cb-row-alt">
+            <td class="cb-row-label">Standard GUC</td>
+            <td>90% / 85%¹</td>
+            <td>75%</td>
+            <td>70%²</td>
+            <td>10% of TPC</td>
+            <td>$5,000,000</td>
+          </tr>
+          <tr>
+            <td class="cb-row-label">Large Development</td>
+            <td>80%</td>
+            <td>70%</td>
+            <td>70%</td>
+            <td>10% of TPC</td>
+            <td>Case-by-case</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="cb-footnotes">
+        <div>¹ 90% LTC requires: FICO ≥700, TLA ≤$3M, LTARV &lt;70%, 3+ mo. interest reserve, 5+ GUC exits or $10M+ volume, 1–4 units only.</div>
+        <div>² Max 60% LTAIV if not yet permitted.</div>
+      </div>
+
+      <!-- Additional Loan Terms -->
+      <table class="cb-table" style="margin-top:16px;">
+        <tbody>
+          <tr class="cb-row-alt">
+            <td class="cb-row-label">Loan Term</td>
+            <td>9–18 months &nbsp;·&nbsp; Interest only &nbsp;·&nbsp; Fixed rate &nbsp;·&nbsp; Extensions <em>negotiable</em></td>
+          </tr>
+          <tr>
+            <td class="cb-row-label">Min Loan</td>
+            <td>$150,000</td>
+          </tr>
+          <tr class="cb-row-alt">
+            <td class="cb-row-label">Cash-Out</td>
+            <td>Not permitted on GUC loans</td>
+          </tr>
+          <tr>
+            <td class="cb-row-label">Contingency</td>
+            <td>≥10% of total hard + soft costs required in budget</td>
+          </tr>
+          <tr class="cb-row-alt">
+            <td class="cb-row-label">GC Fee</td>
+            <td>≥5% of construction costs in budget (if borrower not acting as GC), or provide GC contract</td>
+          </tr>
+          <tr>
+            <td class="cb-row-label">Day 1 Draws</td>
+            <td>Only for work completed after appraisal date; requires IC approval</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Eligibility & Geographic Restrictions -->
+      <div class="cb-section-label" style="margin-top:32px;">Eligibility &amp; Geographic Restrictions</div>
+      <div class="cb-geo-grid">
+
+        <div class="cb-geo-card cb-geo-card--eligible">
+          <div class="cb-geo-head">Eligible</div>
+          <div class="cb-geo-body">1–4 residential units</div>
+        </div>
+
+        <div class="cb-geo-card">
+          <div class="cb-geo-head">Property Conditions</div>
+          <ul class="cb-geo-list">
+            <li>≤5 acres</li>
+            <li>Loan &gt;$3M: secondary CDA required (≤10% variance)</li>
+            <li>5+ units: full Commercial Appraisal required</li>
+            <li>Listed 120+ days: +3rd-party valuation, ≥5% leverage reduction</li>
+            <li>Declining market: 10% reduction to LTC/LTARV</li>
+          </ul>
+        </div>
+
+        <div class="cb-geo-card cb-geo-card--ineligible">
+          <div class="cb-geo-head">Ineligible Property Types</div>
+          <div class="cb-geo-body">Condominium &nbsp;·&nbsp; Ground lease &nbsp;·&nbsp; Land trust &nbsp;·&nbsp; Properties in litigation, rent-controlled, or deed restricted</div>
+        </div>
+
+        <div class="cb-geo-card cb-geo-card--ineligible">
+          <div class="cb-geo-head">Ineligible Markets</div>
+          <div class="cb-geo-body">Western FL &nbsp;·&nbsp; NYC 5 Boroughs &nbsp;·&nbsp; Chicago (city)</div>
+        </div>
+
+        <div class="cb-geo-card cb-geo-card--full">
+          <div class="cb-geo-head">MSA Leverage Adjustments</div>
+          <ul class="cb-geo-list">
+            <li><strong>5% LTC reduction:</strong> Bay Area CA · Austin · Boise · Baltimore · Chicago suburbs · Detroit · Sacramento · San Jose</li>
+            <li><strong>Elevated risk (case-by-case):</strong> Jersey City · Philadelphia · NYC suburbs · Texas</li>
+            <li><strong>Florida:</strong> 5% reduction in LTC/LTARV/LTAIV on no-rehab bridge</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── SECTION 1 ── -->
+    <div class="section-panel" id="sec2">
+      <div class="section-header">
+        <div class="section-num">03</div>
+        <h2 class="section-title">Submission Package</h2>
+        <div class="section-line"></div>
+      </div>
+      <p class="section-note">All submission documents must be fully executed and reference the subject property address and borrowing entity. Deliver via the Borrower POS portal (see Appendix I).</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-num">Doc 01</div>
+          <div class="card-title">Purchase &amp; Sale Agreement (PSA)</div>
+          <div class="card-divider"></div>
+          <div class="card-body">Confirms purchase price, contractual contingencies, closing timeline, and party obligations. Must identify buyer/seller entities and be fully executed.</div>
+          <span class="card-tag">Fully Executed</span>
+          <div class="card-watermark">1</div>
+        </div>
+
+        <div class="card">
+          <div class="card-num">Doc 02</div>
+          <div class="card-title">Settlement Statement</div>
+          <div class="card-divider"></div>
+          <div class="card-body">Itemized uses of proceeds: loan amount, construction reserve, interest reserve, origination, title fees, insurance.</div>
+          <span class="card-tag">Arms-Length Transaction</span>
+          <div class="card-watermark">2</div>
+        </div>
+
+        <div class="card">
+          <div class="card-num">Doc 03</div>
+          <div class="card-title">Site Plan</div>
+          <div class="card-divider"></div>
+          <div class="card-body">Confirms site functionality and zoning compliance. Must illustrate how the structure sits on the parcel, reference the property address, and be completed by a reputable architect.</div>
+          <span class="card-tag">Project Planning</span>
+          <div class="card-watermark">3</div>
+        </div>
+
+        <div class="card">
+          <div class="card-num">Doc 04</div>
+          <div class="card-title">SPV Articles of Formation</div>
+          <div class="card-divider"></div>
+          <div class="card-body">Official state filing legally establishing the borrowing entity. Confirms the entity exists and has legal authority to enter into the transaction.</div>
+          <span class="card-tag">State Filing</span>
+          <div class="card-watermark">4</div>
+        </div>
+
+        <div class="card span2">
+          <div class="card-num">Doc 05</div>
+          <div class="card-title">SPV Operating Agreement</div>
+          <div class="card-divider"></div>
+          <div class="card-body">Governing agreement outlining ownership structure, management authority, and business purpose. Must be fully executed and confirm decision-making authority and investor rights.</div>
+          <span class="card-tag">Fully Executed + All Amendments</span>
+          <div class="card-watermark">5</div>
+        </div>
+
+        <div class="card">
+          <div class="card-num">Doc 06</div>
+          <div class="card-title">SPV EIN Letter</div>
+          <div class="card-divider"></div>
+          <div class="card-body">IRS confirmation assigning a federal tax identification number. Confirms the entity's tax status and ability to open accounts and transact.</div>
+          <span class="card-tag">IRS Issued</span>
+          <div class="card-watermark">6</div>
+        </div>
+
+        <div class="card">
+          <div class="card-num">Doc 07</div>
+          <div class="card-title">Itemized Renovation Budget</div>
+          <div class="card-divider"></div>
+          <div class="card-body">Detailed breakdown of all projected development and operating costs. Used to evaluate financial feasibility and establish the draw schedule. Minimum 5% contingency required.</div>
+          <span class="card-tag">Min. 5% Contingency</span>
+          <div class="card-watermark">7</div>
+        </div>
+
+        <div class="card">
+          <div class="card-num">Doc 08</div>
+          <div class="card-title">Floor Plan</div>
+          <div class="card-divider"></div>
+          <div class="card-body">Verifies proposed unit layout, functionality, and approximate square footage. Must reference the property address and include SF, bedroom count, and bathroom count.</div>
+          <span class="card-tag">SF + Bed/Bath Count</span>
+          <div class="card-watermark">8</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 1 ── Deal Process Overview -->
+    <div class="section-panel active" id="sec1">
+      <div class="section-header">
+        <div class="section-num">01</div>
+        <h2 class="section-title">Deal Process Overview</h2>
+        <div class="section-line"></div>
+      </div>
+      <p class="section-note">Ledger manages the full lifecycle of each ground-up construction loan, from initial submission through final payoff. The five-step process below outlines each important milestone, the documentation required at each step, and how Ledger coordinates diligence, closing, and ongoing draw activity on behalf of Lord Abbett.</p>
+
+      <div class="process-flow">
+
+        <!-- ── STEP 01: Purchase ── -->
+        <div class="process-step">
+          <div class="process-node">
+            <div class="process-node-num">01</div>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <div class="process-connector">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </div>
+          <div class="process-card">
+            <div class="process-card-header">
+              <span class="process-step-num">Step 01</span>
+              <span class="process-title">Purchase</span>
+            </div>
+            <div class="process-divider"></div>
+            <div class="process-card-body single">
+              <p class="process-desc">All new acquisitions are purchased in cash and aggregated for submission to the normalized closing process. Loan closing will occur no later than <strong>6 months post acquisition</strong> to benefit from Delayed Purchase designation. Ledger will provide a guideline for eligible properties and necessary pre-approval to ensure all acquisitions qualify for the facility.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── STEP 02: Submission ── -->
+        <div class="process-step">
+          <div class="process-node">
+            <div class="process-node-num">02</div>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </div>
+          <div class="process-connector">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </div>
+          <div class="process-card">
+            <div class="process-card-header">
+              <span class="process-step-num">Step 02</span>
+              <span class="process-title">Submission</span>
+            </div>
+            <div class="process-divider"></div>
+            <div class="process-card-body">
+              <div>
+                <p class="process-desc">Submissions are accepted on a rolling basis by providing a cloud-based folder. Third party reports will be returned to the shared folder.</p>
+              </div>
+              <div>
+                <div class="process-list-label">Required Documents</div>
+                <ul class="process-list">
+                  <li>Settlement Statement</li>
+                  <li>Purchase &amp; Sale Agreement</li>
+                  <li>Line Item Budget</li>
+                              <li>Floor Plan</li>
+                  <li>Site Plan</li>
+                  <li>SPV Operating Agreement</li>
+                  <li>SPV EIN Letter</li>
+                  <li>SPV Articles of Formation</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── STEP 03: Diligence ── -->
+        <div class="process-step">
+          <div class="process-node">
+            <div class="process-node-num">03</div>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </div>
+          <div class="process-connector">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </div>
+          <div class="process-card">
+            <div class="process-card-header">
+              <span class="process-step-num">Step 03</span>
+              <span class="process-title">Diligence</span>
+            </div>
+            <div class="process-divider"></div>
+            <div class="process-card-body">
+              <div>
+                <p class="process-desc">Ledger uploads all deals into their Loan Origination System and orders all third party reports to expedite closing.</p>
+              </div>
+              <div>
+                <div class="process-list-label">Third-Party Reports &amp; Docs</div>
+                <ul class="process-list">
+                  <li>Appraisal</li>
+                  <li>Feasibility Report</li>
+                  <li>Flood Certificate</li>
+                  <li>Title</li>
+                  <li>GC Contract</li>
+                  <li>Builder Collateral Assignment Contract</li>
+                  <li>Builder's Risk &amp; General Liability Insurance</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── STEP 04: Funding ── -->
+        <div class="process-step">
+          <div class="process-node">
+            <div class="process-node-num">04</div>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+          </div>
+          <div class="process-connector">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </div>
+          <div class="process-card">
+            <div class="process-card-header">
+              <span class="process-step-num">Step 04</span>
+              <span class="process-title">Funding</span>
+            </div>
+            <div class="process-divider"></div>
+            <div class="process-card-body">
+              <div>
+                <p class="process-desc">Properties will close individually and the following documentation will need to be wet-signed at each closing.</p>
+              </div>
+              <div>
+                <div class="process-list-label">Closing Documents</div>
+                <ul class="process-list">
+                  <li>Loan Documents</li>
+                  <li>Environmental Indemnification</li>
+                  <li>Guarantee Doc</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── STEP 05: Asset Management ── -->
+        <div class="process-step">
+          <div class="process-node">
+            <div class="process-node-num">05</div>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <div class="process-connector">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </div>
+          <div class="process-card">
+            <div class="process-card-header">
+              <span class="process-step-num">Step 05</span>
+              <span class="process-title">Asset Management</span>
+            </div>
+            <div class="process-divider"></div>
+            <div class="process-card-body">
+              <div>
+                <p class="process-desc">Ledger uploads all deals into their Asset Management System where each loan will have an individual line item budget presented alongside remaining escrows and disbursed amounts. Draw requests are submitted and completed with an on-site inspection.</p>
+              </div>
+              <div>
+                <div class="process-list-label">Draw Requirements</div>
+                <ul class="process-list">
+                  <li>Lien Waivers</li>
+                  <li>Invoices on Soft Costs</li>
+                </ul>
+                <div class="process-compliance">
+                  <div class="process-compliance-label">Compliance</div>
+                  <ul class="process-list">
+                    <li>Entity Compliance</li>
+                    <li>Liquidity Compliance</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── SECTION 2 ── -->
+    <div class="section-panel" id="sec3">
+      <div class="section-header">
+        <div class="section-num">04</div>
+        <h2 class="section-title">Underwriting Diligence</h2>
+        <div class="section-line"></div>
+      </div>
+      <p class="section-note">The following third-party reports are ordered and reviewed by Ledger during the underwriting phase to validate collateral, market conditions, and project feasibility.</p>
+
+      <table class="styled-table">
+        <thead>
+          <tr>
+            <th>Report</th>
+            <th>Purpose &amp; Requirements</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Appraisal<br><span class="table-tag">Third-Party AMC</span></td>
+            <td>Independent AMC appraisal ordered to support underwriting and validate the purchase price and projected ARV. Provides an objective collateral assessment and satisfies lender credit requirements.</td>
+          </tr>
+          <tr>
+            <td>Feasibility Report<br><span class="table-tag">Third-Party Eval</span></td>
+            <td>Third-party evaluation of market conditions, construction costs, and projected financial performance. Used to determine whether the project is financially and operationally viable relative to LTC and appraised ARV.</td>
+          </tr>
+          <tr>
+            <td>Flood Certificate<br><span class="table-tag">FEMA Assessment</span></td>
+            <td>Determines whether the subject property falls within a FEMA-designated flood zone. Allows Ledger to assess flood risk and determine whether flood insurance coverage is required.</td>
+          </tr>
+          <tr>
+            <td>Title Commitment<br><span class="table-tag">ALTA Endorsements</span></td>
+            <td>
+              Preliminary title report confirming legal ownership and identifying any liens, encumbrances, easements, or restrictions.<br><br>
+              <strong style="color:var(--teal-dark);font-size:12px;">Required ALTA endorsements:</strong> ALTA 9, ALTA 14, ALTA 22, ALTA 27.<br>
+              <strong style="color:var(--teal-dark);font-size:12px;">Additional (loan-structure dependent):</strong> ALTA 6 (ARM), ALTA 10 (Assignment), ALTA 32–33 (Construction Draw).<br>
+              Mechanics lien coverage required — may be satisfied through endorsements or comparable structure.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ── SECTION 3 ── -->
+    <div class="section-panel" id="sec4">
+      <div class="section-header">
+        <div class="section-num">05</div>
+        <h2 class="section-title">Closing Deliverables</h2>
+        <div class="section-line"></div>
+      </div>
+      <p class="section-note">These documents must be executed and in final form prior to or at closing. Each must identify the borrowing entity and subject property address.</p>
+
+      <div class="two-col-grid">
+        <div class="card">
+          <div class="card-num">5.1</div>
+          <div class="card-title">Settlement Statement</div>
+          <div class="card-divider"></div>
+          <div class="card-body">Itemizes all funds exchanged between buyer, seller, lenders, and third-party vendors at closing. Ledger reviews to confirm sources and uses of funds and verify transaction closed per agreed terms.</div>
+        </div>
+
+        <div class="card">
+          <div class="card-num">5.2</div>
+          <div class="card-title">General Contractor Contract</div>
+          <div class="card-divider"></div>
+          <div class="card-body">Executed agreement between the borrower and GC defining scope, project cost, timeline, and responsibilities. Ledger reviews to verify construction pricing, delivery expectations, and risk allocation.</div>
+          <ul class="card-list" style="margin-top:10px;">
+            <li>Must identify the GC entity, borrowing entity, and property address</li>
+            <li>Must be fully executed</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-num">5.3</div>
+          <div class="card-title">Builder's Risk &amp; General Liability Insurance</div>
+          <div class="card-divider"></div>
+          <ul class="card-list">
+            <li>Builder's Risk: covers property damage during construction; coverage = replacement cost or full loan amount</li>
+            <li>General Liability: protects against third-party injury or property damage claims</li>
+            <li>Insured must be the borrowing entity</li>
+            <li>Policy must include a lender mortgagee clause</li>
+            <li>GL coverage: $1MM per occurrence / $2MM aggregate</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-num">5.4</div>
+          <div class="card-title">Builder Collateral Assignment Contract</div>
+          <div class="card-divider"></div>
+          <div class="card-body">Assigns the borrower's rights under the construction contract to Ledger as additional collateral. Allows Ledger to step into the contract upon borrower default.</div>
+          <ul class="card-list" style="margin-top:10px;">
+            <li>Requires a fully executed GC contract prior to execution</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 4 ── -->
+    <div class="section-panel" id="sec5">
+      <div class="section-header">
+        <div class="section-num">06</div>
+        <h2 class="section-title">Closing Package</h2>
+        <div class="section-line"></div>
+      </div>
+      <p class="section-note">The closing package consists of the core loan documents executed at or prior to closing, along with required disclosures and financial supplements.</p>
+
+      <div class="card-grid two-col" style="align-items: stretch;">
+
+        <div class="card">
+          <div class="card-num">6.1</div>
+          <div class="card-title">Loan &amp; Security Agreement</div>
+          <div class="card-divider"></div>
+          <div class="card-body">Defines loan structure and obligations of both parties.</div>
+          <div class="card-watermark">1</div>
+        </div>
+
+        <div class="card">
+          <div class="card-num">6.2</div>
+          <div class="card-title">Secured Note</div>
+          <div class="card-divider"></div>
+          <div class="card-body">Defines loan terms in conjunction with the Loan Security Agreement and Deed of Trust.</div>
+          <div class="card-watermark">2</div>
+        </div>
+
+        <div class="card">
+          <div class="card-num">6.3</div>
+          <div class="card-title">Deed of Trust / Mortgage</div>
+          <div class="card-divider"></div>
+          <div class="card-body">Creates a security interest lien in the property. Filed with the applicable county by the borrower's title agent.</div>
+          <div class="card-watermark">3</div>
+        </div>
+
+        <div class="card">
+          <div class="card-num">6.4</div>
+          <div class="card-title">Settlement Statement</div>
+          <div class="card-divider"></div>
+          <div class="card-body">Itemized uses of proceeds: loan amount, construction reserve, interest reserve, origination, title fees, insurance.</div>
+          <div class="card-watermark">4</div>
+        </div>
+
+        <!-- Left stack: 6.5 + Financial Supplements -->
+        <div class="closing-stack">
+          <div class="card">
+            <div class="card-num">6.5</div>
+            <div class="card-title">Guaranty Agreement</div>
+            <div class="card-divider"></div>
+            <div class="card-body">Establishes limited guarantee executed by authorized signatory on behalf of the investment fund.</div>
+            <div class="card-watermark">5</div>
+          </div>
+          <div class="card">
+            <div class="card-num">Financial</div>
+            <div class="card-title">Supplements</div>
+            <div class="card-divider"></div>
+            <div class="card-body">
+              <ul class="disc-list" style="margin:0;padding:0;">
+                <li>ACH Authorization</li>
+                <li>Anti-Money Laundering Declaration</li>
+                <li>Form W-9</li>
+                <li>Authorized Contacts and Wire Instruction Form</li>
+              </ul>
+            </div>
+            <div class="card-watermark">7</div>
+          </div>
+        </div>
+
+        <!-- Right: Additional Disclosures tall -->
+        <div class="card">
+          <div class="card-num">Additional</div>
+          <div class="card-title">Disclosures</div>
+          <div class="card-divider"></div>
+          <div class="card-body">
+            <ul class="disc-list" style="margin:0;padding:0;">
+              <li>Patriot Act Disclosure</li>
+              <li>Compliance Agreement</li>
+              <li>Hazard Insurance Disclosure</li>
+              <li>Balloon Payment Disclosure</li>
+              <li>Conditional Loan Approval</li>
+              <li>E.C.O.A. Appraisal Report Disclosure</li>
+              <li>Certificate of Non-Owner Occupancy</li>
+              <li>Business Purpose of Loan Certification</li>
+              <li>Environmental Indemnity Agreement</li>
+              <li>Entity Certificate</li>
+            </ul>
+          </div>
+          <div class="card-watermark">6</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── SECTION 5 ── -->
+    <div class="section-panel" id="sec6">
+      <div class="section-header">
+        <div class="section-num">07</div>
+        <h2 class="section-title">Loan Servicing</h2>
+        <div class="section-line"></div>
+      </div>
+      <p class="section-note">Key processes and requirements for managing your loan after closing through the FCI servicing portal.</p>
+
+      <div class="two-col-grid">
+        <div class="card">
+          <div class="card-num">5.1</div>
+          <div class="card-title">Servicer Sign-Up / Add-On</div>
+          <div class="card-divider"></div>
+          <div class="card-body">Register your new loan with the servicing portal by providing:</div>
+          <ul class="card-list">
+            <li>Borrowing entity name</li>
+            <li>Property address, city, and zip code</li>
+            <li>Borrowing entity EIN</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-num">5.2</div>
+          <div class="card-title">ACH Setup</div>
+          <div class="card-divider"></div>
+          <div class="card-body">Complete the ACH form in its entirety with:</div>
+          <ul class="card-list">
+            <li>Entity documentation</li>
+            <li>Bank account and routing number</li>
+            <li>Authorized signatory and user contact</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <div class="card-num">5.3</div>
+          <div class="card-title">Loan Payments</div>
+          <div class="card-divider"></div>
+          <div class="card-body">Payments are due on the 1st of each month, calculated as a function of the current unpaid principal balance. Access your interest payable and outstanding loan balance in the My Portfolio section of the FCI portal.</div>
+          <span class="card-tag">Due 1st of Month</span>
+        </div>
+
+        <div class="card">
+          <div class="card-num">5.4</div>
+          <div class="card-title">Draw Portal Access</div>
+          <div class="card-divider"></div>
+          <div class="card-body">Within two business days after closing, you will be notified that a new loan has been added to your borrower portal. Your loan profile will display key loan attributes and allow you to begin submitting draws.</div>
+          <span class="card-tag">Within 2 Business Days</span>
+        </div>
+
+        <div class="card span2">
+          <div class="card-num">5.5</div>
+          <div class="card-title">Payoffs</div>
+          <div class="card-divider"></div>
+          <div class="card-body">Loan payoffs can be requested directly through Ledger or via the Loan Payoff section of the FCI portal. Payoff statements include servicer fees and are provided within two business days of request.</div>
+          <span class="card-tag">Statements Within 2 Business Days</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 6 ── -->
+    <div class="section-panel" id="sec7">
+      <div class="section-header">
+        <div class="section-num">08</div>
+        <h2 class="section-title">Draw Submissions</h2>
+        <div class="section-line"></div>
+      </div>
+      <p class="section-note">Draw submissions are managed through the Ledger asset management policy. All documentation must be submitted prior to draw disbursement.</p>
+
+      <table class="draw-table">
+        <thead>
+          <tr>
+            <th>Step / Item</th>
+            <th>Description &amp; Requirements</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>6.1 &nbsp;&nbsp; Initiate Draw Request</td>
+            <td>Click <em>Add Service</em> and select <em>Draw</em> in the portal. This will open a draft draw submission for review.</td>
+          </tr>
+          <tr>
+            <td>6.2 &nbsp;&nbsp; Itemized Draw Submission</td>
+            <td>Enter requested draw amounts at a line-item level. Each line item may be submitted as a dollar value or as a percentage of the budgeted amount.</td>
+          </tr>
+          <tr>
+            <td>6.3 &nbsp;&nbsp; Scheduling</td>
+            <td>Select a primary and secondary contact, plus an earliest available inspection date. Use the additional notes field for lockbox codes, entrance instructions, or other access details. An inspector will reach out within 24 hours to confirm scheduling.</td>
+          </tr>
+          <tr>
+            <td>6.4 &nbsp;&nbsp; Lien Waiver</td>
+            <td>A signed lien waiver is required with each draw as attestation that disbursed funds will be allocated for their intended use.</td>
+          </tr>
+          <tr>
+            <td>6.5 &nbsp;&nbsp; Budget Review</td>
+            <td>The borrower should review the schedule of values for accuracy and completeness. The total budget will match the budget submitted and utilized at closing.</td>
+          </tr>
+          <tr>
+            <td>6.6 &nbsp;&nbsp; Project Completion Update</td>
+            <td>Provide an estimated project completion date so Ledger can effectively asset-manage each project.</td>
+          </tr>
+          <tr>
+            <td>6.7 &nbsp;&nbsp; Permits</td>
+            <td>Building and zoning permits must be in good standing to qualify for draw disbursements. If permits were not provided at closing, they must be uploaded with the first draw submission.</td>
+          </tr>
+          <tr>
+            <td>6.8 &nbsp;&nbsp; Wire Affidavit</td>
+            <td>The borrower must provide and reconfirm wire instructions for receipt of funds. All new bank accounts will be verified via phone call to the primary account contact.</td>
+          </tr>
+          <tr>
+            <td>6.9 &nbsp;&nbsp; Title Date Down</td>
+            <td>Required for all unit-based draws exceeding $250,000. An updated title search identifies any delinquent payments or liens from closing to the current date. All liens must be satisfied before disbursement.</td>
+          </tr>
+          <tr>
+            <td>6.10 &nbsp; Insurance</td>
+            <td>All active loans must maintain appropriate insurance coverage. Ground-up construction loans require an active builder's risk policy. Upon project completion, coverage must convert to standard property/dwelling insurance.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ── SECTION 7 ── -->
+    <div class="section-panel" id="sec8">
+      <div class="section-header">
+        <div class="section-num">09</div>
+        <h2 class="section-title">Cost Allocation</h2>
+        <div class="section-line"></div>
+      </div>
+      <p class="section-note">Guidelines for how project costs are categorized, validated, and credited toward draw disbursements.</p>
+
+      <div class="cost-grid">
+        <div class="card">
+          <div class="card-num">7.1</div>
+          <div class="card-title">Soft Costs</div>
+          <div class="card-divider"></div>
+          <div class="card-body">Service-related budget line items not validated by on-site inspection.</div>
+          <div style="margin-top:10px;">
+            <div style="font-size:11px;font-weight:600;color:var(--teal-dark);margin-bottom:4px;">Examples</div>
+            <div style="font-size:12px;color:var(--teal-mid);">Architectural reports, engineering, permits, surveys, project planning</div>
+          </div>
+          <div style="margin-top:12px;">
+            <div style="font-size:11px;font-weight:600;color:var(--teal-dark);margin-bottom:4px;">Required Documentation</div>
+            <ul class="card-list">
+              <li>Invoice documentation</li>
+              <li>Proof of payment (receipt, payment confirmation, or bank statement)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-num">7.2</div>
+          <div class="card-title">Hard Costs</div>
+          <div class="card-divider"></div>
+          <div class="card-body">All budget line items credited through on-site physical inspection.</div>
+          <div style="margin-top:10px;">
+            <div style="font-size:11px;font-weight:600;color:var(--teal-dark);margin-bottom:4px;">Examples</div>
+            <div style="font-size:12px;color:var(--teal-mid);">Demolition, plumbing, HVAC, electrical, framing, insulation, painting, masonry, millwork, concrete, roofing, appliances, flooring</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-num">7.3</div>
+          <div class="card-title">Deposits / Materials</div>
+          <div class="card-divider"></div>
+          <div class="card-body">
+            <span class="important-badge">Important</span><br>
+            Credit is only allocated to completed work. Ledger does not advance funding for pre-work deposits or materials that have not yet been installed.
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-num">7.4</div>
+          <div class="card-title">Percentage Completion</div>
+          <div class="card-divider"></div>
+          <div class="card-body">Certain ancillary costs required during construction (including GC fees and contingencies) are credited by percentage of completion rather than completed work.</div>
+        </div>
+
+        <div class="card">
+          <div class="card-num">7.5</div>
+          <div class="card-title">Disbursement Credit</div>
+          <div class="card-divider"></div>
+          <div class="card-body">Once the inspection is completed and all documentation is submitted, an allocation of credit is approved in the Draw portal. Any reduction in credit will include an explanation. Borrowers may challenge by submitting photos, city inspection reports, or contacting the inspector directly.</div>
+        </div>
+
+        <div class="card">
+          <div class="card-num">7.6</div>
+          <div class="card-title">Disbursement Amounts</div>
+          <div class="card-divider"></div>
+          <div class="card-body">The disbursement amount is a percentage of total allocated credit per the schedule of values, in accordance with the overall advance rate.</div>
+          <div class="disburse-box">
+            <div class="db-title">Example Rate</div>
+            <table class="disburse-table">
+              <thead><tr><th>Advance Rate</th><th>Disbursement</th></tr></thead>
+              <tbody><tr><td>85%</td><td>$85 per $100 credit</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /contentArea -->
+
+</div><!-- /page-wrap -->
+
+<footer>
+  <span class="foot-note">Prepared solely for Lord Abbett Private Real Estate Advisor, LLC</span>
+  <span class="foot-page" id="footPage">GUC PLAYBOOK &nbsp;|&nbsp; Section 1 of 9</span>
+</footer>
+
+<script>
+  const tocItems   = document.querySelectorAll('.toc-item');
+  const sections   = document.querySelectorAll('.section-panel');
+  const stepPills  = document.querySelectorAll('.step-pill[data-section]');
+  const footPage   = document.getElementById('footPage');
+  const contentTop = document.getElementById('contentArea');
+  const dealSubRow = document.getElementById('dealSubRow');
+
+  // Sections that belong under "Deal Process Overview" parent
+  const dealSubSections = new Set([2, 3, 4, 5, 6, 7, 8]);
+  // The primary Deal Process Overview pill targets section 1
+  const dealProcessPill = document.querySelector('.step-pill[data-section="1"]');
+
+  function activateSection(n) {
+    n = parseInt(n);
+
+    sections.forEach(s => s.classList.remove('active'));
+    document.getElementById('sec' + n).classList.add('active');
+
+    tocItems.forEach(t => t.classList.remove('active'));
+    const tocTarget = document.querySelector(`.toc-item[data-target="${n}"]`);
+    if (tocTarget) tocTarget.classList.add('active');
+
+    stepPills.forEach(p => p.classList.remove('active'));
+    const pill = document.querySelector(`.step-pill[data-section="${n}"]`);
+    if (pill) pill.classList.add('active');
+
+    // If a sub-section is active, also highlight the Deal Process Overview pill
+    // and keep the sub-row connector bright
+    if (dealSubSections.has(n)) {
+      dealProcessPill.classList.add('active');
+      dealSubRow.classList.add('parent-active');
+    } else if (n === 1) {
+      dealSubRow.classList.add('parent-active');
+    } else {
+      dealSubRow.classList.remove('parent-active');
+    }
+
+    footPage.innerHTML = `GUC PLAYBOOK &nbsp;|&nbsp; Section ${n} of 9`;
+
+    const rect = contentTop.getBoundingClientRect();
+    if (rect.top < 0 || rect.top > window.innerHeight * 0.5) {
+      contentTop.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+
+  tocItems.forEach(item => item.addEventListener('click', () => activateSection(item.dataset.target)));
+  stepPills.forEach(pill => pill.addEventListener('click', () => activateSection(pill.dataset.section)));
+</script>
+</body>
+</html>

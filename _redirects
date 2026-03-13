@@ -62,3 +62,7 @@
 /private-lending-west-virginia.html    /private-lending-west-virginia    301
 /private-lending-wisconsin.html    /private-lending-wisconsin    301
 /private-lending-wyoming.html    /private-lending-wyoming    301
+
+/externaldocshare/admin /externaldocshare/admin/index.html 200
+/externaldocshare/:orgId/:docId /externaldocshare/index.html 200
+/externaldocshare/* /externaldocshare/index.html 200
