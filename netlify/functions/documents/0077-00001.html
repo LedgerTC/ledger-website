@@ -445,11 +445,14 @@
     /* ── Header: hide entirely, content moves to hero ── */
     header { display: none; }
 
-    /* ── Hero: sticky on mobile ── */
+    /* ── Hero: fixed on mobile so it always persists ── */
     .hero {
-      position: sticky; top: 0; z-index: 100;
-      padding: 10px 16px 0;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 10px 16px 8px;
     }
+    /* Push page content below fixed hero */
+    .page-wrap { margin-top: var(--mobile-hero-h, 200px); }
+
     .hero-inner {
       flex-direction: row;
       align-items: center;
@@ -461,21 +464,21 @@
     .hero-desc { display: none; }
     .mobile-logo { display: block !important; order: 1; flex-shrink: 0; }
 
-    /* Mobile info block — always visible but compact */
+    /* Mobile info block — always visible */
     .mobile-hero-info { display: block !important; }
     .mobile-hero-subtitle { text-align: center; font-size: 13px !important; }
-    .mobile-hero-detail { display: none; }
+    .mobile-hero-detail { display: block; }
     .mobile-toggle-btn { display: none !important; }
 
-    /* ── Mobile breadcrumb bar ── */
+    /* ── Mobile breadcrumb bar — always visible, shows current section ── */
     .mobile-breadcrumb {
       display: flex !important;
       align-items: center;
       gap: 6px;
-      padding: 6px 0 4px;
+      padding: 6px 0 2px;
       cursor: pointer;
       border-top: 1px solid rgba(217,168,66,0.15);
-      margin-top: 6px;
+      margin-top: 4px;
     }
     .mobile-breadcrumb-text {
       font-family: 'DM Sans', sans-serif;
@@ -502,6 +505,7 @@
     .step-pill { padding: 5px 10px; }
     .step-pill .nav-num { font-size: 7px; }
     .step-pill .nav-lbl { font-size: 10px; }
+    .sub-nav-bar { display: none !important; }
     .sub-nav-inner { padding: 6px 0; gap: 4px; }
     .sub-pill { padding: 4px 10px; }
     .sub-lbl { font-size: 9.5px; }
@@ -1998,9 +2002,10 @@
       : `Section ${n === 1 ? 1 : 2} of 3`;
     footPage.innerHTML = `GUC PLAYBOOK &nbsp;|&nbsp; ${sectionNum}`;
 
-    // Close mobile nav if open, scroll to top
+    // Close mobile nav if open, recalc hero height, scroll to top
     hero.classList.remove('nav-open');
     breadcrumbChevron.classList.remove('expanded');
+    updateHeroOffset();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
@@ -2015,19 +2020,32 @@
   function toggleMobileNav() {
     hero.classList.toggle('nav-open');
     breadcrumbChevron.classList.toggle('expanded');
+    // Recalculate hero height after nav expands/collapses
+    updateHeroOffset();
   }
 
   // Set hero sticky offset to sit just below the sticky header (desktop)
+  // On mobile, calculate fixed hero height for margin-top on page content
   function updateHeroOffset() {
+    const isMobile = window.innerWidth <= 800;
     const headerEl = document.querySelector('header');
-    if (headerEl && hero) {
-      hero.style.top = headerEl.offsetHeight + 'px';
+    if (isMobile) {
+      // Fixed hero on mobile — set CSS variable for page-wrap margin
+      requestAnimationFrame(() => {
+        const heroH = hero.offsetHeight;
+        document.documentElement.style.setProperty('--mobile-hero-h', heroH + 'px');
+      });
+    } else {
+      // Desktop — sticky hero below sticky header
+      if (headerEl && hero) {
+        hero.style.top = headerEl.offsetHeight + 'px';
+      }
+      document.documentElement.style.removeProperty('--mobile-hero-h');
     }
   }
   updateHeroOffset();
   window.addEventListener('resize', () => {
     updateHeroOffset();
-    // Reset nav-open state when switching to desktop
     if (window.innerWidth > 800) {
       hero.classList.remove('nav-open');
       breadcrumbChevron.classList.remove('expanded');
