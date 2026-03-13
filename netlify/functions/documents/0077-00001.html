@@ -445,10 +445,10 @@
     /* ── Header: hide entirely, content moves to hero ── */
     header { display: none; }
 
-    /* ── Hero: sticky compact header ── */
+    /* ── Hero: sticky on mobile ── */
     .hero {
       position: sticky; top: 0; z-index: 100;
-      padding: 12px 16px 0;
+      padding: 10px 16px 0;
     }
     .hero-inner {
       flex-direction: row;
@@ -459,31 +459,23 @@
     .hero-title { font-size: 22px; flex-shrink: 0; order: 2; }
     .hero-divider { display: none; }
     .hero-desc { display: none; }
-    /* Show logo inline in hero */
     .mobile-logo { display: block !important; order: 1; flex-shrink: 0; }
 
-    /* Mobile info block */
+    /* Mobile info block — always visible but compact */
     .mobile-hero-info { display: block !important; }
-    .mobile-hero-subtitle { text-align: center; }
-    /* Collapsible detail lines */
-    .mobile-hero-detail { overflow: hidden; max-height: 200px; transition: max-height 0.3s ease; }
-    .mobile-hero-detail.collapsed { max-height: 0; }
-    .mobile-toggle-btn {
-      display: inline-block !important;
-      background: none; border: none; color: var(--gold);
-      font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 1px;
-      cursor: pointer; padding: 4px 0; opacity: 0.7;
-      text-align: center; width: 100%;
-    }
-    .mobile-toggle-btn:hover { opacity: 1; }
+    .mobile-hero-subtitle { text-align: center; font-size: 13px !important; }
+    .mobile-hero-detail { display: none; }
+    .mobile-toggle-btn { display: none !important; }
 
     /* ── Mobile breadcrumb bar ── */
     .mobile-breadcrumb {
       display: flex !important;
       align-items: center;
       gap: 6px;
-      padding: 8px 0 6px;
+      padding: 6px 0 4px;
       cursor: pointer;
+      border-top: 1px solid rgba(217,168,66,0.15);
+      margin-top: 6px;
     }
     .mobile-breadcrumb-text {
       font-family: 'DM Sans', sans-serif;
@@ -503,8 +495,8 @@
     }
     .mobile-breadcrumb-chevron.expanded { transform: rotate(180deg); }
 
-    /* ── Nav: collapsed by default when scrolled ── */
-    .hero-nav-bar { margin-top: 0; }
+    /* ── Nav: hidden by default, shown on breadcrumb tap ── */
+    .hero-nav-bar { margin-top: 0; display: none; }
     .hero-nav-inner { padding: 6px 0; gap: 5px; }
     .nav-bar-label { display: none; }
     .step-pill { padding: 5px 10px; }
@@ -514,16 +506,9 @@
     .sub-pill { padding: 4px 10px; }
     .sub-lbl { font-size: 9.5px; }
 
-    /* When hero is in scrolled/compact mode */
-    .hero.scrolled .mobile-hero-info { display: none !important; }
-    .hero.scrolled .mobile-toggle-btn { display: none !important; }
-    .hero.scrolled .hero-nav-bar { display: none; }
-    .hero.scrolled .sub-nav-bar { display: none !important; }
-    .hero.scrolled .mobile-breadcrumb { display: flex !important; }
-
     /* When nav is expanded via breadcrumb tap */
-    .hero.scrolled.nav-open .hero-nav-bar { display: block; }
-    .hero.scrolled.nav-open .sub-nav-bar.visible { display: block !important; }
+    .hero.nav-open .hero-nav-bar { display: block; }
+    .hero.nav-open .sub-nav-bar.visible { display: block !important; }
 
     /* ── Content area ── */
     .page-wrap { padding: 20px 16px 40px; max-width: 100%; overflow-x: hidden; }
@@ -2026,23 +2011,6 @@
   stepPills.forEach(pill => pill.addEventListener('click', () => activateSection(pill.dataset.section)));
   subPills.forEach(pill => pill.addEventListener('click', () => activateSection(pill.dataset.section)));
 
-  // ── Mobile: scroll detection for compact mode ──
-  let scrolled = false;
-  function isMobile() { return window.innerWidth <= 800; }
-
-  window.addEventListener('scroll', () => {
-    if (!isMobile()) return;
-    const shouldBeScrolled = window.scrollY > 80;
-    if (shouldBeScrolled !== scrolled) {
-      scrolled = shouldBeScrolled;
-      hero.classList.toggle('scrolled', scrolled);
-      if (!scrolled) {
-        hero.classList.remove('nav-open');
-        breadcrumbChevron.classList.remove('expanded');
-      }
-    }
-  }, { passive: true });
-
   // Toggle mobile nav dropdown from breadcrumb
   function toggleMobileNav() {
     hero.classList.toggle('nav-open');
@@ -2059,11 +2027,10 @@
   updateHeroOffset();
   window.addEventListener('resize', () => {
     updateHeroOffset();
-    // Reset scroll state when switching between mobile/desktop
-    if (!isMobile()) {
-      hero.classList.remove('scrolled', 'nav-open');
+    // Reset nav-open state when switching to desktop
+    if (window.innerWidth > 800) {
+      hero.classList.remove('nav-open');
       breadcrumbChevron.classList.remove('expanded');
-      scrolled = false;
     }
   });
 </script>
