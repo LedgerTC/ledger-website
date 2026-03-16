@@ -69,7 +69,7 @@ exports.handler = async function(event, context) {
 
   return {
     statusCode: 200,
-    headers: { ...headers, 'Content-Type': 'text/html' },
+    headers: { ...headers, 'Content-Type': 'text/html', 'Content-Security-Policy': 'img-src * data: blob:' },
     body: fileContent
   };
 };

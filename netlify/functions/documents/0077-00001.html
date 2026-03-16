@@ -51,7 +51,7 @@
   }
   .header-inner {
     max-width: 1340px; margin: 0 auto; padding: 28px 48px 24px;
-    display: flex; align-items: flex-end; justify-content: space-between; gap: 24px;
+    display: flex; align-items: center; justify-content: space-between; gap: 24px;
     position: relative; z-index: 1;
   }
   .logo-area { display: flex; align-items: center; }
@@ -92,6 +92,9 @@
   .pb-play, .pb-book { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 32px; letter-spacing: -0.5px; }
   .pb-play { color: #fff; }
   .pb-book { color: var(--gold); }
+  .header-center { text-align: center; flex: 1; min-width: 0; }
+  .header-center .doc-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: #fff; letter-spacing: 0.5px; }
+  .header-center .doc-sub { font-size: 12px; color: var(--cream); margin-top: 4px; letter-spacing: 0.5px; }
   .header-right { display: flex; align-items: center; }
   .client-logo { height: 60px; width: auto; display: block; }
   /* ─── HERO CENTER BLOCK ─── */
@@ -105,8 +108,9 @@
   @media (min-width: 801px) {
     .hero-title { display: none; }
     .hero-divider { display: none; }
-    .hero-inner { flex-direction: column; align-items: center; text-align: center; gap: 16px; }
-    .hero-desc { flex: none; text-align: center; max-width: 800px; }
+    .hero { padding: 8px 48px 0; }
+    .hero-inner { flex-direction: column; align-items: center; text-align: center; gap: 0; padding: 8px 0; }
+    .hero-desc { flex: none; text-align: center; max-width: 800px; margin: 0 auto; }
     .header-meta { display: none; }
   }
 
@@ -538,8 +542,8 @@
 
     /* ── Hide decorative backgrounds ── */
     .header-brand-graphic, .hero-brand-graphic { display: none; }
-    /* ── Hide desktop hero-center on mobile ── */
-    .hero-center { display: none; }
+    /* ── Hide header-center on mobile (header is display:none but belt-and-suspenders) ── */
+    .header-center { display: none; }
 
     /* ── Header: hide entirely, content moves to hero ── */
     header { display: none; }
@@ -1118,6 +1122,10 @@
         <span class="pb-book">BOOK</span>
       </div>
     </div>
+    <div class="header-center">
+      <div class="doc-title">Ground-Up Construction Lending</div>
+      <div class="doc-sub">Prepared for Lord Abbett Private Real Estate Advisor, LLC</div>
+    </div>
     <div class="header-right">
       <img class="client-logo" src="https://ledgertc.com/logos/lord-abbett.png" alt="Lord Abbett">
     </div>
@@ -1135,10 +1143,6 @@
     </div>
     <h1 class="hero-title">PLAY<br><span>BOOK</span></h1>
     <div class="hero-divider"></div>
-    <div class="hero-center">
-      <h2 class="hero-doc-title">Ground-Up Construction Lending</h2>
-      <div class="hero-doc-sub">Prepared for Lord Abbett Private Real Estate Advisor, LLC</div>
-    </div>
     <p class="hero-desc">
       A complete reference guide covering <strong>submission</strong>, <strong>underwriting</strong>,
       <strong>closing</strong>, <strong>servicing</strong>, and <strong>draw</strong> processes
@@ -2073,7 +2077,7 @@
           </div>
         </div>
         <div class="team-tile">
-          <div class="team-role">Escalation</div>
+          <div class="team-role">Escalation<br>&nbsp;</div>
           <img src="https://ledgertc.com/team/tyler.png" alt="Tyler Van Wagoner" class="team-photo">
           <div class="team-name">Tyler Van Wagoner</div>
           <div class="team-title-text">Chief Executive Officer</div>
