@@ -95,8 +95,11 @@
   .header-center { text-align: center; flex: 1; min-width: 0; }
   .header-center .doc-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: #fff; letter-spacing: 0.5px; }
   .header-center .doc-sub { font-size: 12px; color: var(--cream); margin-top: 4px; letter-spacing: 0.5px; }
-  .header-right { display: flex; align-items: center; }
-  .client-logo { height: 72px; width: auto; display: block; border-radius: 4px; background: #ffffff; padding: 5px 8px; }
+  .header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+  .client-logo { height: 72px; width: auto; display: block; }
+  .client-label { text-align: right; }
+  .client-prepared { font-size: 10px; color: var(--cream); opacity: 0.7; letter-spacing: 0.5px; margin-bottom: 2px; }
+  .client-name { font-size: 11px; color: var(--cream); letter-spacing: 0.3px; white-space: nowrap; }
   /* ─── HERO CENTER BLOCK ─── */
   .hero-center { text-align: center; }
   .hero-doc-title { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700; color: #fff; letter-spacing: 0.5px; margin: 0; }
@@ -1128,6 +1131,10 @@
       <div class="doc-sub">Prepared for Lord Abbett Private Real Estate Advisor, LLC</div>
     </div>
     <div class="header-right">
+      <div class="client-label">
+        <div class="client-prepared">Prepared for</div>
+        <div class="client-name">Lord Abbett Private Real Estate Advisor, LLC</div>
+      </div>
       <img class="client-logo" src="__HOST__/logos/lord-abbett.png" alt="Lord Abbett">
     </div>
   </div>
