@@ -14,8 +14,10 @@
 window.dataLayer=window.dataLayer||[];
 function gtag(){dataLayer.push(arguments);}
 gtag('js',new Date());
+if(window.location.hostname==='ledgertc.com'){
 gtag('config','G-P2E61PRS60');
 gtag('config','AW-17993082803');
+}
 </script>
 <title>DSCR Rental Loans from 5.875% | No Tax Returns | Ledger Trade &amp; Capital</title>
 <meta name="description" content="DSCR rental loans from 5.875%. Qualify on property cash flow, not personal income. No tax returns. 30-year fixed for rental investors. Up to $3M.">
@@ -782,15 +784,16 @@ img{max-width:100%;height:auto;display:block;}
             <input type="tel" id="phone" name="phone" required autocomplete="tel">
           </div>
           <div class="form-field">
-            <label for="property_details">Property Details <span style="font-weight:400;color:#999;">(optional)</span></label>
-            <textarea id="property_details" name="property_details" placeholder="Tell us about your property — e.g. SFR rental in Tampa, $350K purchase"></textarea>
+            <label for="details">Property Details <span style="font-weight:400;color:#999;">(optional)</span></label>
+            <textarea id="details" name="details" placeholder="Tell us about your property — e.g. SFR rental in Tampa, $350K purchase"></textarea>
           </div>
           <!-- Honeypot -->
           <div class="hp-field" aria-hidden="true">
-            <label for="company_url">Company URL</label>
-            <input type="text" id="company_url" name="company_url" tabindex="-1" autocomplete="off">
+            <label for="website">Company URL</label>
+            <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
           </div>
           <input type="hidden" name="form_source" value="dscr-landing-page-google-ads">
+          <input type="hidden" name="form_loaded_at" id="form_loaded_at">
           <button type="submit" class="form-submit">Get My Rate &rarr;</button>
           <p class="form-note">No obligation. No credit pull. Just a conversation.</p>
         </form>
@@ -1001,7 +1004,7 @@ function toggleFaq(btn){
   if(!form)return;
   form.addEventListener('submit',function(e){
     e.preventDefault();
-    var hp=form.querySelector('[name="company_url"]');
+    var hp=form.querySelector('[name="website"]');
     if(hp&&hp.value)return;
 
     var btn=form.querySelector('.form-submit');
@@ -1016,8 +1019,11 @@ function toggleFaq(btn){
     params.append('last_name',form.querySelector('[name="last_name"]').value.trim());
     params.append('email',form.querySelector('[name="email"]').value.trim());
     params.append('phone',e164);
-    params.append('property_details',form.querySelector('[name="property_details"]').value.trim());
+    params.append('details',form.querySelector('[name="details"]').value.trim());
     params.append('form_source',form.querySelector('[name="form_source"]').value);
+    params.append('page_url',window.location.href);
+    params.append('form_loaded_at',form.querySelector('[name="form_loaded_at"]').value);
+    params.append('website',form.querySelector('[name="website"]').value);
 
     fetch('/.netlify/functions/submit-form',{
       method:'POST',
@@ -1029,6 +1035,7 @@ function toggleFaq(btn){
       form.style.display='none';
       document.getElementById('formSuccess').style.display='block';
       if(typeof gtag==='function'){
+        gtag('event','form_submit',{'form_id':'dscr-lp'});
         gtag('event','conversion',{
           send_to:'AW-17993082803/dscr_lead',
           event_callback:function(){}
@@ -1047,5 +1054,6 @@ function toggleFaq(btn){
 <!-- HubSpot tracking -->
 <script type="text/javascript" id="hs-script-loader" defer src="//js.hs-scripts.com/46107229.js"></script>
 
+<script>document.getElementById('form_loaded_at').value=Date.now();</script>
 </body>
 </html>

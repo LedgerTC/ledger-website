@@ -595,7 +595,12 @@ exports.handler = async function (event) {
       const ownerId = await determineTicketOwner(contactResult, companyResult);
 
       // Step 5 & 6: Create ticket with summary and associations
-      const ticketCategory = raw.form_source === "construction-landing-page-google-ads" ? "Campaign" : "GENERAL_INQUIRY";
+      const ticketCategoryMap = {
+        "construction-landing-page-google-ads": "Campaign",
+        "first-time-builder-landing-page-google-ads": "First Time Campaign",
+        "dscr-landing-page-google-ads": "DSCR Campaign",
+      };
+      const ticketCategory = ticketCategoryMap[raw.form_source] || "GENERAL_INQUIRY";
       const ticket = await createTicket(formData, ownerId, contactId, companyId, ticketCategory);
 
       return {

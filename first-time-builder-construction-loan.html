@@ -12,7 +12,8 @@
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"></noscript>
 
   <!-- Google Tag Manager -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-P2E61PRS60"></script>
@@ -20,8 +21,10 @@
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-P2E61PRS60');
-    gtag('config', 'AW-17993082803');
+    if (window.location.hostname === 'ledgertc.com') {
+      gtag('config', 'G-P2E61PRS60');
+      gtag('config', 'AW-17993082803');
+    }
   </script>
 
   <style>
@@ -512,6 +515,7 @@
           </div>
           <div style="position:absolute;left:-9999px;"><input type="text" name="website" tabindex="-1" autocomplete="off"></div>
           <input type="hidden" name="form_source" value="first-time-builder-landing-page-google-ads">
+          <input type="hidden" name="form_loaded_at" id="form_loaded_at">
           <button type="submit" class="form-submit">Check My Eligibility &rarr;</button>
           <p class="form-note">No obligation. No credit pull. Just a conversation about your project.</p>
         </form>
@@ -636,6 +640,9 @@
       formData.append('email', this.querySelector('[name="email"]').value);
       formData.append('phone', formattedPhone);
       formData.append('form_source', 'first-time-builder-landing-page-google-ads');
+      formData.append('page_url', window.location.href);
+      formData.append('form_loaded_at', document.getElementById('form_loaded_at').value);
+      formData.append('website', this.querySelector('[name="website"]').value);
 
       var detailsField = this.querySelector('[name="details"]');
       if (detailsField && detailsField.value) { formData.append('details', detailsField.value); }
@@ -649,7 +656,10 @@
         if (response.ok) {
           document.getElementById('ftbLPForm').style.display = 'none';
           document.getElementById('form-success').style.display = 'block';
-          if (typeof gtag === 'function') { gtag('event', 'conversion', {'send_to': 'AW-17993082803/form_submit'}); }
+          if (typeof gtag === 'function') {
+            gtag('event', 'form_submit', {'form_id': 'first-time-builder-lp'});
+            gtag('event', 'conversion', {'send_to': 'AW-17993082803/form_submit'});
+          }
         } else {
           submitBtn.disabled = false;
           submitBtn.textContent = 'Check My Eligibility \u2192';
@@ -664,5 +674,6 @@
     });
   </script>
 
+<script>document.getElementById('form_loaded_at').value = Date.now();</script>
 </body>
 </html>
