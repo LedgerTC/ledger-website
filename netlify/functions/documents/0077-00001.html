@@ -50,7 +50,7 @@
     pointer-events: none;
   }
   .header-inner {
-    max-width: 1340px; margin: 0 auto; padding: 28px 48px 24px;
+    max-width: 1340px; margin: 0 auto; padding: 14px 48px 12px;
     display: flex; align-items: center; justify-content: space-between; gap: 24px;
     position: relative; z-index: 1;
   }
@@ -686,6 +686,10 @@
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
     }
+    .styled-table thead th:first-child { width: auto; }
+    .styled-table thead th:nth-child(2) { width: 200px; }
+    .draw-table thead th:first-child { width: auto; }
+    .draw-table thead th:nth-child(2) { width: 200px; }
   }
 
   /* ─── DEAL PROCESS FLOW ─── */
@@ -1134,7 +1138,7 @@
       </div>
     </div>
     <div class="header-center">
-      <div class="doc-title">Ground-Up Construction Lending</div>
+      <div class="doc-title">New Construction</div>
     </div>
     <div class="header-right">
       <div class="client-top">
