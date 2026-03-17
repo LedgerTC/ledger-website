@@ -755,15 +755,11 @@ gtag('config', 'AW-17993082803/k0r2CNOO-IkcELPP4oND', {
         <span class="value" id="res-origination">--</span>
       </div>
       <div class="breakdown-row">
-        <span class="label">Underwriting Fee</span>
-        <span class="value" id="res-uwfee">--</span>
-      </div>
-      <div class="breakdown-row">
-        <span class="label">Legal &amp; Documentation</span>
-        <span class="value">$1,195</span>
+        <span class="label">Processing &amp; Closing Costs</span>
+        <span class="value" id="res-closing">--</span>
       </div>
       <div class="breakdown-row" style="font-weight:700; border-top: 2px solid var(--gray-300); margin-top: 4px; padding-top: 12px;">
-        <span class="label" style="color: var(--text-primary);">Total Estimated Loan Closing Costs</span>
+        <span class="label" style="color: var(--text-primary);">Total Estimated Costs</span>
         <span class="value" id="res-totalfees">--</span>
       </div>
     </div>
@@ -1323,7 +1319,7 @@ function showIneligible(msg) {
   document.getElementById('res-ltc').textContent = 'N/A';
   document.getElementById('res-ltv').textContent = 'N/A';
   document.getElementById('res-origination').textContent = 'N/A';
-  document.getElementById('res-uwfee').textContent = 'N/A';
+  document.getElementById('res-closing').textContent = 'N/A';
   document.getElementById('res-totalfees').textContent = 'N/A';
 }
 
@@ -1516,13 +1512,34 @@ function calculateRTL() {
     program, dealType
   }, lev);
 
-  const rate = calculateRate(tier, assetType, fico);
+  let rate = calculateRate(tier, assetType, fico);
 
-  // Fees
-  const origFee = Math.round(tla * 0.02);
-  const uwFee = 1495;
-  const legalDocFee = 1195;
-  const totalFees = origFee + uwFee + legalDocFee;
+  // Small deal adder: TLA < $500K gets +50bps (fixed costs vs deal economics)
+  if (tla < 500000) rate = ceilEighth(rate + 0.500);
+
+  // Heavy rehab adder: +50bps for execution risk not captured by tier
+  if (program === 'FnF - Heavy') rate = ceilEighth(rate + 0.500);
+
+  // Tiered origination fees
+  let origPct;
+  if (tla < 500000) origPct = 0.025;
+  else if (tla <= 1000000) origPct = 0.02;
+  else if (tla <= 2000000) origPct = 0.0175;
+  else if (tla <= 3000000) origPct = 0.015;
+  else origPct = 0.01;
+  const origFee = Math.round(tla * origPct);
+
+  // Processing & closing costs: percentage-based, rounded to nearest $25
+  let closingPct;
+  if (tla < 500000) closingPct = 0.0075;
+  else if (tla <= 1000000) closingPct = 0.005;
+  else if (tla <= 2000000) closingPct = 0.0035;
+  else if (tla <= 3000000) closingPct = 0.003;
+  else closingPct = 0.0025;
+  const closingMin = 2500;
+  const closingRaw = Math.max(closingMin, tla * closingPct);
+  const closingFee = Math.round(closingRaw / 25) * 25;
+  const totalFees = origFee + closingFee;
 
   let programDisplay = program;
   if (program === 'FnF - Light') programDisplay = 'Fix & Flip (Light Rehab)';
@@ -1610,8 +1627,9 @@ function calculateRTL() {
     constraintNote.style.display = 'none';
   }
 
-  document.getElementById('res-origination').textContent = '$' + origFee.toLocaleString();
-  document.getElementById('res-uwfee').textContent = '$' + uwFee.toLocaleString();
+  const origPctDisplay = (origPct * 100) % 1 === 0 ? (origPct * 100).toFixed(1) : (origPct * 100).toFixed(2);
+  document.getElementById('res-origination').textContent = '$' + origFee.toLocaleString() + ' (' + origPctDisplay + '%)';
+  document.getElementById('res-closing').textContent = '$' + closingFee.toLocaleString();
   document.getElementById('res-totalfees').textContent = '$' + totalFees.toLocaleString();
 
   // Store results for lead form
