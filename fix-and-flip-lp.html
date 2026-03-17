@@ -577,6 +577,91 @@ img{max-width:100%;height:auto;display:block;}
   line-height:1.4;
 }
 
+/* ── Estimate Section ── */
+.estimate-section{
+  background:var(--cream);
+  padding:clamp(3rem,6vw,5rem) 2rem;
+}
+.estimate-inner{
+  max-width:1100px;
+  margin:0 auto;
+  text-align:center;
+}
+.estimate-inner h2{
+  font-size:clamp(1.5rem,3.5vw,2.25rem);
+  font-weight:800;
+  color:var(--green);
+  margin-bottom:0.5rem;
+}
+.estimate-subtitle{
+  font-size:clamp(0.9rem,0.88rem + 0.15vw,1rem);
+  color:var(--gray-600);
+  max-width:600px;
+  margin:0 auto 2rem;
+  line-height:1.6;
+}
+.estimate-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1.25rem;
+  margin-bottom:2rem;
+}
+.estimate-card{
+  background:var(--white);
+  border:1px solid var(--gray-100);
+  border-radius:12px;
+  padding:1.5rem 1.25rem;
+  text-align:left;
+}
+.estimate-card-type{
+  font-size:0.75rem;
+  font-weight:700;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:0.75rem;
+}
+.estimate-card-inputs{
+  font-size:0.85rem;
+  color:var(--gray-600);
+  line-height:1.6;
+  margin-bottom:1rem;
+}
+.estimate-card-result{
+  font-family:'Plus Jakarta Sans','DM Sans',sans-serif;
+  font-size:0.95rem;
+  font-weight:700;
+  color:var(--green);
+  padding-top:0.75rem;
+  border-top:1px solid var(--gray-100);
+}
+.estimate-cta-wrap{
+  text-align:center;
+}
+.estimate-alt-link{
+  font-size:0.88rem;
+  color:var(--gray-500);
+  margin-top:0.75rem;
+}
+.estimate-alt-link a{
+  color:var(--gold);
+  font-weight:600;
+}
+.estimate-alt-link a:hover{
+  text-decoration:underline;
+}
+.final-estimate-link{
+  margin-top:1rem;
+  font-size:0.9rem;
+}
+.final-estimate-link a{
+  color:rgba(255,255,255,0.7);
+  font-weight:500;
+}
+.final-estimate-link a:hover{
+  color:var(--white);
+}
+
 /* ── FAQ ── */
 .faq-section{
   background:var(--cream);
@@ -740,6 +825,9 @@ img{max-width:100%;height:auto;display:block;}
     grid-template-columns:repeat(2,1fr);
   }
   .params-grid{
+    grid-template-columns:1fr;
+  }
+  .estimate-grid{
     grid-template-columns:1fr;
   }
   .footer-grid{
@@ -1002,6 +1090,36 @@ img{max-width:100%;height:auto;display:block;}
   </div>
 </section>
 
+<!-- ── Estimate Your Rate ── -->
+<section class="estimate-section">
+  <div class="estimate-inner">
+    <div class="section-label" style="color:var(--gold);">Pricing Tool</div>
+    <h2>Estimate Your Rate in 60 Seconds</h2>
+    <p class="estimate-subtitle">Use our free calculator to see your estimated rate, loan amount, and costs — no login required.</p>
+    <div class="estimate-grid">
+      <div class="estimate-card">
+        <div class="estimate-card-type">Light Rehab</div>
+        <div class="estimate-card-inputs">$200K purchase · $50K budget<br>720 FICO · 5 deals</div>
+        <div class="estimate-card-result">Rate: 9.750% · Loan: ~$220K</div>
+      </div>
+      <div class="estimate-card">
+        <div class="estimate-card-type">Heavy Rehab</div>
+        <div class="estimate-card-inputs">$300K purchase · $200K budget<br>740 FICO · 10+ deals</div>
+        <div class="estimate-card-result">Rate: 10.250% · Loan: ~$405K</div>
+      </div>
+      <div class="estimate-card">
+        <div class="estimate-card-type">Small Flip</div>
+        <div class="estimate-card-inputs">$150K purchase · $40K budget<br>700 FICO · 3 deals</div>
+        <div class="estimate-card-result">Rate: 10.250% · Loan: ~$165K</div>
+      </div>
+    </div>
+    <div class="estimate-cta-wrap">
+      <a href="/construction-loan-calculator" target="_blank" class="btn-gold calculator-cta" data-cta-source="lp-estimate-section">Try the Calculator &rarr;</a>
+      <p class="estimate-alt-link">Or skip straight to a custom quote — <a href="#form">get your rate</a></p>
+    </div>
+  </div>
+</section>
+
 <!-- ── FAQ ── -->
 <section class="faq-section">
   <div class="faq-inner">
@@ -1040,6 +1158,10 @@ img{max-width:100%;height:auto;display:block;}
         <button class="faq-question" onclick="toggleFaq(this)">Can I use a fix and flip loan for the BRRRR strategy?<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
         <div class="faq-answer"><div class="faq-answer-inner">Yes &mdash; a fix and flip loan is the first step in the BRRRR strategy (Buy, Rehab, Rent, Refinance, Repeat). Fund the acquisition and renovation, stabilize the property as a rental, then refinance into a long-term DSCR rental loan. We offer both products, making the transition seamless.</div></div>
       </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">How are rates determined?<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="faq-answer"><div class="faq-answer-inner">Rates depend on borrower experience, credit score, leverage, and project scope. Experienced flippers with strong credit and lower leverage typically receive the best pricing. <a href="/construction-loan-calculator" target="_blank" class="calculator-cta" data-cta-source="lp-faq" style="color:var(--gold);font-weight:600;">Try our construction loan calculator</a> to estimate your rate.</div></div>
+      </div>
     </div>
   </div>
 </section>
@@ -1052,6 +1174,7 @@ img{max-width:100%;height:auto;display:block;}
     <a href="#form" class="btn-gold">Get Your Rate &uarr;</a>
     <a href="tel:2017491691" class="btn-outline">(201) 749-1691</a>
   </div>
+  <p class="final-estimate-link"><a href="/construction-loan-calculator" target="_blank" class="calculator-cta" data-cta-source="lp-final-cta">Estimate First &rarr;</a></p>
 </section>
 
 <!-- ── Footer ── -->
@@ -1167,5 +1290,17 @@ function toggleFaq(btn){
 <script type="text/javascript" id="hs-script-loader" defer src="//js.hs-scripts.com/46107229.js"></script>
 
 <script>document.getElementById('form_loaded_at').value=Date.now();</script>
+
+<!-- ── Calculator CTA Tracking ── -->
+<script>
+document.addEventListener('click', function(e) {
+  var link = e.target.closest('.calculator-cta');
+  if (link && typeof gtag === 'function') {
+    gtag('event', 'calculator_cta_click', {
+      source: link.getAttribute('data-cta-source') || 'unknown'
+    });
+  }
+});
+</script>
 </body>
 </html>
