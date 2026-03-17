@@ -617,6 +617,8 @@
     .step-pill { padding: 5px 10px; }
     .step-pill .nav-num { font-size: 7px; }
     .step-pill .nav-lbl { font-size: 10px; }
+    .nav-lbl[data-mobile-lbl] { font-size: 0; }
+    .nav-lbl[data-mobile-lbl]::after { content: attr(data-mobile-lbl); font-size: 10px; }
     .sub-nav-bar { display: none; }
     .sub-nav-bar.visible { display: block; }
     .sub-nav-inner { padding: 6px 0; gap: 4px; }
@@ -1175,13 +1177,13 @@
   </div>
   <!-- Mobile breadcrumb (visible only when scrolled on mobile) -->
   <div class="mobile-breadcrumb" id="mobileBreadcrumb" style="display:none;" onclick="toggleMobileNav()">
-    <span class="mobile-breadcrumb-text" id="breadcrumbText">Deal Process Overview</span>
+    <span class="mobile-breadcrumb-text" id="breadcrumbText">Deal Process</span>
     <span class="mobile-breadcrumb-chevron" id="breadcrumbChevron">▼</span>
   </div>
   <div class="hero-nav-bar">
     <div class="hero-nav-inner">
       <span class="nav-bar-label">Content Navigation</span>
-      <span class="step-pill active" data-section="1" id="pill-1"><span class="nav-lbl">Deal Process Overview</span></span>
+      <span class="step-pill active" data-section="1" id="pill-1"><span class="nav-lbl" data-mobile-lbl="Deal Process">Deal Process Overview</span></span>
       <span class="step-pill" data-section="9" id="pill-9"><span class="nav-lbl">Credit Box</span></span>
       <span class="step-pill glossary-pill" id="pill-glossary"><span class="nav-lbl">Glossary by Stage</span></span>
       <span class="step-pill" data-section="10" id="pill-10"><span class="nav-lbl">Team</span></span>
@@ -2142,6 +2144,7 @@
     8: 'Cost Allocation',
     10: 'Team'
   };
+  const mobileSectionNames = { 1: 'Deal Process' };
 
   function isGlossarySection(n) {
     return glossarySections.includes(parseInt(n));
@@ -2152,7 +2155,7 @@
     if (isGlossarySection(n)) {
       breadcrumbText.innerHTML = '<span style="opacity:0.6">Glossary by Stage</span> <span class="mobile-breadcrumb-sep">›</span> ' + (sectionNames[n] || '');
     } else {
-      breadcrumbText.textContent = sectionNames[n] || '';
+      breadcrumbText.textContent = mobileSectionNames[n] || sectionNames[n] || '';
     }
   }
 
