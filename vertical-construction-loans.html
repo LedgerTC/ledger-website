@@ -131,6 +131,7 @@ gtag('config', 'AW-17993082803/k0r2CNOO-IkcELPP4oND', {
   ]
 }
 </script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
 
@@ -159,8 +160,8 @@ gtag('config', 'AW-17993082803/k0r2CNOO-IkcELPP4oND', {
     <li class="dropdown">
       <a href="#">Pricing Tools ▾</a>
       <div class="dropdown-menu"><ul>
-        <li><a href="construction-loan-calculator.html">Construction Loan Calculator</a></li>
-        <li><a href="rental-loan-calculator.html">DSCR Rental Calculator</a></li>
+        <li><a href="construction-loan-calculator.html">Construction</a></li>
+        <li><a href="rental-loan-calculator.html">DSCR Rental</a></li>
       </ul></div>
     </li>
     <li class="dropdown">
@@ -194,6 +195,11 @@ gtag('config', 'AW-17993082803/k0r2CNOO-IkcELPP4oND', {
     <a href="where-we-lend.html">Where We Lend</a>
   </div>
   <a href="broker-partners.html" class="mobile-section-label" style="text-decoration: none;">Broker Partners</a>
+  <div class="mobile-section-label">Loan Calculators</div>
+  <div class="mobile-sub">
+    <a href="construction-loan-calculator.html">Construction</a>
+    <a href="rental-loan-calculator.html">DSCR Rental</a>
+  </div>
   <div class="mobile-section-label">Client Portal</div>
   <div class="mobile-sub">
     <a href="https://partner.trustpoint.ai/login" target="_blank">Submit Draws</a>
@@ -295,6 +301,7 @@ gtag('config', 'AW-17993082803/k0r2CNOO-IkcELPP4oND', {
           <input type="hidden" name="form_source" value="construction-loan">
           <input type="text" name="website" style="display:none" tabindex="-1" autocomplete="off">
           <input type="hidden" name="form_loaded_at" id="form_loaded_at">
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAACtw1TOxqy4xMX4D" data-theme="light"></div>
           <div>
             <button type="submit" style="width: 100%; background: var(--gold); color: var(--white); padding: 1rem; border-radius: 8px; font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: 1rem; border: none; cursor: pointer; transition: all 0.2s;">Apply Now</button>
           </div>
@@ -419,6 +426,11 @@ gtag('config', 'AW-17993082803/k0r2CNOO-IkcELPP4oND', {
 
     var formData = new URLSearchParams(new FormData(form));
     formData.set('page_url', window.location.href);
+    var lp = new URLSearchParams(window.location.search);
+    ['gclid','gbraid','wbraid','gad_source','gad_campaignid','utm_source','utm_medium','utm_campaign','utm_term','utm_content'].forEach(function(k) {
+      var v = lp.get(k);
+      if (v) formData.set(k, v);
+    });
 
     fetch('/.netlify/functions/submit-form', {
       method: 'POST',

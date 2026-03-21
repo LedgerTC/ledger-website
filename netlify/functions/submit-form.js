@@ -121,6 +121,12 @@ async function findOrCreateContact(formData) {
       phone: formData.phone,
       lifecyclestage: "lead",
       source_website: "Yes",
+      ...(formData.gclid && { hs_google_click_id: formData.gclid }),
+      ...(formData.utmSource && { utm_source: formData.utmSource }),
+      ...(formData.utmMedium && { utm_medium: formData.utmMedium }),
+      ...(formData.utmCampaign && { utm_campaign: formData.utmCampaign }),
+      ...(formData.utmTerm && { utm_term: formData.utmTerm }),
+      ...(formData.utmContent && { utm_content: formData.utmContent }),
     },
   });
 
@@ -180,6 +186,31 @@ async function associateContactToCompany(contactId, companyId) {
   } else {
     console.log(`Associated contact ${contactId} <-> company ${companyId}`);
   }
+}
+
+// ─── Step 3b: Get existing company associated with a contact ─────
+async function getContactCompany(contactId) {
+  const assoc = await hubspot(
+    "GET",
+    `/crm/v4/objects/contacts/${contactId}/associations/companies`
+  );
+
+  if (assoc.error || !assoc.results || assoc.results.length === 0) {
+    return null;
+  }
+
+  const companyId = assoc.results[0].toObjectId;
+  const company = await hubspot(
+    "GET",
+    `/crm/v3/objects/companies/${companyId}?properties=name,coverage`
+  );
+
+  if (company.error) {
+    return null;
+  }
+
+  console.log(`Found existing associated company: ${company.id} (${company.properties.name})`);
+  return { company, isNew: false };
 }
 
 // ─── Step 4: Determine Ticket owner ──────────────────────────────
@@ -460,6 +491,14 @@ exports.handler = async function (event) {
       projectOverview: raw.project_overview || raw.details || "",
       website: raw.website || "",
       pageUrl: raw.page_url || "",
+      gclid: raw.gclid || "",
+      gbraid: raw.gbraid || "",
+      wbraid: raw.wbraid || "",
+      utmSource: raw.utm_source || "",
+      utmMedium: raw.utm_medium || "",
+      utmCampaign: raw.utm_campaign || "",
+      utmTerm: raw.utm_term || "",
+      utmContent: raw.utm_content || "",
     };
 
     // ── Honeypot check ──────────────────────────────────────────
@@ -469,6 +508,37 @@ exports.handler = async function (event) {
         statusCode: 200,
         headers,
         body: JSON.stringify({ success: true, message: "Thank you for your submission." }),
+      };
+    }
+
+    // ── Cloudflare Turnstile verification ───────────────────────
+    const turnstileToken = raw["cf-turnstile-response"] || "";
+    if (!turnstileToken) {
+      console.log("Missing Turnstile token — rejecting");
+      return {
+        statusCode: 403,
+        headers,
+        body: JSON.stringify({ error: "Security verification failed. Please refresh the page and try again." }),
+      };
+    }
+
+    const turnstileRes = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        secret: process.env.TURNSTILE_SECRET_KEY,
+        response: turnstileToken,
+        remoteip: (event.headers["x-forwarded-for"] || "").split(",")[0].trim(),
+      }),
+    });
+    const turnstileData = await turnstileRes.json();
+
+    if (!turnstileData.success) {
+      console.log("Turnstile verification failed:", turnstileData);
+      return {
+        statusCode: 403,
+        headers,
+        body: JSON.stringify({ error: "Security verification failed. Please refresh the page and try again." }),
       };
     }
 
@@ -548,8 +618,15 @@ exports.handler = async function (event) {
       const contactResult = await findOrCreateContact(formData);
       const contactId = contactResult.contact.id;
 
-      // Step 2: Company
-      const companyResult = await findOrCreateCompany(formData.company);
+      // Step 2: Company — check existing association first, then find/create
+      let companyResult = null;
+      if (!contactResult.isNew) {
+        companyResult = await getContactCompany(contactId);
+      }
+      if (!companyResult) {
+        const companyName = formData.company || `${formData.firstName} ${formData.lastName} LLC`;
+        companyResult = await findOrCreateCompany(companyName);
+      }
       const companyId = companyResult.company ? companyResult.company.id : null;
 
       // Step 3: Associate Contact <-> Company (only if company is NEW)
@@ -582,8 +659,15 @@ exports.handler = async function (event) {
       const contactResult = await findOrCreateContact(formData);
       const contactId = contactResult.contact.id;
 
-      // Step 2: Company
-      const companyResult = await findOrCreateCompany(formData.company);
+      // Step 2: Company — check existing association first, then find/create
+      let companyResult = null;
+      if (!contactResult.isNew) {
+        companyResult = await getContactCompany(contactId);
+      }
+      if (!companyResult) {
+        const companyName = formData.company || `${formData.firstName} ${formData.lastName} LLC`;
+        companyResult = await findOrCreateCompany(companyName);
+      }
       const companyId = companyResult.company ? companyResult.company.id : null;
 
       // Step 3: Associate Contact <-> Company (only if company is NEW)
@@ -599,7 +683,7 @@ exports.handler = async function (event) {
         "construction-landing-page-google-ads": "Campaign",
         "first-time-builder-landing-page-google-ads": "First Time Campaign",
         "dscr-landing-page-google-ads": "DSCR Campaign",
-        "fix-and-flip-landing-page-google-ads": "Fix & Flip Campaign",
+        "fix-and-flip-landing-page-google-ads": "Fix and Flip Campaign",
       };
       const ticketCategory = ticketCategoryMap[raw.form_source] || "GENERAL_INQUIRY";
       const ticket = await createTicket(formData, ownerId, contactId, companyId, ticketCategory);

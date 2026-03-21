@@ -476,6 +476,91 @@ img{max-width:100%;height:auto;display:block;}
   line-height:1.4;
 }
 
+/* ── Estimate Section ── */
+.estimate-section{
+  background:var(--cream);
+  padding:clamp(3rem,6vw,5rem) 2rem;
+}
+.estimate-inner{
+  max-width:1100px;
+  margin:0 auto;
+  text-align:center;
+}
+.estimate-inner h2{
+  font-size:clamp(1.5rem,3.5vw,2.25rem);
+  font-weight:800;
+  color:var(--green);
+  margin-bottom:0.5rem;
+}
+.estimate-subtitle{
+  font-size:clamp(0.9rem,0.88rem + 0.15vw,1rem);
+  color:var(--gray-600);
+  max-width:600px;
+  margin:0 auto 2rem;
+  line-height:1.6;
+}
+.estimate-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1.25rem;
+  margin-bottom:2rem;
+}
+.estimate-card{
+  background:var(--white);
+  border:1px solid var(--gray-100);
+  border-radius:12px;
+  padding:1.5rem 1.25rem;
+  text-align:left;
+}
+.estimate-card-type{
+  font-size:0.75rem;
+  font-weight:700;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:0.75rem;
+}
+.estimate-card-inputs{
+  font-size:0.85rem;
+  color:var(--gray-600);
+  line-height:1.6;
+  margin-bottom:1rem;
+}
+.estimate-card-result{
+  font-family:'Plus Jakarta Sans','DM Sans',sans-serif;
+  font-size:0.95rem;
+  font-weight:700;
+  color:var(--green);
+  padding-top:0.75rem;
+  border-top:1px solid var(--gray-100);
+}
+.estimate-cta-wrap{
+  text-align:center;
+}
+.estimate-alt-link{
+  font-size:0.88rem;
+  color:var(--gray-500);
+  margin-top:0.75rem;
+}
+.estimate-alt-link a{
+  color:var(--gold);
+  font-weight:600;
+}
+.estimate-alt-link a:hover{
+  text-decoration:underline;
+}
+.final-estimate-link{
+  margin-top:1rem;
+  font-size:0.9rem;
+}
+.final-estimate-link a{
+  color:rgba(255,255,255,0.7);
+  font-weight:500;
+}
+.final-estimate-link a:hover{
+  color:var(--white);
+}
+
 /* ── FAQ ── */
 .faq-section{
   background:var(--cream);
@@ -641,6 +726,9 @@ img{max-width:100%;height:auto;display:block;}
   .params-grid{
     grid-template-columns:1fr;
   }
+  .estimate-grid{
+    grid-template-columns:1fr;
+  }
   .footer-grid{
     grid-template-columns:1fr;
     text-align:center;
@@ -664,6 +752,7 @@ img{max-width:100%;height:auto;display:block;}
   }
 }
 </style>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
 
@@ -799,6 +888,7 @@ img{max-width:100%;height:auto;display:block;}
           </div>
           <input type="hidden" name="form_source" value="dscr-landing-page-google-ads">
           <input type="hidden" name="form_loaded_at" id="form_loaded_at">
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAACtw1TOxqy4xMX4D" data-theme="light"></div>
           <button type="submit" class="form-submit">Get My Rate &rarr;</button>
           <p class="form-note">No obligation. No credit pull. Just a conversation.</p>
         </form>
@@ -899,6 +989,36 @@ img{max-width:100%;height:auto;display:block;}
   </div>
 </section>
 
+<!-- ── Estimate Your Rate ── -->
+<section class="estimate-section">
+  <div class="estimate-inner">
+    <div class="section-label" style="color:var(--gold);">Pricing Tool</div>
+    <h2>Estimate Your Rate in 60 Seconds</h2>
+    <p class="estimate-subtitle">Use our free calculator to see your estimated rate, payment, and costs — no login required.</p>
+    <div class="estimate-grid">
+      <div class="estimate-card">
+        <div class="estimate-card-type">SFR Purchase</div>
+        <div class="estimate-card-inputs">$300K property · 75% LTV<br>1.25x DSCR · 740 FICO</div>
+        <div class="estimate-card-result">Rate: ~6.500% · Payment: ~$1,423/mo</div>
+      </div>
+      <div class="estimate-card">
+        <div class="estimate-card-type">Cash-Out Refi</div>
+        <div class="estimate-card-inputs">$400K property · 70% LTV<br>1.10x DSCR · 720 FICO</div>
+        <div class="estimate-card-result">Rate: ~7.125% · Payment: ~$1,889/mo</div>
+      </div>
+      <div class="estimate-card">
+        <div class="estimate-card-type">Portfolio</div>
+        <div class="estimate-card-inputs">$750K portfolio · 75% LTV<br>1.30x DSCR · 760 FICO</div>
+        <div class="estimate-card-result">Rate: ~6.250% · Payment: ~$3,463/mo</div>
+      </div>
+    </div>
+    <div class="estimate-cta-wrap">
+      <a href="/rental-loan-calculator" target="_blank" class="btn-gold calculator-cta" data-cta-source="lp-estimate-section">Try the Calculator &rarr;</a>
+      <p class="estimate-alt-link">Or skip straight to a custom quote — <a href="#form">get your rate</a></p>
+    </div>
+  </div>
+</section>
+
 <!-- ── FAQ ── -->
 <section class="faq-section">
   <div class="faq-inner">
@@ -933,6 +1053,10 @@ img{max-width:100%;height:auto;display:block;}
         <button class="faq-question" onclick="toggleFaq(this)">Do you lend nationwide?<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
         <div class="faq-answer"><div class="faq-answer-inner">Yes, we lend nationwide across all 50 states. Whether your rental property is in Texas, Florida, Ohio, or California, we can provide DSCR financing with consistent terms and a streamlined process.</div></div>
       </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">How is my rate calculated?<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="faq-answer"><div class="faq-answer-inner">DSCR loan rates are based on credit score, LTV, DSCR ratio, and property type. Stronger credit, lower leverage, and higher cash flow coverage generally result in better rates. <a href="/rental-loan-calculator" target="_blank" class="calculator-cta" data-cta-source="lp-faq" style="color:var(--gold);font-weight:600;">Try our DSCR calculator</a> to see your estimated rate and payment.</div></div>
+      </div>
     </div>
   </div>
 </section>
@@ -945,6 +1069,7 @@ img{max-width:100%;height:auto;display:block;}
     <a href="#form" class="btn-gold">Get Your Rate &uarr;</a>
     <a href="tel:2017491691" class="btn-outline">(201) 749-1691</a>
   </div>
+  <p class="final-estimate-link"><a href="/rental-loan-calculator" target="_blank" class="calculator-cta" data-cta-source="lp-final-cta">Estimate First &rarr;</a></p>
 </section>
 
 <!-- ── Footer ── -->
@@ -1027,6 +1152,11 @@ function toggleFaq(btn){
     params.append('details',form.querySelector('[name="details"]').value.trim());
     params.append('form_source',form.querySelector('[name="form_source"]').value);
     params.append('page_url',window.location.href);
+    var lp=new URLSearchParams(window.location.search);
+    ['gclid','gbraid','wbraid','gad_source','gad_campaignid','utm_source','utm_medium','utm_campaign','utm_term','utm_content'].forEach(function(k){
+      var v=lp.get(k);
+      if(v)params.append(k,v);
+    });
     params.append('form_loaded_at',form.querySelector('[name="form_loaded_at"]').value);
     params.append('website',form.querySelector('[name="website"]').value);
 
@@ -1060,5 +1190,17 @@ function toggleFaq(btn){
 <script type="text/javascript" id="hs-script-loader" defer src="//js.hs-scripts.com/46107229.js"></script>
 
 <script>document.getElementById('form_loaded_at').value=Date.now();</script>
+
+<!-- ── Calculator CTA Tracking ── -->
+<script>
+document.addEventListener('click', function(e) {
+  var link = e.target.closest('.calculator-cta');
+  if (link && typeof gtag === 'function') {
+    gtag('event', 'calculator_cta_click', {
+      source: link.getAttribute('data-cta-source') || 'unknown'
+    });
+  }
+});
+</script>
 </body>
 </html>

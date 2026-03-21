@@ -223,39 +223,6 @@ body {
   background: rgba(43,74,66,0.06); border-radius: 6px;
 }
 
-/* Slider styles */
-.slider-section {
-  background: var(--cream); border-radius: 10px; padding: 20px; margin-bottom: 24px;
-}
-.slider-section h3 {
-  font-size: 14px; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.5px; margin-bottom: 16px; color: var(--green);
-}
-.slider-row { margin-bottom: 16px; }
-.slider-row:last-child { margin-bottom: 0; }
-.slider-label {
-  display: flex; justify-content: space-between; align-items: center;
-  font-size: 14px; margin-bottom: 8px;
-}
-.slider-label .label { color: var(--text-secondary); }
-.slider-label .value { font-weight: 700; color: var(--green); font-size: 15px; }
-input[type="range"] {
-  width: 100%; -webkit-appearance: none; height: 6px;
-  border-radius: 3px; background: var(--gray-100); outline: none;
-}
-input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none; width: 22px; height: 22px; border-radius: 50%;
-  background: var(--gold); cursor: pointer;
-  border: 2px solid var(--white); box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-}
-input[type="range"]::-moz-range-thumb {
-  width: 22px; height: 22px; border-radius: 50%;
-  background: var(--gold); cursor: pointer;
-  border: 2px solid var(--white); box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-}
-.slider-constraint {
-  font-size: 11px; color: var(--gray-500); margin-top: 4px;
-}
 
 .lead-form-section {
   background: var(--green); border-radius: 12px;
@@ -462,8 +429,8 @@ gtag('config', 'AW-17993082803/k0r2CNOO-IkcELPP4oND', {
     <li class="dropdown">
       <a href="#">Pricing Tools ▾</a>
       <div class="dropdown-menu"><ul>
-        <li><a href="construction-loan-calculator.html">Construction Loan Calculator</a></li>
-        <li><a href="rental-loan-calculator.html">DSCR Rental Calculator</a></li>
+        <li><a href="construction-loan-calculator.html">Construction</a></li>
+        <li><a href="rental-loan-calculator.html">DSCR Rental</a></li>
       </ul></div>
     </li>
     <li class="dropdown">
@@ -497,10 +464,10 @@ gtag('config', 'AW-17993082803/k0r2CNOO-IkcELPP4oND', {
     <a href="where-we-lend.html">Where We Lend</a>
   </div>
   <a href="broker-partners.html" class="mobile-section-label" style="text-decoration: none;">Broker Partners</a>
-  <div class="mobile-section-label">Pricing Tools</div>
+  <div class="mobile-section-label">Loan Calculators</div>
   <div class="mobile-sub">
-    <a href="construction-loan-calculator.html">Construction Loan Calculator</a>
-    <a href="rental-loan-calculator.html">DSCR Rental Calculator</a>
+    <a href="construction-loan-calculator.html">Construction</a>
+    <a href="rental-loan-calculator.html">DSCR Rental</a>
   </div>
   <div class="mobile-section-label">Client Portal</div>
   <div class="mobile-sub">
@@ -638,6 +605,15 @@ gtag('config', 'AW-17993082803/k0r2CNOO-IkcELPP4oND', {
       </div>
     </div>
 
+    <div class="field-group" id="permitsGroup" style="display:none;">
+      <label>Permits in hand?</label>
+      <p class="field-hint">If construction permits have already been obtained, a higher day-1 advance is available.</p>
+      <div class="toggle-group" role="radiogroup">
+        <button type="button" class="toggle-btn" role="radio" aria-checked="false" data-field="permitsInHand" data-value="No" onclick="toggleSelect(this)">No</button>
+        <button type="button" class="toggle-btn" role="radio" aria-checked="false" data-field="permitsInHand" data-value="Yes" onclick="toggleSelect(this)">Yes</button>
+      </div>
+    </div>
+
     <!-- Purchase Date: only for refi -->
     <div class="field-group" id="purchaseDateGroup" style="display:none;">
       <label>Original Purchase Date</label>
@@ -771,41 +747,6 @@ gtag('config', 'AW-17993082803/k0r2CNOO-IkcELPP4oND', {
       </div>
     </div>
 
-    <!-- GUC Slider: only shown for GUC loans -->
-    <div class="slider-section" id="guc-slider-section" style="display:none;">
-      <h3>Adjust Construction Holdback</h3>
-      <p style="font-size:13px; color:var(--gray-500); margin-bottom:12px;">
-        Slide to adjust how much of your construction budget is held in escrow. Higher holdback = higher total loan.
-      </p>
-      <div class="slider-row">
-        <div class="slider-label">
-          <span class="label">Construction Holdback</span>
-          <span class="value" id="slider-holdback-pct">--</span>
-        </div>
-        <input type="range" id="holdback-slider" min="50" max="100" step="5" value="85" oninput="onHoldbackSliderChange()">
-      </div>
-      <div id="holdback-cap-msg" style="font-size:12px; color:var(--gray-500); margin-bottom:12px;"></div>
-      <div class="slider-constraint" id="slider-constraint-msg"></div>
-      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-top:16px;">
-        <div>
-          <div style="font-size:11px; text-transform:uppercase; letter-spacing:0.5px; color:var(--gray-500);">Day 1</div>
-          <div style="font-size:16px; font-weight:700;" id="slider-day1">--</div>
-        </div>
-        <div>
-          <div style="font-size:11px; text-transform:uppercase; letter-spacing:0.5px; color:var(--gray-500);">Holdback</div>
-          <div style="font-size:16px; font-weight:700;" id="slider-holdback">--</div>
-        </div>
-        <div>
-          <div style="font-size:11px; text-transform:uppercase; letter-spacing:0.5px; color:var(--gray-500);">Total Loan</div>
-          <div style="font-size:16px; font-weight:700;" id="slider-tla">--</div>
-        </div>
-      </div>
-      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-top:8px;">
-        <div style="font-size:12px; color:var(--gray-500);" id="slider-ltaiv-lbl">LTAIV: --</div>
-        <div style="font-size:12px; color:var(--gray-500);" id="slider-ltc-lbl">LTC: --</div>
-        <div style="font-size:12px; color:var(--gray-500);" id="slider-ltarv-lbl">LTARV: --</div>
-      </div>
-    </div>
 
     <div class="results-breakdown">
       <h3>Estimated Loan Costs</h3>
@@ -814,15 +755,11 @@ gtag('config', 'AW-17993082803/k0r2CNOO-IkcELPP4oND', {
         <span class="value" id="res-origination">--</span>
       </div>
       <div class="breakdown-row">
-        <span class="label">Underwriting Fee</span>
-        <span class="value" id="res-uwfee">--</span>
-      </div>
-      <div class="breakdown-row">
-        <span class="label">Legal &amp; Documentation</span>
-        <span class="value">$1,195</span>
+        <span class="label">Processing &amp; Closing Costs</span>
+        <span class="value" id="res-closing">--</span>
       </div>
       <div class="breakdown-row" style="font-weight:700; border-top: 2px solid var(--gray-300); margin-top: 4px; padding-top: 12px;">
-        <span class="label" style="color: var(--text-primary);">Total Estimated Loan Closing Costs</span>
+        <span class="label" style="color: var(--text-primary);">Total Estimated Costs</span>
         <span class="value" id="res-totalfees">--</span>
       </div>
     </div>
@@ -886,6 +823,13 @@ gtag('config', 'AW-17993082803/k0r2CNOO-IkcELPP4oND', {
       <div class="edit-item">
         <div class="edit-label">Project Type</div>
         <select id="edit-projectType"></select>
+      </div>
+      <div class="edit-item" id="edit-permits-item" style="display:none;">
+        <div class="edit-label">Permits in Hand</div>
+        <select id="edit-permitsInHand">
+          <option value="No">No</option>
+          <option value="Yes">Yes</option>
+        </select>
       </div>
       <div class="edit-item">
         <div class="edit-label">Property Type</div>
@@ -985,7 +929,6 @@ gtag('config', 'AW-17993082803/k0r2CNOO-IkcELPP4oND', {
 // ─── STATE ───
 let currentStep = 1;
 const toggleValues = {};
-let gucState = null; // stored for slider
 
 // ─── NAVIGATION ───
 function goToStep(step) {
@@ -1088,6 +1031,15 @@ function updateProjectTypeUI() {
   const rehabLabel = document.getElementById('label-rehab');
   const rehabHint = document.getElementById('hint-rehab');
   const arvLabel = document.getElementById('label-arv');
+
+  // Permits toggle: show for Ground Up only
+  const permitsGroup = document.getElementById('permitsGroup');
+  if (projectType === 'Ground Up') {
+    permitsGroup.style.display = 'block';
+  } else {
+    permitsGroup.style.display = 'none';
+    toggleValues.permitsInHand = 'No';
+  }
 
   if (projectType === 'Bridge') {
     rehabArvSection.style.display = 'none';
@@ -1367,9 +1319,8 @@ function showIneligible(msg) {
   document.getElementById('res-ltc').textContent = 'N/A';
   document.getElementById('res-ltv').textContent = 'N/A';
   document.getElementById('res-origination').textContent = 'N/A';
-  document.getElementById('res-uwfee').textContent = 'N/A';
+  document.getElementById('res-closing').textContent = 'N/A';
   document.getElementById('res-totalfees').textContent = 'N/A';
-  document.getElementById('guc-slider-section').style.display = 'none';
 }
 
 // ─── MAIN CALCULATION ───
@@ -1486,33 +1437,50 @@ function calculateRTL() {
     day1 = tla;
     holdback = 0;
   } else {
-    const maxLTAIV = lev.ltaiv;
-    const maxLTC = lev.ltc;
-    const maxLTV = lev.ltv;
     const baseVal = Math.min(purchasePrice, asIsValue);
-    const totalCostLocal = baseVal + bufferedCost;
 
-    // Max TLA from leverage constraints
-    let maxTLA = Math.round(Math.min(totalCostLocal * maxLTC, arv * maxLTV));
+    // GUC permits override: 70% LTAIV with permits, 60% without
+    let maxLTAIV = lev.ltaiv;
+    if (program === 'GUC' && toggleValues.permitsInHand === 'Yes') {
+      maxLTAIV = 0.70;
+    }
 
-    // GUC dual-regime: if LTC > 85%, LTARV must cap at 70%
-    if (program === 'GUC') {
-      const checkLTC = totalCostLocal > 0 ? maxTLA / totalCostLocal : 0;
-      const checkLTARV = arv > 0 ? maxTLA / arv : 0;
-      if (checkLTC > 0.85 && checkLTARV > 0.70) {
-        maxTLA = Math.round(arv * 0.70);
+    // Holdback = 100% of buffered construction cost
+    holdback = bufferedCost;
+
+    // Day 1 from LTAIV
+    day1 = Math.round(baseVal * maxLTAIV);
+
+    // Unconstrained TLA
+    tla = day1 + holdback;
+
+    // LTARV cap — if TLA exceeds max LTARV, reduce day1 first
+    const maxLTV = lev.ltv;
+    const maxTLAFromARV = Math.round(arv * maxLTV);
+    if (tla > maxTLAFromARV) {
+      const excess = tla - maxTLAFromARV;
+      day1 = Math.max(0, day1 - excess);
+      tla = day1 + holdback;
+      // If still over (day1 already at 0), reduce holdback
+      if (tla > maxTLAFromARV) {
+        holdback = Math.max(0, maxTLAFromARV - day1);
+        tla = day1 + holdback;
       }
     }
 
-    // Day 1 capped by LTAIV
-    const maxDay1 = Math.round(baseVal * maxLTAIV);
-    day1 = Math.min(maxDay1, maxTLA);
-
-    // Holdback: remaining TLA capacity, but never more than the construction budget
-    holdback = Math.min(bufferedCost, Math.max(0, maxTLA - day1));
-
-    // Final TLA = day1 + holdback (may be less than maxTLA if holdback is capped)
-    tla = day1 + holdback;
+    // LTC cap — same approach: reduce day1 first
+    const maxLTC = lev.ltc;
+    const totalCostLocal = baseVal + bufferedCost;
+    const maxTLAFromLTC = Math.round(totalCostLocal * maxLTC);
+    if (tla > maxTLAFromLTC) {
+      const excess = tla - maxTLAFromLTC;
+      day1 = Math.max(0, day1 - excess);
+      tla = day1 + holdback;
+      if (tla > maxTLAFromLTC) {
+        holdback = Math.max(0, maxTLAFromLTC - day1);
+        tla = day1 + holdback;
+      }
+    }
   }
 
   // FIX #9: Loan amount limits
@@ -1544,13 +1512,34 @@ function calculateRTL() {
     program, dealType
   }, lev);
 
-  const rate = calculateRate(tier, assetType, fico);
+  let rate = calculateRate(tier, assetType, fico);
 
-  // Fees
-  const origFee = Math.round(tla * 0.02);
-  const uwFee = 1495;
-  const legalDocFee = 1195;
-  const totalFees = origFee + uwFee + legalDocFee;
+  // Small deal adder: TLA < $500K gets +50bps (fixed costs vs deal economics)
+  if (tla < 500000) rate = ceilEighth(rate + 0.500);
+
+  // Heavy rehab adder: +50bps for execution risk not captured by tier
+  if (program === 'FnF - Heavy') rate = ceilEighth(rate + 0.500);
+
+  // Tiered origination fees
+  let origPct;
+  if (tla < 500000) origPct = 0.025;
+  else if (tla <= 1000000) origPct = 0.02;
+  else if (tla <= 2000000) origPct = 0.0175;
+  else if (tla <= 3000000) origPct = 0.015;
+  else origPct = 0.01;
+  const origFee = Math.round(tla * origPct);
+
+  // Processing & closing costs: percentage-based, rounded to nearest $25
+  let closingPct;
+  if (tla < 500000) closingPct = 0.0075;
+  else if (tla <= 1000000) closingPct = 0.005;
+  else if (tla <= 2000000) closingPct = 0.0035;
+  else if (tla <= 3000000) closingPct = 0.003;
+  else closingPct = 0.0025;
+  const closingMin = 2500;
+  const closingRaw = Math.max(closingMin, tla * closingPct);
+  const closingFee = Math.round(closingRaw / 25) * 25;
+  const totalFees = origFee + closingFee;
 
   let programDisplay = program;
   if (program === 'FnF - Light') programDisplay = 'Fix & Flip (Light Rehab)';
@@ -1638,19 +1627,10 @@ function calculateRTL() {
     constraintNote.style.display = 'none';
   }
 
-  document.getElementById('res-origination').textContent = '$' + origFee.toLocaleString();
-  document.getElementById('res-uwfee').textContent = '$' + uwFee.toLocaleString();
+  const origPctDisplay = (origPct * 100) % 1 === 0 ? (origPct * 100).toFixed(1) : (origPct * 100).toFixed(2);
+  document.getElementById('res-origination').textContent = '$' + origFee.toLocaleString() + ' (' + origPctDisplay + '%)';
+  document.getElementById('res-closing').textContent = '$' + closingFee.toLocaleString();
   document.getElementById('res-totalfees').textContent = '$' + totalFees.toLocaleString();
-
-  // GUC Slider setup
-  if (program === 'GUC' && bufferedCost > 0) {
-    gucState = { arv, baseVal, bufferedCost, totalCost, tla, day1, holdback, maxLTC: lev.ltc, maxLTV: lev.ltv, maxLTAIV: lev.ltaiv };
-    document.getElementById('guc-slider-section').style.display = 'block';
-    setupHoldbackSlider();
-  } else {
-    document.getElementById('guc-slider-section').style.display = 'none';
-    gucState = null;
-  }
 
   // Store results for lead form
   document.getElementById('hidden-results').value = JSON.stringify({
@@ -1666,66 +1646,6 @@ function calculateRTL() {
   if (editHidden) editHidden.value = document.getElementById('hidden-results').value;
 }
 
-// ─── GUC HOLDBACK SLIDER ───
-function setupHoldbackSlider() {
-  if (!gucState) return;
-  const { tla, day1, holdback, bufferedCost } = gucState;
-
-  // Default holdback % from the main calculation
-  const defaultPct = bufferedCost > 0 ? Math.round(holdback / bufferedCost * 100) : 0;
-
-  // Max holdback: can't exceed TLA (day1 would go to 0) and can't exceed 100% of budget
-  const maxHoldback = Math.min(bufferedCost, tla);
-  const maxPct = bufferedCost > 0 ? Math.min(100, Math.floor(maxHoldback / bufferedCost * 100)) : 0;
-
-  // Min holdback: day1 can't exceed its current value (already at LTAIV cap),
-  // so holdback can't go below tla - day1 = current holdback
-  const minPct = defaultPct;
-
-  const slider = document.getElementById('holdback-slider');
-  slider.min = minPct;
-  slider.max = maxPct;
-  slider.value = defaultPct;
-
-  // Show cap message if max < 100%
-  const capMsg = document.getElementById('holdback-cap-msg');
-  if (maxPct < 100) {
-    capMsg.textContent = 'Max holdback: ' + maxPct + '% of construction budget. Total loan would need to increase for more holdback — a higher appraisal could help.';
-    capMsg.style.display = 'block';
-  } else {
-    capMsg.style.display = 'none';
-  }
-
-  // Render initial state
-  updateHoldbackDisplay(defaultPct);
-}
-
-function onHoldbackSliderChange() {
-  const pct = parseInt(document.getElementById('holdback-slider').value);
-  updateHoldbackDisplay(pct);
-}
-
-function updateHoldbackDisplay(pct) {
-  if (!gucState) return;
-  const { arv, baseVal, bufferedCost, totalCost, tla } = gucState;
-
-  // TLA stays fixed — redistribute between day1 and holdback
-  const newHoldback = Math.round(pct / 100 * bufferedCost);
-  const newDay1 = Math.max(0, tla - newHoldback);
-
-  const finalLtaiv = baseVal > 0 ? newDay1 / baseVal : 0;
-  const finalLtc = totalCost > 0 ? tla / totalCost : 0;
-  const finalLtarv = arv > 0 ? tla / arv : 0;
-
-  document.getElementById('slider-holdback-pct').textContent = pct + '%';
-  document.getElementById('slider-day1').textContent = '$' + newDay1.toLocaleString();
-  document.getElementById('slider-holdback').textContent = '$' + newHoldback.toLocaleString();
-  document.getElementById('slider-tla').textContent = '$' + tla.toLocaleString();
-  document.getElementById('slider-ltaiv-lbl').textContent = 'LTAIV: ' + (finalLtaiv * 100).toFixed(1) + '%';
-  document.getElementById('slider-ltc-lbl').textContent = 'LTC: ' + (finalLtc * 100).toFixed(1) + '%';
-  document.getElementById('slider-ltarv-lbl').textContent = 'LTARV: ' + (finalLtarv * 100).toFixed(1) + '%';
-  document.getElementById('slider-constraint-msg').textContent = '';
-}
 
 // ─── LEAD FORM ───
 function submitLead(e) {
@@ -1779,6 +1699,7 @@ function showEditInputs() {
     dst.value = src.value;
   });
   document.getElementById('edit-foreignNational').value = toggleValues.foreignNational || 'No';
+  document.getElementById('edit-permitsInHand').value = toggleValues.permitsInHand || 'No';
   document.getElementById('edit-purchasePrice').value = document.getElementById('purchasePrice').value;
   document.getElementById('edit-asIsValue').value = document.getElementById('asIsValue').value;
   document.getElementById('edit-rehabBudget').value = document.getElementById('rehabBudget').value;
@@ -1786,10 +1707,11 @@ function showEditInputs() {
   document.getElementById('edit-loanTerm').value = document.getElementById('loanTerm').value;
   document.getElementById('edit-recourse').value = document.getElementById('recourse').value;
 
-  // Hide rehab/arv for Bridge
+  // Hide rehab/arv for Bridge, show permits for GUC
   const pt = document.getElementById('edit-projectType').value;
   document.getElementById('edit-rehab-item').style.display = pt === 'Bridge' ? 'none' : 'block';
   document.getElementById('edit-arv-item').style.display = pt === 'Bridge' ? 'none' : 'block';
+  document.getElementById('edit-permits-item').style.display = pt === 'Ground Up' ? 'block' : 'none';
   document.getElementById('edit-aiv-item').style.display = document.getElementById('edit-dealType').value === 'Purchase' ? 'none' : 'block';
 
   // Show step 5 without changing progress bar (keep step 4 active look)
@@ -1803,6 +1725,7 @@ document.getElementById('edit-projectType')?.addEventListener('change', function
   const pt = this.value;
   document.getElementById('edit-rehab-item').style.display = pt === 'Bridge' ? 'none' : 'block';
   document.getElementById('edit-arv-item').style.display = pt === 'Bridge' ? 'none' : 'block';
+  document.getElementById('edit-permits-item').style.display = pt === 'Ground Up' ? 'block' : 'none';
 });
 document.getElementById('edit-dealType')?.addEventListener('change', function() {
   document.getElementById('edit-aiv-item').style.display = this.value === 'Purchase' ? 'none' : 'block';
@@ -1813,6 +1736,7 @@ function recalcFromEdit() {
   document.getElementById('experience').value = document.getElementById('edit-experience').value;
   document.getElementById('fico').value = document.getElementById('edit-fico').value;
   toggleValues.foreignNational = document.getElementById('edit-foreignNational').value;
+  toggleValues.permitsInHand = document.getElementById('edit-permitsInHand').value;
   document.getElementById('projectType').value = document.getElementById('edit-projectType').value;
   document.getElementById('assetType').value = document.getElementById('edit-assetType').value;
   document.getElementById('dealType').value = document.getElementById('edit-dealType').value;

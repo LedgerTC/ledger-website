@@ -362,6 +362,7 @@
       .solution-card { flex-direction: column; gap: 16px; }
     }
   </style>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
 
@@ -521,6 +522,7 @@
           <div style="position:absolute;left:-9999px;"><input type="text" name="website" tabindex="-1" autocomplete="off"></div>
           <input type="hidden" name="form_source" value="first-time-builder-landing-page-google-ads">
           <input type="hidden" name="form_loaded_at" id="form_loaded_at">
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAACtw1TOxqy4xMX4D" data-theme="light"></div>
           <button type="submit" class="form-submit">Check My Eligibility &rarr;</button>
           <p class="form-note">No obligation. No credit pull. Just a conversation about your project.</p>
         </form>
@@ -646,6 +648,11 @@
       formData.append('phone', formattedPhone);
       formData.append('form_source', 'first-time-builder-landing-page-google-ads');
       formData.append('page_url', window.location.href);
+      var lp = new URLSearchParams(window.location.search);
+      ['gclid','gbraid','wbraid','gad_source','gad_campaignid','utm_source','utm_medium','utm_campaign','utm_term','utm_content'].forEach(function(k) {
+        var v = lp.get(k);
+        if (v) formData.append(k, v);
+      });
       formData.append('form_loaded_at', document.getElementById('form_loaded_at').value);
       formData.append('website', this.querySelector('[name="website"]').value);
 
