@@ -139,7 +139,26 @@ async function findOrCreateContact(formData) {
 }
 
 // ─── Step 2: Company lookup / creation ────────────────────────────
-async function findOrCreateCompany(companyName) {
+function activityToConnectValue(formSource) {
+  return formSource && formSource.includes("google-ads") ? "Ads" : "Website";
+}
+
+const BEFORE_CONNECTED_STAGES = ["946683714", "lead"];
+
+async function maybeUpdateActivityToConnect(companyId, company, formSource) {
+  const stage = (company.properties && company.properties.lifecyclestage) || "";
+  if (BEFORE_CONNECTED_STAGES.includes(stage) || !stage) {
+    const newValue = activityToConnectValue(formSource);
+    await hubspot("PATCH", `/crm/v3/objects/companies/${companyId}`, {
+      properties: { activity_to_connect: newValue },
+    });
+    console.log(`Updated activity_to_connect to "${newValue}" for company ${companyId}`);
+  } else {
+    console.log(`Company ${companyId} already connected (stage: ${stage}), skipping activity_to_connect update`);
+  }
+}
+
+async function findOrCreateCompany(companyName, formSource) {
   if (!companyName || companyName.trim() === "") {
     return { company: null, isNew: false };
   }
@@ -149,12 +168,13 @@ async function findOrCreateCompany(companyName) {
     filterGroups: [{
       filters: [{ propertyName: "name", operator: "EQ", value: companyName.trim() }]
     }],
-    properties: ["name", "coverage"],
+    properties: ["name", "coverage", "lifecyclestage", "activity_to_connect"],
   });
 
   if (search.total > 0) {
     const existing = search.results[0];
     console.log(`Company found: ${existing.id} (${companyName})`);
+    await maybeUpdateActivityToConnect(existing.id, existing, formSource);
     return { company: existing, isNew: false };
   }
 
@@ -163,6 +183,7 @@ async function findOrCreateCompany(companyName) {
     properties: {
       name: companyName.trim(),
       source_website: "Yes",
+      activity_to_connect: activityToConnectValue(formSource),
     },
   });
 
@@ -189,7 +210,7 @@ async function associateContactToCompany(contactId, companyId) {
 }
 
 // ─── Step 3b: Get existing company associated with a contact ─────
-async function getContactCompany(contactId) {
+async function getContactCompany(contactId, formSource) {
   const assoc = await hubspot(
     "GET",
     `/crm/v4/objects/contacts/${contactId}/associations/companies`
@@ -202,7 +223,7 @@ async function getContactCompany(contactId) {
   const companyId = assoc.results[0].toObjectId;
   const company = await hubspot(
     "GET",
-    `/crm/v3/objects/companies/${companyId}?properties=name,coverage`
+    `/crm/v3/objects/companies/${companyId}?properties=name,coverage,lifecyclestage,activity_to_connect`
   );
 
   if (company.error) {
@@ -210,6 +231,9 @@ async function getContactCompany(contactId) {
   }
 
   console.log(`Found existing associated company: ${company.id} (${company.properties.name})`);
+  if (formSource) {
+    await maybeUpdateActivityToConnect(company.id, company, formSource);
+  }
   return { company, isNew: false };
 }
 
@@ -621,11 +645,11 @@ exports.handler = async function (event) {
       // Step 2: Company — check existing association first, then find/create
       let companyResult = null;
       if (!contactResult.isNew) {
-        companyResult = await getContactCompany(contactId);
+        companyResult = await getContactCompany(contactId, raw.form_source);
       }
       if (!companyResult) {
         const companyName = formData.company || `${formData.firstName} ${formData.lastName} LLC`;
-        companyResult = await findOrCreateCompany(companyName);
+        companyResult = await findOrCreateCompany(companyName, raw.form_source);
       }
       const companyId = companyResult.company ? companyResult.company.id : null;
 
@@ -662,11 +686,11 @@ exports.handler = async function (event) {
       // Step 2: Company — check existing association first, then find/create
       let companyResult = null;
       if (!contactResult.isNew) {
-        companyResult = await getContactCompany(contactId);
+        companyResult = await getContactCompany(contactId, raw.form_source);
       }
       if (!companyResult) {
         const companyName = formData.company || `${formData.firstName} ${formData.lastName} LLC`;
-        companyResult = await findOrCreateCompany(companyName);
+        companyResult = await findOrCreateCompany(companyName, raw.form_source);
       }
       const companyId = companyResult.company ? companyResult.company.id : null;
 

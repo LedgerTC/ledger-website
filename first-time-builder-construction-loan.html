@@ -657,33 +657,26 @@ document.addEventListener("click", function(e) {
       submitBtn.textContent = 'Submitting...';
 
       var rawPhone = this.querySelector('[name="phone"]').value.replace(/\D/g, '');
-      var formattedPhone = rawPhone.length === 10 ? '+1' + rawPhone : '+' + rawPhone;
+      this.querySelector('[name="phone"]').value = rawPhone.length === 10 ? '+1' + rawPhone : '+' + rawPhone;
 
-      var formData = new URLSearchParams();
-      formData.append('first_name', this.querySelector('[name="first_name"]').value);
-      formData.append('last_name', this.querySelector('[name="last_name"]').value);
-      formData.append('email', this.querySelector('[name="email"]').value);
-      formData.append('phone', formattedPhone);
-      formData.append('form_source', 'first-time-builder-landing-page-google-ads');
-      formData.append('page_url', window.location.href);
+      var formData = new URLSearchParams(new FormData(this));
+      formData.set('page_url', window.location.href);
       var lp = new URLSearchParams(window.location.search);
       ['gclid','gbraid','wbraid','gad_source','gad_campaignid','utm_source','utm_medium','utm_campaign','utm_term','utm_content'].forEach(function(k) {
         var v = lp.get(k);
-        if (v) formData.append(k, v);
+        if (v) formData.set(k, v);
       });
-      formData.append('form_loaded_at', document.getElementById('form_loaded_at').value);
-      formData.append('website', this.querySelector('[name="website"]').value);
-
-      var detailsField = this.querySelector('[name="details"]');
-      if (detailsField && detailsField.value) { formData.append('details', detailsField.value); }
 
       fetch('/.netlify/functions/submit-form', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: formData.toString()
       })
-      .then(function(response) {
-        if (response.ok) {
+      .then(function(res) {
+        return res.json().then(function(data) { return { ok: res.ok, status: res.status, data: data }; });
+      })
+      .then(function(result) {
+        if (result.ok && result.data.success) {
           document.getElementById('ftbLPForm').style.display = 'none';
           document.getElementById('form-success').style.display = 'block';
           if (typeof gtag === 'function') {
@@ -691,9 +684,10 @@ document.addEventListener("click", function(e) {
             gtag('event', 'conversion', {'send_to': 'AW-17993082803/hf9SCKCquoccELPP4oND'});
           }
         } else {
+          var msg = result.data.error || 'Something went wrong. Please call us at (201) 749-1691.';
+          alert(msg);
           submitBtn.disabled = false;
           submitBtn.textContent = 'Check My Eligibility \u2192';
-          alert('Something went wrong. Please call us at (201) 749-1691.');
         }
       })
       .catch(function() {
