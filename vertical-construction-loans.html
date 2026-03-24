@@ -4,7 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-P2E61PRS60"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17993082803"></script>
+<script>
+(function(a,e,f,g,b,c,d){a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)};c=e.createElement(f);c.async=1;c.src=g;d=e.getElementsByTagName(f)[0];d.parentNode.insertBefore(c,d)})(window,document,"script","https://www.gstatic.com/wcm/loader.js","_googWcmGet");
+_googWcmGet(function(fmt,mob){if(!fmt)return;var a=document.querySelectorAll('a[href*="2017491691"],a[href*="201-749-1691"]');for(var i=0;i<a.length;i++){a[i].href='tel:'+mob;if(a[i].textContent.match(/201/))a[i].textContent=fmt;}},"(201) 749-1691","AW-17993082803/VHvmCLv2y4wcELPP4oND");
+</script>
 <script>
 window.dataLayer=window.dataLayer||[];
 function gtag(){dataLayer.push(arguments);}
@@ -12,11 +16,25 @@ gtag('js',new Date());
 if (window.location.hostname === 'ledgertc.com') {
   gtag('config','G-P2E61PRS60');
   gtag('config','AW-17993082803');
+  gtag('config', 'AW-17993082803/VHvmCLv2y4wcELPP4oND', {
+    'phone_conversion_number': '(201) 749-1691'
+  });
 }
 </script>
 <script>
-gtag('config', 'AW-17993082803/k0r2CNOO-IkcELPP4oND', {
-  'phone_conversion_number': '201-749-1691'
+/* Click-to-call tracking: fires GA4 event + Ads conversion on tel: link clicks */
+document.addEventListener("click", function(e) {
+  var link = e.target.closest && e.target.closest('a[href^="tel:"]');
+  if (!link) return;
+  if (window.location.hostname !== 'ledgertc.com') return;
+  gtag('event', 'phone_call_click', {
+    event_category: 'engagement',
+    event_label: link.href,
+    value: 1
+  });
+  gtag('event', 'conversion', {
+    send_to: 'AW-17993082803/hf9SCKCquoccELPP4oND'
+  });
 });
 </script>
 <link rel="icon" href="favicon.ico" type="image/x-icon">
@@ -351,7 +369,7 @@ gtag('config', 'AW-17993082803/k0r2CNOO-IkcELPP4oND', {
     </div>
     <div class="faq-item">
       <button class="faq-question">How much experience do I need for a construction loan?<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
-      <div class="faq-answer"><div class="faq-answer-inner">Construction loan borrowers should have completed at least 5 residential construction or renovation projects within the last 3 years. Builders with deeper experience may qualify for improved leverage and pricing.</div></div>
+      <div class="faq-answer"><div class="faq-answer-inner">Construction loan borrowers should have completed at least 5 residential construction or renovation projects within the last 3 years. Builders with deeper experience may qualify for improved leverage and pricing. Building your first spec home? See our <a href="first-time-builder-construction-loan.html" style="color:var(--gold);text-decoration:underline;">first-time builder construction loan</a> program.</div></div>
     </div>
     <div class="faq-item">
       <button class="faq-question">Are non-recourse construction loans available?<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
@@ -378,6 +396,7 @@ gtag('config', 'AW-17993082803/k0r2CNOO-IkcELPP4oND', {
     <h2 class="section-title" style="color: var(--green);">Ready to Break Ground?</h2>
     <a href="get-in-touch.html" class="btn-primary" style="font-size: 1.05rem; padding: 1rem 2.5rem;">Apply Now →</a>
     <a href="construction-loan-calculator.html" class="btn-outline" style="display:inline-block; padding:14px 32px; border:2px solid #c49a3c; color:#c49a3c; border-radius:6px; font-weight:600; text-decoration:none; margin-left:12px; transition:all 0.2s;">Estimate Your Rate →</a>
+    <p style="margin-top:1rem;font-size:0.95rem;color:var(--gray-600);">See current <a href="construction-loans-lp.html" style="color:var(--gold);text-decoration:underline;">construction loan rates from 8.875%</a></p>
   </div>
 </div>
 
@@ -426,6 +445,11 @@ gtag('config', 'AW-17993082803/k0r2CNOO-IkcELPP4oND', {
 
     var formData = new URLSearchParams(new FormData(form));
     formData.set('page_url', window.location.href);
+    var lp = new URLSearchParams(window.location.search);
+    ['gclid','gbraid','wbraid','gad_source','gad_campaignid','utm_source','utm_medium','utm_campaign','utm_term','utm_content'].forEach(function(k) {
+      var v = lp.get(k);
+      if (v) formData.set(k, v);
+    });
 
     fetch('/.netlify/functions/submit-form', {
       method: 'POST',

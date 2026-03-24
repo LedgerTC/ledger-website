@@ -9,7 +9,11 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
 <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-P2E61PRS60"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17993082803"></script>
+<script>
+(function(a,e,f,g,b,c,d){a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)};c=e.createElement(f);c.async=1;c.src=g;d=e.getElementsByTagName(f)[0];d.parentNode.insertBefore(c,d)})(window,document,"script","https://www.gstatic.com/wcm/loader.js","_googWcmGet");
+_googWcmGet(function(fmt,mob){if(!fmt)return;var a=document.querySelectorAll('a[href*="2017491691"],a[href*="201-749-1691"]');for(var i=0;i<a.length;i++){a[i].href='tel:'+mob;if(a[i].textContent.match(/201/))a[i].textContent=fmt;}},"(201) 749-1691","AW-17993082803/VHvmCLv2y4wcELPP4oND");
+</script>
 <script>
 window.dataLayer=window.dataLayer||[];
 function gtag(){dataLayer.push(arguments);}
@@ -17,11 +21,25 @@ gtag('js',new Date());
 if(window.location.hostname==='ledgertc.com'){
 gtag('config','G-P2E61PRS60');
 gtag('config','AW-17993082803');
+gtag('config', 'AW-17993082803/VHvmCLv2y4wcELPP4oND', {
+  'phone_conversion_number': '(201) 749-1691'
+});
 }
 </script>
 <script>
-gtag('config', 'AW-17993082803/k0r2CNOO-IkcELPP4oND', {
-  'phone_conversion_number': '201-749-1691'
+/* Click-to-call tracking: fires GA4 event + Ads conversion on tel: link clicks */
+document.addEventListener("click", function(e) {
+  var link = e.target.closest && e.target.closest('a[href^="tel:"]');
+  if (!link) return;
+  if (window.location.hostname !== 'ledgertc.com') return;
+  gtag('event', 'phone_call_click', {
+    event_category: 'engagement',
+    event_label: link.href,
+    value: 1
+  });
+  gtag('event', 'conversion', {
+    send_to: 'AW-17993082803/hf9SCKCquoccELPP4oND'
+  });
 });
 </script>
 <title>Fix &amp; Flip Loans from 8.875% | Up to 95% LTC | Ledger Trade &amp; Capital</title>
@@ -959,7 +977,7 @@ img{max-width:100%;height:auto;display:block;}
     <div>
       <div class="form-card">
         <h3>Get Your Custom Rate</h3>
-        <form id="leadForm" novalidate>
+        <form id="fixFlipLPForm" novalidate>
           <div class="form-row">
             <div class="form-field">
               <label for="first_name">First Name</label>
@@ -1237,7 +1255,7 @@ function toggleFaq(btn){
 <!-- ── Form Submission ── -->
 <script>
 (function(){
-  var form=document.getElementById('leadForm');
+  var form=document.getElementById('fixFlipLPForm');
   if(!form)return;
   form.addEventListener('submit',function(e){
     e.preventDefault();
@@ -1249,34 +1267,40 @@ function toggleFaq(btn){
     btn.textContent='Submitting...';
 
     var rawPhone=form.querySelector('[name="phone"]').value.replace(/\D/g,'');
-    var e164='+1'+rawPhone;
+    form.querySelector('[name="phone"]').value='+1'+rawPhone;
 
-    var params=new URLSearchParams();
-    params.append('first_name',form.querySelector('[name="first_name"]').value.trim());
-    params.append('last_name',form.querySelector('[name="last_name"]').value.trim());
-    params.append('email',form.querySelector('[name="email"]').value.trim());
-    params.append('phone',e164);
-    params.append('details',form.querySelector('[name="details"]').value.trim());
-    params.append('form_source',form.querySelector('[name="form_source"]').value);
-    params.append('page_url',window.location.href);
-    params.append('form_loaded_at',form.querySelector('[name="form_loaded_at"]').value);
-    params.append('website',form.querySelector('[name="website"]').value);
+    var formData=new URLSearchParams(new FormData(form));
+    formData.set('page_url',window.location.href);
+    var lp=new URLSearchParams(window.location.search);
+    ['gclid','gbraid','wbraid','gad_source','gad_campaignid','utm_source','utm_medium','utm_campaign','utm_term','utm_content'].forEach(function(k){
+      var v=lp.get(k);
+      if(v)formData.set(k,v);
+    });
 
     fetch('/.netlify/functions/submit-form',{
       method:'POST',
       headers:{'Content-Type':'application/x-www-form-urlencoded'},
-      body:params.toString()
+      body:formData.toString()
     })
     .then(function(res){
-      if(!res.ok)throw new Error('Network response was not ok');
-      form.style.display='none';
-      document.getElementById('formSuccess').style.display='block';
-      if(typeof gtag==='function'){
-        gtag('event','form_submit',{'form_id':'fix-and-flip-lp'});
-        gtag('event','conversion',{
-          send_to:'AW-17993082803/hf9SCKCquoccELPP4oND',
-          event_callback:function(){}
-        });
+      return res.json().then(function(data){return{ok:res.ok,status:res.status,data:data};});
+    })
+    .then(function(result){
+      if(result.ok&&result.data.success){
+        form.style.display='none';
+        document.getElementById('formSuccess').style.display='block';
+        if(typeof gtag==='function'){
+          gtag('event','form_submit',{'form_id':'fix-and-flip-lp'});
+          gtag('event','conversion',{
+            send_to:'AW-17993082803/hf9SCKCquoccELPP4oND',
+            event_callback:function(){}
+          });
+        }
+      }else{
+        var msg=result.data.error||'Something went wrong. Please try again or call us at (201) 749-1691.';
+        alert(msg);
+        btn.disabled=false;
+        btn.textContent='Get My Rate \u2192';
       }
     })
     .catch(function(){

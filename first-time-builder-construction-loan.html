@@ -7,7 +7,7 @@
   <meta name="description" content="No prior builds? No problem. Ledger Trade & Capital finances first-time builders using your GC's experience. Ground-up construction loans up to 90% LTC. National private lender.">
   <meta name="keywords" content="first time builder construction loan, construction loan no experience, no prior builds construction loan, GC experience construction loan, first time spec home loan">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://ledgertc.com/first-time-builder-construction-loan/">
+  <link rel="canonical" href="https://ledgertc.com/first-time-builder-construction-loan">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
@@ -16,7 +16,11 @@
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"></noscript>
 
   <!-- Google Tag Manager -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-P2E61PRS60"></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17993082803"></script>
+  <script>
+(function(a,e,f,g,b,c,d){a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)};c=e.createElement(f);c.async=1;c.src=g;d=e.getElementsByTagName(f)[0];d.parentNode.insertBefore(c,d)})(window,document,"script","https://www.gstatic.com/wcm/loader.js","_googWcmGet");
+_googWcmGet(function(fmt,mob){if(!fmt)return;var a=document.querySelectorAll('a[href*="2017491691"],a[href*="201-749-1691"]');for(var i=0;i<a.length;i++){a[i].href='tel:'+mob;if(a[i].textContent.match(/201/))a[i].textContent=fmt;}},"(201) 749-1691","AW-17993082803/VHvmCLv2y4wcELPP4oND");
+</script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
@@ -24,13 +28,27 @@
     if (window.location.hostname === 'ledgertc.com') {
       gtag('config', 'G-P2E61PRS60');
       gtag('config', 'AW-17993082803');
+      gtag('config', 'AW-17993082803/VHvmCLv2y4wcELPP4oND', {
+        'phone_conversion_number': '(201) 749-1691'
+      });
     }
   </script>
-  <script>
-  gtag('config', 'AW-17993082803/k0r2CNOO-IkcELPP4oND', {
-    'phone_conversion_number': '201-749-1691'
+<script>
+/* Click-to-call tracking: fires GA4 event + Ads conversion on tel: link clicks */
+document.addEventListener("click", function(e) {
+  var link = e.target.closest && e.target.closest('a[href^="tel:"]');
+  if (!link) return;
+  if (window.location.hostname !== 'ledgertc.com') return;
+  gtag('event', 'phone_call_click', {
+    event_category: 'engagement',
+    event_label: link.href,
+    value: 1
   });
-  </script>
+  gtag('event', 'conversion', {
+    send_to: 'AW-17993082803/hf9SCKCquoccELPP4oND'
+  });
+});
+</script>
 
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -639,28 +657,26 @@
       submitBtn.textContent = 'Submitting...';
 
       var rawPhone = this.querySelector('[name="phone"]').value.replace(/\D/g, '');
-      var formattedPhone = rawPhone.length === 10 ? '+1' + rawPhone : '+' + rawPhone;
+      this.querySelector('[name="phone"]').value = rawPhone.length === 10 ? '+1' + rawPhone : '+' + rawPhone;
 
-      var formData = new URLSearchParams();
-      formData.append('first_name', this.querySelector('[name="first_name"]').value);
-      formData.append('last_name', this.querySelector('[name="last_name"]').value);
-      formData.append('email', this.querySelector('[name="email"]').value);
-      formData.append('phone', formattedPhone);
-      formData.append('form_source', 'first-time-builder-landing-page-google-ads');
-      formData.append('page_url', window.location.href);
-      formData.append('form_loaded_at', document.getElementById('form_loaded_at').value);
-      formData.append('website', this.querySelector('[name="website"]').value);
-
-      var detailsField = this.querySelector('[name="details"]');
-      if (detailsField && detailsField.value) { formData.append('details', detailsField.value); }
+      var formData = new URLSearchParams(new FormData(this));
+      formData.set('page_url', window.location.href);
+      var lp = new URLSearchParams(window.location.search);
+      ['gclid','gbraid','wbraid','gad_source','gad_campaignid','utm_source','utm_medium','utm_campaign','utm_term','utm_content'].forEach(function(k) {
+        var v = lp.get(k);
+        if (v) formData.set(k, v);
+      });
 
       fetch('/.netlify/functions/submit-form', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: formData.toString()
       })
-      .then(function(response) {
-        if (response.ok) {
+      .then(function(res) {
+        return res.json().then(function(data) { return { ok: res.ok, status: res.status, data: data }; });
+      })
+      .then(function(result) {
+        if (result.ok && result.data.success) {
           document.getElementById('ftbLPForm').style.display = 'none';
           document.getElementById('form-success').style.display = 'block';
           if (typeof gtag === 'function') {
@@ -668,9 +684,10 @@
             gtag('event', 'conversion', {'send_to': 'AW-17993082803/hf9SCKCquoccELPP4oND'});
           }
         } else {
+          var msg = result.data.error || 'Something went wrong. Please call us at (201) 749-1691.';
+          alert(msg);
           submitBtn.disabled = false;
           submitBtn.textContent = 'Check My Eligibility \u2192';
-          alert('Something went wrong. Please call us at (201) 749-1691.');
         }
       })
       .catch(function() {

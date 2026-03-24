@@ -4,7 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-P2E61PRS60"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-17993082803"></script>
+<script>
+(function(a,e,f,g,b,c,d){a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)};c=e.createElement(f);c.async=1;c.src=g;d=e.getElementsByTagName(f)[0];d.parentNode.insertBefore(c,d)})(window,document,"script","https://www.gstatic.com/wcm/loader.js","_googWcmGet");
+_googWcmGet(function(fmt,mob){if(!fmt)return;var a=document.querySelectorAll('a[href*="2017491691"],a[href*="201-749-1691"]');for(var i=0;i<a.length;i++){a[i].href='tel:'+mob;if(a[i].textContent.match(/201/))a[i].textContent=fmt;}},"(201) 749-1691","AW-17993082803/VHvmCLv2y4wcELPP4oND");
+</script>
 <script>
 window.dataLayer=window.dataLayer||[];
 function gtag(){dataLayer.push(arguments);}
@@ -12,25 +16,39 @@ gtag('js',new Date());
 if (window.location.hostname === 'ledgertc.com') {
   gtag('config','G-P2E61PRS60');
   gtag('config','AW-17993082803');
+  gtag('config', 'AW-17993082803/VHvmCLv2y4wcELPP4oND', {
+    'phone_conversion_number': '(201) 749-1691'
+  });
 }
 </script>
 <script>
-gtag('config', 'AW-17993082803/k0r2CNOO-IkcELPP4oND', {
-  'phone_conversion_number': '201-749-1691'
+/* Click-to-call tracking: fires GA4 event + Ads conversion on tel: link clicks */
+document.addEventListener("click", function(e) {
+  var link = e.target.closest && e.target.closest('a[href^="tel:"]');
+  if (!link) return;
+  if (window.location.hostname !== 'ledgertc.com') return;
+  gtag('event', 'phone_call_click', {
+    event_category: 'engagement',
+    event_label: link.href,
+    value: 1
+  });
+  gtag('event', 'conversion', {
+    send_to: 'AW-17993082803/hf9SCKCquoccELPP4oND'
+  });
 });
 </script>
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">
-<title>Bridge | Ledger Trade & Capital</title>
+<title>Bridge Loans | Ledger Trade & Capital</title>
 <meta name="description" content="Short-term bridge loan financing for real estate investors. Close fast and bridge to your next move. $100K to $20MM.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Ledger Trade & Capital">
-<meta property="og:title" content="Bridge | Ledger Trade & Capital">
+<meta property="og:title" content="Bridge Loans | Ledger Trade & Capital">
 <meta property="og:description" content="Short-term bridge financing for real estate investors. Close fast and bridge to your next move. $100K to $20MM.">
 <meta property="og:url" content="https://ledgertc.com/bridge.html">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Bridge | Ledger Trade & Capital">
+<meta name="twitter:title" content="Bridge Loans | Ledger Trade & Capital">
 <meta name="twitter:description" content="Short-term bridge financing for real estate investors. Close fast and bridge to your next move. $100K to $20MM.">
 <meta name="twitter:image" content="https://ledgertc.com/icon-color.png">
 <meta property="og:image" content="https://ledgertc.com/icon-color.png">
