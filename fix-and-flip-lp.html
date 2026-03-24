@@ -1259,7 +1259,6 @@ function toggleFaq(btn){
   if(!form)return;
   form.addEventListener('submit',function(e){
     e.preventDefault();
-    e.stopImmediatePropagation();
     var hp=form.querySelector('[name="website"]');
     if(hp&&hp.value)return;
 

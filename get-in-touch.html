@@ -361,7 +361,6 @@ document.addEventListener("click", function(e) {
 
   form.addEventListener('submit', function(e) {
     e.preventDefault();
-    e.stopImmediatePropagation();
     errorBox.style.display = 'none';
 
     if (!window._ledgerValidation.validatePhone()) return;

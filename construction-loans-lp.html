@@ -1296,7 +1296,6 @@ document.addEventListener("click", function(e) {
 
     form.addEventListener('submit', function(e) {
       e.preventDefault();
-      e.stopImmediatePropagation();
 
       // Honeypot check
       if (form.querySelector('[name="website"]').value) return;
