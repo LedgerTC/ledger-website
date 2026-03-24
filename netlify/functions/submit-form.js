@@ -139,16 +139,16 @@ async function findOrCreateContact(formData) {
 }
 
 // ─── Step 2: Company lookup / creation ────────────────────────────
-function activityToConnectValue(formSource) {
-  return formSource && formSource.includes("google-ads") ? "Ads" : "Website";
+function activityToConnectValue(gclid) {
+  return gclid ? "Ads" : "Website";
 }
 
 const BEFORE_CONNECTED_STAGES = ["946683714", "lead"];
 
-async function maybeUpdateActivityToConnect(companyId, company, formSource) {
+async function maybeUpdateActivityToConnect(companyId, company, gclid) {
   const stage = (company.properties && company.properties.lifecyclestage) || "";
   if (BEFORE_CONNECTED_STAGES.includes(stage) || !stage) {
-    const newValue = activityToConnectValue(formSource);
+    const newValue = activityToConnectValue(gclid);
     await hubspot("PATCH", `/crm/v3/objects/companies/${companyId}`, {
       properties: { activity_to_connect: newValue },
     });
@@ -158,7 +158,7 @@ async function maybeUpdateActivityToConnect(companyId, company, formSource) {
   }
 }
 
-async function findOrCreateCompany(companyName, formSource) {
+async function findOrCreateCompany(companyName, gclid) {
   if (!companyName || companyName.trim() === "") {
     return { company: null, isNew: false };
   }
@@ -174,7 +174,7 @@ async function findOrCreateCompany(companyName, formSource) {
   if (search.total > 0) {
     const existing = search.results[0];
     console.log(`Company found: ${existing.id} (${companyName})`);
-    await maybeUpdateActivityToConnect(existing.id, existing, formSource);
+    await maybeUpdateActivityToConnect(existing.id, existing, gclid);
     return { company: existing, isNew: false };
   }
 
@@ -183,7 +183,7 @@ async function findOrCreateCompany(companyName, formSource) {
     properties: {
       name: companyName.trim(),
       source_website: "Yes",
-      activity_to_connect: activityToConnectValue(formSource),
+      activity_to_connect: activityToConnectValue(gclid),
     },
   });
 
@@ -210,7 +210,7 @@ async function associateContactToCompany(contactId, companyId) {
 }
 
 // ─── Step 3b: Get existing company associated with a contact ─────
-async function getContactCompany(contactId, formSource) {
+async function getContactCompany(contactId, gclid) {
   const assoc = await hubspot(
     "GET",
     `/crm/v4/objects/contacts/${contactId}/associations/companies`
@@ -231,8 +231,8 @@ async function getContactCompany(contactId, formSource) {
   }
 
   console.log(`Found existing associated company: ${company.id} (${company.properties.name})`);
-  if (formSource) {
-    await maybeUpdateActivityToConnect(company.id, company, formSource);
+  if (gclid) {
+    await maybeUpdateActivityToConnect(company.id, company, gclid);
   }
   return { company, isNew: false };
 }
@@ -645,11 +645,11 @@ exports.handler = async function (event) {
       // Step 2: Company — check existing association first, then find/create
       let companyResult = null;
       if (!contactResult.isNew) {
-        companyResult = await getContactCompany(contactId, raw.form_source);
+        companyResult = await getContactCompany(contactId, formData.gclid);
       }
       if (!companyResult) {
         const companyName = formData.company || `${formData.firstName} ${formData.lastName} LLC`;
-        companyResult = await findOrCreateCompany(companyName, raw.form_source);
+        companyResult = await findOrCreateCompany(companyName, formData.gclid);
       }
       const companyId = companyResult.company ? companyResult.company.id : null;
 
@@ -686,11 +686,11 @@ exports.handler = async function (event) {
       // Step 2: Company — check existing association first, then find/create
       let companyResult = null;
       if (!contactResult.isNew) {
-        companyResult = await getContactCompany(contactId, raw.form_source);
+        companyResult = await getContactCompany(contactId, formData.gclid);
       }
       if (!companyResult) {
         const companyName = formData.company || `${formData.firstName} ${formData.lastName} LLC`;
-        companyResult = await findOrCreateCompany(companyName, raw.form_source);
+        companyResult = await findOrCreateCompany(companyName, formData.gclid);
       }
       const companyId = companyResult.company ? companyResult.company.id : null;
 
