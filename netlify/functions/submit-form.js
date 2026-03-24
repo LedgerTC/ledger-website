@@ -231,9 +231,7 @@ async function getContactCompany(contactId, gclid) {
   }
 
   console.log(`Found existing associated company: ${company.id} (${company.properties.name})`);
-  if (gclid) {
-    await maybeUpdateActivityToConnect(company.id, company, gclid);
-  }
+  await maybeUpdateActivityToConnect(company.id, company, gclid);
   return { company, isNew: false };
 }
 
