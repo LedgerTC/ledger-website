@@ -96,6 +96,32 @@ async function hubspot(method, path, body) {
   return data;
 }
 
+// ─── Analytics: Associate hutk with contact ───────────────────────
+async function associateHutkWithContact(email, hutk, pageUri, pageName) {
+  if (!hutk) return;
+  try {
+    const res = await fetch(`${HUBSPOT_API}/contacts/v1/contact/createOrUpdate/email/${encodeURIComponent(email)}`, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${process.env.HUBSPOT_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        properties: [],
+        context: {
+          hutk,
+          pageUri: pageUri || "",
+          pageName: pageName || "",
+        },
+      }),
+    });
+    const text = await res.text();
+    console.log(`hutk associated for ${email}: status ${res.status}`);
+  } catch (err) {
+    console.error("Failed to associate hutk:", err);
+  }
+}
+
 // ─── Step 1: Contact lookup / creation ────────────────────────────
 async function findOrCreateContact(formData) {
   // Search by email
@@ -501,8 +527,8 @@ exports.handler = async function (event) {
 
     // Map snake_case form field names to camelCase
     const formData = {
-      firstName: raw.first_name || raw.firstname || "",
-      lastName: raw.last_name || raw.lastname || "",
+      firstName: raw.first_name || raw.firstname || raw['first-name'] || "",
+      lastName: raw.last_name || raw.lastname || raw['last-name'] || "",
       email: raw.email || "",
       phone: raw.phone || "",
       company: raw.company || "",
@@ -521,6 +547,8 @@ exports.handler = async function (event) {
       utmCampaign: raw.utm_campaign || "",
       utmTerm: raw.utm_term || "",
       utmContent: raw.utm_content || "",
+      hutk: raw.hutk || "",
+      pageName: raw.page_name || "",
     };
 
     // ── Honeypot check ──────────────────────────────────────────
@@ -640,6 +668,9 @@ exports.handler = async function (event) {
       const contactResult = await findOrCreateContact(formData);
       const contactId = contactResult.contact.id;
 
+      // Associate hutk for Google Ads attribution
+      await associateHutkWithContact(formData.email, formData.hutk, formData.pageUrl, formData.pageName);
+
       // Step 2: Company — check existing association first, then find/create
       let companyResult = null;
       if (!contactResult.isNew) {
@@ -680,6 +711,9 @@ exports.handler = async function (event) {
       // Step 1: Contact
       const contactResult = await findOrCreateContact(formData);
       const contactId = contactResult.contact.id;
+
+      // Associate hutk for Google Ads attribution
+      await associateHutkWithContact(formData.email, formData.hutk, formData.pageUrl, formData.pageName);
 
       // Step 2: Company — check existing association first, then find/create
       let companyResult = null;

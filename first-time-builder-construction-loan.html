@@ -675,6 +675,14 @@ if (window.location.hostname === 'ledgertc.com') {
         if (v) formData.set(k, v);
       });
 
+      // Get HubSpot tracking cookie for attribution
+      function getHubspotCookie() {
+        var match = document.cookie.match(/hubspotutk=([^;]+)/);
+        return match ? match[1] : '';
+      }
+      formData.set('hutk', getHubspotCookie());
+      formData.set('page_name', document.title);
+
       fetch('/.netlify/functions/submit-form', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },

@@ -419,6 +419,7 @@ document.addEventListener("click", function(e) {
   });
 });
 </script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
 
@@ -799,6 +800,8 @@ document.addEventListener("click", function(e) {
           <input type="hidden" name="form-name" value="rtl-calculator-lead">
           <input type="hidden" name="bot-field">
           <input type="hidden" name="calculator-results" id="hidden-results">
+          <input type="hidden" name="form_loaded_at" id="form_loaded_at_calc">
+          <input type="hidden" name="form_source" value="rtl-calculator">
           <div class="field-row" style="gap:12px;">
             <input type="text" name="first-name" placeholder="First name" required>
             <input type="text" name="last-name" placeholder="Last name" required>
@@ -807,6 +810,7 @@ document.addEventListener("click", function(e) {
           <input type="tel" name="phone" placeholder="Phone number" id="lead-phone">
           <p style="font-size:12px; opacity:0.6; margin:-8px 0 8px;">Email or phone required (at least one).</p>
           <textarea name="notes" placeholder="Anything else we should know? (optional)"></textarea>
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAACtw1TOxqy4xMX4D" data-theme="dark" style="margin-bottom:12px;"></div>
           <button type="submit" class="btn btn-primary">Submit Request &rarr;</button>
         </form>
       </div>
@@ -902,6 +906,8 @@ document.addEventListener("click", function(e) {
         <p class="lead-subtitle">Enter your details and a loan officer will reach out within one business day.</p>
         <form name="rtl-calculator-lead-edit" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="return submitLead(event)">
           <input type="hidden" name="form-name" value="rtl-calculator-lead">
+          <input type="hidden" name="form_loaded_at" id="form_loaded_at_calc_edit">
+          <input type="hidden" name="form_source" value="rtl-calculator">
           <input type="hidden" name="bot-field">
           <input type="hidden" name="calculator-results" id="hidden-results-edit">
           <div class="field-row" style="gap:12px;">
@@ -1675,13 +1681,20 @@ function submitLead(e) {
     alert('Please provide either an email address or phone number.');
     return false;
   }
-  const formData = new FormData(form);
-
   const section = form.closest('.lead-form-section');
-  fetch('/', {
+  const params = new URLSearchParams(new FormData(form));
+  params.set('page_url', window.location.href);
+  params.set('page_name', document.title);
+  var hutkMatch = document.cookie.match(/hubspotutk=([^;]+)/);
+  params.set('hutk', hutkMatch ? hutkMatch[1] : '');
+  var lp = new URLSearchParams(window.location.search);
+  ['gclid','gbraid','wbraid','gad_source','gad_campaignid','utm_source','utm_medium','utm_campaign','utm_term','utm_content'].forEach(function(k) {
+    var v = lp.get(k); if (v) params.set(k, v);
+  });
+  fetch('/.netlify/functions/submit-form', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams(formData).toString()
+    body: params.toString()
   }).then(() => {
     form.parentElement.style.display = 'none';
     const success = section.querySelector('.lead-success');
@@ -1786,6 +1799,15 @@ if (window.location.hostname === 'ledgertc.com') {
   cr.src = '//cdn.callrail.com/companies/260483659/40e1476c9c9954310f9a/12/swap.js';
   document.body.appendChild(cr);
 }
+</script>
+<script>
+  (function() {
+    var t = Date.now();
+    var e1 = document.getElementById('form_loaded_at_calc');
+    var e2 = document.getElementById('form_loaded_at_calc_edit');
+    if (e1) e1.value = t;
+    if (e2) e2.value = t;
+  })();
 </script>
 </body>
 </html>
