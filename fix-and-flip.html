@@ -22,7 +22,7 @@ if (window.location.hostname === 'ledgertc.com') {
 }
 </script>
 <script>
-/* Click-to-call tracking: fires GA4 event + Ads conversion on tel: link clicks */
+/* Click-to-call tracking: fires GA4 event on tel: link clicks */
 document.addEventListener("click", function(e) {
   var link = e.target.closest && e.target.closest('a[href^="tel:"]');
   if (!link) return;
@@ -31,9 +31,6 @@ document.addEventListener("click", function(e) {
     event_category: 'engagement',
     event_label: link.href,
     value: 1
-  });
-  gtag('event', 'conversion', {
-    send_to: 'AW-17993082803/hf9SCKCquoccELPP4oND'
   });
 });
 </script>
