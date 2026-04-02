@@ -1691,10 +1691,6 @@ function submitLead(e) {
     if (success) success.style.display = 'block';
     if (typeof gtag === 'function') {
       gtag('event', 'form_submit', {'form_id': 'dscr-calculator'});
-      gtag('event', 'conversion', {
-        send_to: 'AW-17993082803/hf9SCKCquoccELPP4oND',
-        event_callback: function(){}
-      });
     }
   }).catch(() => {
     form.parentElement.style.display = 'none';
