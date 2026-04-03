@@ -16,6 +16,12 @@ if (window.location.hostname === 'ledgertc.com') {
 window.dataLayer=window.dataLayer||[];
 function gtag(){dataLayer.push(arguments);}
 gtag('js',new Date());
+gtag('consent','default',{
+  'ad_storage':'granted',
+  'ad_user_data':'granted',
+  'ad_personalization':'granted',
+  'analytics_storage':'granted'
+});
 if (window.location.hostname === 'ledgertc.com') {
   gtag('config','G-P2E61PRS60');
   gtag('config','AW-17993082803');
@@ -44,45 +50,20 @@ if (window.location.hostname === 'ledgertc.com') {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"></noscript>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  "name": "Loan Application",
-  "description": "Complete your Ledger Trade & Capital loan application online.",
-  "url": "https://ledgertc.com/loan-application",
-  "mainEntity": {
-    "@type": "Organization",
-    "@id": "https://ledgertc.com/#organization",
-    "name": "Ledger Trade & Capital",
-    "telephone": "+1-201-749-1691",
-    "email": "Info@ledgertc.com"
-  }
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Home",
-      "item": "https://ledgertc.com/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Loan Application",
-      "item": "https://ledgertc.com/loan-application"
-    }
-  ]
-}
-</script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<script src="https://cdn.docuseal.com/js/form.js" async></script>
 <style>
+  /* ─── Input overrides ─── */
+  .loan-app-wrap .form-group input,
+  .loan-app-wrap .form-group select,
+  .loan-app-wrap .form-group textarea {
+    background: #ffffff;
+    border: 1px solid #d1d5db;
+  }
+
+  /* ─── Hero ─── */
   .loan-app-hero {
-    padding: 3.5rem 2rem 1.5rem;
+    padding: clamp(7rem, 8vw, 10rem) 2rem 1.5rem;
     text-align: center;
     background: var(--green);
     color: var(--white);
@@ -101,51 +82,373 @@ if (window.location.hostname === 'ledgertc.com') {
     margin: 0 auto;
     line-height: 1.6;
   }
+
+  /* ─── Wrapper ─── */
   .loan-app-wrap {
-    max-width: 960px;
+    max-width: 820px;
     margin: 0 auto;
     padding: 2rem 1.5rem 3rem;
   }
-  .loan-app-info {
+
+  /* ─── Progress Bar ─── */
+  .loan-progress {
     display: flex;
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 2rem;
+  }
+  .loan-progress-step {
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+  .loan-progress-num {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--gray-100);
+    color: var(--gray-600);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    flex-shrink: 0;
+  }
+  .loan-progress-num.active {
+    background: var(--green);
+    color: var(--white);
+  }
+  .loan-progress-num.done {
+    background: var(--gold);
+    color: var(--white);
+  }
+  .loan-progress-line {
+    width: clamp(30px, 6vw, 60px);
+    height: 3px;
+    background: var(--gray-100);
+    transition: background 0.3s;
+  }
+  .loan-progress-line.done {
+    background: var(--gold);
+  }
+  .loan-progress-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--gray-600);
+    text-align: center;
+    margin-top: 0.3rem;
+    display: none;
+  }
+  @media (min-width: 640px) {
+    .loan-progress-label { display: block; }
+  }
+
+  /* ─── Steps ─── */
+  .loan-step { display: none; }
+  .loan-step.active { display: block; }
+
+  /* ─── Section headers inside form ─── */
+  .form-section-bar {
+    background: var(--green);
+    color: var(--white);
+    padding: 0.5rem 1rem;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-radius: 6px;
+    margin: 1.5rem 0 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .form-section-bar:first-child { margin-top: 0; }
+  .form-section-num {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--gold);
+    color: var(--white);
+    font-size: 0.7rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* ─── Radio pills (Yes/No) ─── */
+  .radio-pill {
+    display: inline-flex;
+    border: 1px solid var(--gray-100);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--cream);
+  }
+  .radio-pill input { display: none; }
+  .radio-pill label {
+    padding: 0.45rem 1.1rem;
+    cursor: pointer;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--gray-600);
+    transition: all 0.2s;
+    border-right: 1px solid var(--gray-100);
+    user-select: none;
+  }
+  .radio-pill label:last-child { border-right: none; }
+  .radio-pill input:checked + label {
+    background: var(--green);
+    color: var(--white);
+  }
+
+  /* ─── Co-Guarantor gate ─── */
+  .coguarantor-gate {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: #f9f5ec;
+    border: 1px solid #e0ddd6;
+    border-radius: 8px;
+    margin: 1rem 0;
+    font-weight: 600;
+    font-size: 0.9rem;
     flex-wrap: wrap;
   }
-  .loan-app-info-card {
-    flex: 1;
-    min-width: 180px;
-    background: var(--white);
-    border: 1px solid var(--gray-100);
-    border-radius: 10px;
-    padding: 1.25rem;
+  .coguarantor-section { display: none; }
+  .coguarantor-section.visible { display: block; }
+
+  /* ─── Declarations ─── */
+  .decl-confirm-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: var(--green);
+    color: var(--white);
+    border-radius: 8px;
+    margin: 0.75rem 0;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .decl-confirm-bar input[type="checkbox"] {
+    width: 18px; height: 18px;
+    accent-color: var(--gold);
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+  .decl-confirm-hint {
+    font-size: 0.72rem;
+    font-weight: 400;
+    opacity: 0.75;
+    display: block;
+    margin-top: 2px;
+  }
+  .decl-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid var(--gray-100);
+    font-size: 0.82rem;
+    line-height: 1.4;
+  }
+  .decl-row:nth-child(even) { background: #f7f9f8; }
+  .decl-num {
+    font-weight: 700;
+    color: var(--gray-600);
+    font-size: 0.75rem;
+    flex-shrink: 0;
+    width: 22px;
     text-align: center;
   }
-  .loan-app-info-card .info-icon {
-    font-size: 1.5rem;
-    margin-bottom: 0.4rem;
+  .decl-text { flex: 1; }
+  .decl-text .note {
+    font-size: 0.72rem;
+    font-style: italic;
+    color: #8a9590;
+    display: block;
+    margin-top: 2px;
   }
-  .loan-app-info-card h3 {
+  .decl-yn { flex-shrink: 0; }
+  .decl-section-label {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 0.75rem;
+    color: var(--white);
+    background: #3a5f55;
+    padding: 0.25rem 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-radius: 4px;
+    margin: 0.75rem 0 0.25rem;
+  }
+  .decl-standalone {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 0.75rem;
+    background: #fcfcfc;
+    border: 1px solid var(--gray-100);
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+  .decl-standalone .radio-pill { margin-left: auto; }
+
+  /* ─── Title/Insurance ─── */
+  .ti-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--gray-100);
+    border-radius: 6px;
+    margin-bottom: 0.4rem;
+    background: #fcfcfc;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+  }
+  .ti-option input[type="checkbox"] {
+    width: 16px; height: 16px;
+    accent-color: var(--green);
+  }
+  .ti-conditional { display: none; margin-top: 0.5rem; }
+  .ti-conditional.visible { display: block; }
+
+  /* ─── Review table ─── */
+  .review-section {
+    margin-bottom: 1.25rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+    padding-top: 0;
+  }
+  .review-section h3 {
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-size: 0.85rem;
     font-weight: 700;
     color: var(--green);
-    margin-bottom: 0.25rem;
+    border-bottom: 2px solid var(--gold);
+    padding: 0.5rem 0.75rem 0.25rem;
+    margin-bottom: 0;
+    background: #f9fafb;
   }
-  .loan-app-info-card p {
-    font-size: 0.8rem;
-    color: var(--text-secondary);
+  .review-row {
+    display: flex;
+    padding: 0.45rem 0.75rem;
+    font-size: 0.82rem;
+    border-bottom: 1px solid #e5e7eb;
+    background: #ffffff;
+  }
+  .review-row:nth-child(even) {
+    background: #f9fafb;
+  }
+  .review-label {
+    flex: 0 0 40%;
+    font-weight: 600;
+    color: #374151;
+  }
+  .review-value {
+    flex: 1;
+    color: #1a2e28;
+    font-weight: 500;
+  }
+  .review-legal {
+    font-size: 0.7rem;
     line-height: 1.4;
-    margin: 0;
+    color: #6b7c77;
+    margin: 1rem 0;
+    padding: 0.75rem;
+    background: #f9f9f7;
+    border-radius: 6px;
+    max-height: 200px;
+    overflow-y: auto;
   }
-  .loan-app-embed {
+  .review-legal strong { color: var(--green); }
+
+  /* ─── Navigation ─── */
+  .loan-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.5rem;
+    gap: 1rem;
+  }
+  .loan-nav button {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: 0.75rem 2rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-back {
+    background: var(--cream);
+    color: var(--green);
+    border: 1px solid var(--gray-100) !important;
+  }
+  .btn-back:hover { background: #e8e5de; }
+  .btn-next, .btn-submit {
+    background: var(--gold);
+    color: var(--white);
+    margin-left: auto;
+  }
+  .btn-next:hover, .btn-submit:hover {
+    background: var(--gold-dark);
+    transform: translateY(-1px);
+  }
+  .btn-submit { padding: 0.85rem 2.5rem; font-size: 0.95rem; }
+
+  /* ─── Error ─── */
+  .loan-error {
+    background: #fef2f2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+    display: none;
+  }
+
+  /* ─── Signature embed ─── */
+  .signature-embed {
+    display: none;
     background: var(--white);
     border: 1px solid var(--gray-100);
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-    min-height: 600px;
+    min-height: 500px;
   }
+  .signature-embed.active { display: block; }
+  .signature-intro {
+    text-align: center;
+    padding: 1.25rem;
+    background: #f0f7f5;
+    border-bottom: 2px solid var(--green);
+  }
+  .signature-intro h2 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 1.1rem;
+    color: var(--green);
+    margin-bottom: 0.25rem;
+  }
+  .signature-intro p {
+    font-size: 0.85rem;
+    color: var(--gray-600);
+  }
+
+  /* ─── Help ─── */
   .loan-app-help {
     text-align: center;
     margin-top: 2rem;
@@ -161,8 +464,17 @@ if (window.location.hostname === 'ledgertc.com') {
     font-weight: 600;
     text-decoration: none;
   }
-  .loan-app-help a:hover {
-    text-decoration: underline;
+  .loan-app-help a:hover { text-decoration: underline; }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 640px) {
+    .loan-app-wrap { padding: 1.25rem 1rem 2rem; }
+    .coguarantor-gate { flex-direction: column; align-items: flex-start; }
+    .decl-row { flex-wrap: wrap; }
+    .decl-yn { width: 100%; margin-top: 0.25rem; }
+    .review-row { flex-direction: column; }
+    .review-label { flex: none; margin-bottom: 0.1rem; }
+    .loan-progress-num { width: 30px; height: 30px; font-size: 0.75rem; }
   }
 </style>
 </head>
@@ -172,7 +484,7 @@ if (window.location.hostname === 'ledgertc.com') {
   <a href="index.html" class="nav-logo"><img src="logo-color.png" alt="Ledger Trade &amp; Capital" class="nav-logo-img" width="269" height="67"></a>
   <ul class="nav-links">
     <li class="dropdown">
-      <a href="#">Loan Products ▾</a>
+      <a href="#">Loan Products &#9662;</a>
       <div class="dropdown-menu"><ul>
         <li><a href="vertical-construction-loans.html">New Construction</a></li>
         <li><a href="dscr.html">DSCR Rental</a></li>
@@ -182,7 +494,7 @@ if (window.location.hostname === 'ledgertc.com') {
       </ul></div>
     </li>
     <li class="dropdown">
-      <a href="#">Who We Are ▾</a>
+      <a href="#">Who We Are &#9662;</a>
       <div class="dropdown-menu"><ul>
         <li><a href="what-we-do.html">What We Do</a></li>
         <li><a href="team.html">Meet the Team</a></li>
@@ -191,14 +503,14 @@ if (window.location.hostname === 'ledgertc.com') {
     </li>
     <li><a href="broker-partners.html">Broker Partners</a></li>
     <li class="dropdown">
-      <a href="#">Pricing Tools ▾</a>
+      <a href="#">Pricing Tools &#9662;</a>
       <div class="dropdown-menu"><ul>
         <li><a href="construction-loan-calculator.html">Construction</a></li>
         <li><a href="rental-loan-calculator.html">DSCR Rental</a></li>
       </ul></div>
     </li>
     <li class="dropdown">
-      <a href="#">Client Portal ▾</a>
+      <a href="#">Client Portal &#9662;</a>
       <div class="dropdown-menu"><ul>
         <li><a href="https://partner.trustpoint.ai/login" target="_blank">Submit Draws</a></li>
         <li><a href="https://ledgertc-pos.elphimortgage.com/login" target="_blank">Loan Diligence</a></li>
@@ -251,92 +563,339 @@ if (window.location.hostname === 'ledgertc.com') {
 
 <div class="loan-app-hero">
   <h1>Loan Application</h1>
-  <p>Complete your application online, e-sign, and submit. Works on any device.</p>
+  <p>Complete your application online, e-sign, and submit.</p>
 </div>
 
 <div class="loan-app-wrap">
 
-  <div class="loan-app-info">
-    <div class="loan-app-info-card">
-      <div class="info-icon">&#128196;</div>
-      <h3>Step-by-Step</h3>
-      <p>Fill out each section at your own pace</p>
-    </div>
-    <div class="loan-app-info-card">
-      <div class="info-icon">&#9997;</div>
-      <h3>E-Sign</h3>
-      <p>Sign electronically, no printing needed</p>
-    </div>
-    <div class="loan-app-info-card">
-      <div class="info-icon">&#128241;</div>
-      <h3>Any Device</h3>
-      <p>Desktop, tablet, or phone</p>
-    </div>
+  <!-- Progress Bar -->
+  <div class="loan-progress" id="loanProgress">
+    <div class="loan-progress-step"><div class="loan-progress-num active" data-step="1">1</div></div>
+    <div class="loan-progress-line" data-line="1"></div>
+    <div class="loan-progress-step"><div class="loan-progress-num" data-step="2">2</div></div>
+    <div class="loan-progress-line" data-line="2"></div>
+    <div class="loan-progress-step"><div class="loan-progress-num" data-step="3">3</div></div>
+    <div class="loan-progress-line" data-line="3"></div>
+    <div class="loan-progress-step"><div class="loan-progress-num" data-step="4">4</div></div>
   </div>
 
-  <div class="loan-app-embed">
-    <script src="https://cdn.docuseal.com/js/form.js"></script>
-    <docuseal-form
-      data-src="https://docuseal.com/d/JDAiyfq18AHoJR"
-      data-expand="true"
-      data-with-title="false"
-      data-logo="https://ledgertc.com/logo-color.png"
-      data-background-color="#ffffff"
-      data-custom-css="
-        /* Submit button - gold brand CTA */
-        #submit_form_button { background-color: #c49a3c !important; font-weight: 700 !important; font-size: 1.05rem !important; padding: 0.75rem 2rem !important; border-radius: 6px !important; }
-        #submit_form_button:hover { background-color: #b08832 !important; }
+  <div class="loan-error" id="loanError"></div>
 
-        /* Input fields - more visible */
-        .base-input, .input, input[type=text], input[type=email], input[type=tel], input[type=date], textarea, .base-textarea {
-          border: 2px solid #2b4a42 !important;
-          border-radius: 6px !important;
-          background: #f0f7f5 !important;
-          font-size: 16px !important;
-        }
-        .base-input:focus, .input:focus, input:focus, textarea:focus {
-          border-color: #c49a3c !important;
-          box-shadow: 0 0 0 3px rgba(196,154,60,0.2) !important;
-          outline: none !important;
-        }
+  <form id="loanAppForm" novalidate>
+    <input type="hidden" name="form_loaded_at" id="form_loaded_at">
+    <input type="text" name="website" style="display:none" tabindex="-1" autocomplete="off">
 
-        /* Labels - bold green */
-        .label, label { font-weight: 600 !important; color: #2b4a42 !important; }
+    <!-- ═══════════ STEP 1: Entity, Property, Guarantors ═══════════ -->
+    <div class="loan-step active" data-step="1">
+      <div class="form-section-bar"><span class="form-section-num">I</span> Entity</div>
+      <div class="form-grid">
+        <div class="form-group full">
+          <label for="entity_name">Borrower Legal Entity Name *</label>
+          <input type="text" id="entity_name" name="entity_name" required placeholder="e.g. ABC Development LLC">
+        </div>
+        <div class="form-group">
+          <label for="ein">EIN</label>
+          <input type="text" id="ein" name="ein" placeholder="XX-XXXXXXX">
+        </div>
+      </div>
 
-        /* Bottom input panel - green background, sticky, prominent */
-        .sticky.bottom-0, div[class*='sticky'][class*='bottom'] {
-          background: #2b4a42 !important;
-          border-top: 3px solid #c49a3c !important;
-          box-shadow: 0 -4px 20px rgba(0,0,0,0.15) !important;
-          padding: 16px 20px !important;
-          z-index: 50 !important;
-        }
-        .sticky.bottom-0 .label, div[class*='sticky'][class*='bottom'] .label,
-        .sticky.bottom-0 label, div[class*='sticky'][class*='bottom'] label {
-          color: #fff !important;
-          font-weight: 700 !important;
-          font-size: 0.95rem !important;
-        }
-        .sticky.bottom-0 .base-input, div[class*='sticky'][class*='bottom'] .base-input,
-        .sticky.bottom-0 input, div[class*='sticky'][class*='bottom'] input,
-        .sticky.bottom-0 textarea, div[class*='sticky'][class*='bottom'] textarea {
-          background: #fff !important;
-          border: 2px solid #c49a3c !important;
-          font-size: 16px !important;
-        }
-        .sticky.bottom-0 .base-button, .sticky.bottom-0 button[type=submit],
-        div[class*='sticky'][class*='bottom'] .base-button {
-          background: #c49a3c !important;
-          color: #fff !important;
-          font-weight: 700 !important;
-          border-radius: 6px !important;
-        }
+      <div class="form-section-bar"><span class="form-section-num">II</span> Subject Property</div>
+      <div class="form-grid">
+        <div class="form-group full">
+          <label for="property_address">Property Address, City, State, Zip *</label>
+          <input type="text" id="property_address" name="property_address" required placeholder="123 Main St, Raleigh, NC 27601">
+        </div>
+        <div class="form-group">
+          <label>Cross-Collateralized?</label>
+          <div class="radio-pill">
+            <input type="radio" name="cross_collateralized" id="cc_yes" value="Yes"><label for="cc_yes">Yes</label>
+            <input type="radio" name="cross_collateralized" id="cc_no" value="No" checked><label for="cc_no">No</label>
+          </div>
+        </div>
+      </div>
 
-        /* White button style override */
-        .white-button { background: #c49a3c !important; color: #fff !important; font-weight: 700 !important; border-radius: 6px !important; border: none !important; }
-        .white-button:hover { background: #b08832 !important; }
-      ">
-    </docuseal-form>
+      <div class="form-section-bar"><span class="form-section-num">III</span> Guarantor</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="guarantor_name">Full Name *</label>
+          <input type="text" id="guarantor_name" name="guarantor_name" required>
+        </div>
+        <div class="form-group">
+          <label for="guarantor_ownership">% Ownership</label>
+          <input type="text" id="guarantor_ownership" name="guarantor_ownership" placeholder="e.g. 100">
+        </div>
+        <div class="form-group">
+          <label for="guarantor_ssn">Social Security # *</label>
+          <input type="password" id="guarantor_ssn" name="guarantor_ssn" required inputmode="numeric" maxlength="11" placeholder="XXX-XX-XXXX" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label for="guarantor_dob">Date of Birth *</label>
+          <input type="date" id="guarantor_dob" name="guarantor_dob" required>
+        </div>
+        <div class="form-group">
+          <label for="guarantor_credit">Credit Score</label>
+          <input type="text" id="guarantor_credit" name="guarantor_credit" placeholder="e.g. 720" inputmode="numeric">
+        </div>
+        <div class="form-group">
+          <label for="guarantor_phone">Primary Phone *</label>
+          <input type="tel" id="guarantor_phone" name="guarantor_phone" required placeholder="(201) 555-1234">
+        </div>
+        <div class="form-group">
+          <label for="guarantor_email">Primary Email *</label>
+          <input type="email" id="guarantor_email" name="guarantor_email" required>
+        </div>
+        <div class="form-group full">
+          <label for="guarantor_address">Primary Address *</label>
+          <input type="text" id="guarantor_address" name="guarantor_address" required placeholder="Street, City, State, Zip">
+        </div>
+      </div>
+
+      <!-- Co-Guarantor Gate -->
+      <div class="coguarantor-gate">
+        Will there be a co-guarantor on this loan?
+        <div class="radio-pill">
+          <input type="radio" name="has_co_guarantor" id="cg_yes" value="Yes"><label for="cg_yes">Yes</label>
+          <input type="radio" name="has_co_guarantor" id="cg_no" value="No" checked><label for="cg_no">No</label>
+        </div>
+      </div>
+
+      <div class="coguarantor-section" id="coGuarantorInfo">
+        <div class="form-section-bar" style="margin-top:0"><span class="form-section-num">III</span> Co-Guarantor</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="co_guarantor_name">Full Name</label>
+            <input type="text" id="co_guarantor_name" name="co_guarantor_name">
+          </div>
+          <div class="form-group">
+            <label for="co_guarantor_ownership">% Ownership</label>
+            <input type="text" id="co_guarantor_ownership" name="co_guarantor_ownership">
+          </div>
+          <div class="form-group">
+            <label for="co_guarantor_ssn">Social Security #</label>
+            <input type="password" id="co_guarantor_ssn" name="co_guarantor_ssn" inputmode="numeric" maxlength="11" placeholder="XXX-XX-XXXX" autocomplete="off">
+          </div>
+          <div class="form-group">
+            <label for="co_guarantor_dob">Date of Birth</label>
+            <input type="date" id="co_guarantor_dob" name="co_guarantor_dob">
+          </div>
+          <div class="form-group">
+            <label for="co_guarantor_credit">Credit Score</label>
+            <input type="text" id="co_guarantor_credit" name="co_guarantor_credit" inputmode="numeric">
+          </div>
+          <div class="form-group">
+            <label for="co_guarantor_phone">Primary Phone</label>
+            <input type="tel" id="co_guarantor_phone" name="co_guarantor_phone" placeholder="(201) 555-1234">
+          </div>
+          <div class="form-group">
+            <label for="co_guarantor_email">Primary Email</label>
+            <input type="email" id="co_guarantor_email" name="co_guarantor_email">
+          </div>
+          <div class="form-group full">
+            <label for="co_guarantor_address">Primary Address</label>
+            <input type="text" id="co_guarantor_address" name="co_guarantor_address">
+          </div>
+        </div>
+      </div>
+
+      <div class="loan-nav">
+        <span></span>
+        <button type="button" class="btn-next" onclick="loanWizard.next()">Next: Declarations &rarr;</button>
+      </div>
+    </div>
+
+    <!-- ═══════════ STEP 2: Declarations ═══════════ -->
+    <div class="loan-step" data-step="2">
+      <div class="form-section-bar"><span class="form-section-num">IV</span> Guarantor Declarations</div>
+
+      <!-- Citizenship -->
+      <div class="decl-standalone">
+        Are you a U.S. citizen?
+        <div class="radio-pill">
+          <input type="radio" name="g_us_citizen" id="g_cit_y" value="Yes"><label for="g_cit_y">Yes</label>
+          <input type="radio" name="g_us_citizen" id="g_cit_n" value="No"><label for="g_cit_n">No</label>
+        </div>
+      </div>
+      <div class="decl-standalone">
+        Are you a permanent resident alien?
+        <div class="radio-pill">
+          <input type="radio" name="g_permanent_resident" id="g_pr_y" value="Yes"><label for="g_pr_y">Yes</label>
+          <input type="radio" name="g_permanent_resident" id="g_pr_n" value="No"><label for="g_pr_n">No</label>
+        </div>
+      </div>
+
+      <!-- Confirm All No -->
+      <div class="decl-confirm-bar" onclick="this.querySelector('input').click()">
+        <input type="checkbox" name="g_confirm_all_no" id="g_confirm_all_no" onclick="event.stopPropagation()">
+        <div>
+          I confirm that the answer to all of the following declarations is "No."
+          <span class="decl-confirm-hint">If any answer is "Yes," leave this unchecked and select Yes on the individual items below.</span>
+        </div>
+      </div>
+
+      <div id="gDeclList">
+        <div class="decl-section-label">Personal</div>
+        <div class="decl-row"><span class="decl-num">1</span><span class="decl-text">Have you, your borrowing entity, or any entity that you are a member of been declared bankrupt within the past 5 years?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="g_bankrupt_5yr" id="g_b5_y" value="Yes"><label for="g_b5_y">Y</label><input type="radio" name="g_bankrupt_5yr" id="g_b5_n" value="No"><label for="g_b5_n">N</label></div></span></div>
+        <div class="decl-row"><span class="decl-num">2</span><span class="decl-text">Have you, your borrowing entity, or any entity that you are a member of had property foreclosed upon or given title or deed in lieu thereof in the last 4 years?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="g_foreclosed_4yr" id="g_f4_y" value="Yes"><label for="g_f4_y">Y</label><input type="radio" name="g_foreclosed_4yr" id="g_f4_n" value="No"><label for="g_f4_n">N</label></div></span></div>
+        <div class="decl-row"><span class="decl-num">3</span><span class="decl-text">Have you, your borrowing entity, or any entity that you are a member of been a party to a lawsuit?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="g_lawsuit" id="g_ls_y" value="Yes"><label for="g_ls_y">Y</label><input type="radio" name="g_lawsuit" id="g_ls_n" value="No"><label for="g_ls_n">N</label></div></span></div>
+        <div class="decl-row"><span class="decl-num">4</span><span class="decl-text">Have you, your borrowing entity, or any entity that you are a member of, directly or indirectly been obligated on any loan which resulted in foreclosure, transfer of title in lieu of foreclosure, or judgment?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="g_loan_default" id="g_ld_y" value="Yes"><label for="g_ld_y">Y</label><input type="radio" name="g_loan_default" id="g_ld_n" value="No"><label for="g_ld_n">N</label></div></span></div>
+        <div class="decl-row"><span class="decl-num">5</span><span class="decl-text">Are you presently delinquent or in default on any Federal debt or any other loan, mortgage, financial obligation, bond, or loan guarantee?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="g_federal_debt" id="g_fd_y" value="Yes"><label for="g_fd_y">Y</label><input type="radio" name="g_federal_debt" id="g_fd_n" value="No"><label for="g_fd_n">N</label></div></span></div>
+        <div class="decl-row"><span class="decl-num">6</span><span class="decl-text">Have you ever been charged with, or convicted of a felony?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="g_felony" id="g_fe_y" value="Yes"><label for="g_fe_y">Y</label><input type="radio" name="g_felony" id="g_fe_n" value="No"><label for="g_fe_n">N</label></div></span></div>
+        <div class="decl-row"><span class="decl-num">7</span><span class="decl-text">Do you, your borrowing entity, or any entity that you are a member of have any outstanding judgments against you?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="g_judgments" id="g_jg_y" value="Yes"><label for="g_jg_y">Y</label><input type="radio" name="g_judgments" id="g_jg_n" value="No"><label for="g_jg_n">N</label></div></span></div>
+
+        <div class="decl-section-label">Property</div>
+        <div class="decl-row"><span class="decl-num">8</span><span class="decl-text">Do you currently occupy, or do you intend to occupy, the subject property?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="g_occupy_property" id="g_op_y" value="Yes"><label for="g_op_y">Y</label><input type="radio" name="g_occupy_property" id="g_op_n" value="No"><label for="g_op_n">N</label></div></span></div>
+        <div class="decl-row"><span class="decl-num">9</span><span class="decl-text">Have you ever occupied the subject property?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="g_ever_occupied" id="g_eo_y" value="Yes"><label for="g_eo_y">Y</label><input type="radio" name="g_ever_occupied" id="g_eo_n" value="No"><label for="g_eo_n">N</label></div></span></div>
+        <div class="decl-row"><span class="decl-num">10</span><span class="decl-text">Is the subject property currently under construction?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="g_under_construction" id="g_uc_y" value="Yes"><label for="g_uc_y">Y</label><input type="radio" name="g_under_construction" id="g_uc_n" value="No"><label for="g_uc_n">N</label></div></span></div>
+        <div class="decl-row"><span class="decl-num">11</span><span class="decl-text">Are there any known hazards or safety issues (mold, foundation, structural, etc.)?<span class="note">Remediation costs must be included in your rehab budget</span></span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="g_hazards" id="g_hz_y" value="Yes"><label for="g_hz_y">Y</label><input type="radio" name="g_hazards" id="g_hz_n" value="No"><label for="g_hz_n">N</label></div></span></div>
+        <div class="decl-row"><span class="decl-num">12</span><span class="decl-text">Do you have a relationship or business affiliation with a seller, closing agent, or title agent that pre-dates this transaction?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="g_seller_relationship" id="g_sr_y" value="Yes"><label for="g_sr_y">Y</label><input type="radio" name="g_seller_relationship" id="g_sr_n" value="No"><label for="g_sr_n">N</label></div></span></div>
+        <div class="decl-row"><span class="decl-num">13</span><span class="decl-text">Is the subject property being purchased from a wholesaler?<span class="note">Assignment fees cannot be financed</span></span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="g_wholesaler" id="g_wh_y" value="Yes"><label for="g_wh_y">Y</label><input type="radio" name="g_wholesaler" id="g_wh_n" value="No"><label for="g_wh_n">N</label></div></span></div>
+        <div class="decl-row"><span class="decl-num">14</span><span class="decl-text">Will any part of the down payment be borrowed?<span class="note">Secondary liens are prohibited. Funds from equity/JV partners are allowed</span></span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="g_down_payment" id="g_dp_y" value="Yes"><label for="g_dp_y">Y</label><input type="radio" name="g_down_payment" id="g_dp_n" value="No"><label for="g_dp_n">N</label></div></span></div>
+        <div class="decl-row"><span class="decl-num">15</span><span class="decl-text">Is this transaction subject to a short sale approval by the existing lender?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="g_short_sale" id="g_ss_y" value="Yes"><label for="g_ss_y">Y</label><input type="radio" name="g_short_sale" id="g_ss_n" value="No"><label for="g_ss_n">N</label></div></span></div>
+      </div>
+
+      <!-- Co-Guarantor Declarations (conditional) -->
+      <div class="coguarantor-section" id="coGuarantorDecl">
+        <div class="form-section-bar"><span class="form-section-num">IV</span> Co-Guarantor Declarations</div>
+
+        <div class="decl-standalone">
+          Are you a U.S. citizen?
+          <div class="radio-pill">
+            <input type="radio" name="cg_us_citizen" id="cg_cit_y" value="Yes"><label for="cg_cit_y">Yes</label>
+            <input type="radio" name="cg_us_citizen" id="cg_cit_n" value="No"><label for="cg_cit_n">No</label>
+          </div>
+        </div>
+        <div class="decl-standalone">
+          Are you a permanent resident alien?
+          <div class="radio-pill">
+            <input type="radio" name="cg_permanent_resident" id="cg_pr_y" value="Yes"><label for="cg_pr_y">Yes</label>
+            <input type="radio" name="cg_permanent_resident" id="cg_pr_n" value="No"><label for="cg_pr_n">No</label>
+          </div>
+        </div>
+
+        <div class="decl-confirm-bar" onclick="this.querySelector('input').click()">
+          <input type="checkbox" name="cg_confirm_all_no" id="cg_confirm_all_no" onclick="event.stopPropagation()">
+          <div>
+            I confirm that the answer to all of the following declarations is "No."
+            <span class="decl-confirm-hint">If any answer is "Yes," leave this unchecked and select Yes on the individual items below.</span>
+          </div>
+        </div>
+
+        <div id="cgDeclList">
+          <div class="decl-section-label">Personal</div>
+          <div class="decl-row"><span class="decl-num">1</span><span class="decl-text">Declared bankrupt within the past 5 years?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="cg_bankrupt_5yr" id="cg_b5_y" value="Yes"><label for="cg_b5_y">Y</label><input type="radio" name="cg_bankrupt_5yr" id="cg_b5_n" value="No"><label for="cg_b5_n">N</label></div></span></div>
+          <div class="decl-row"><span class="decl-num">2</span><span class="decl-text">Property foreclosed upon in the last 4 years?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="cg_foreclosed_4yr" id="cg_f4_y" value="Yes"><label for="cg_f4_y">Y</label><input type="radio" name="cg_foreclosed_4yr" id="cg_f4_n" value="No"><label for="cg_f4_n">N</label></div></span></div>
+          <div class="decl-row"><span class="decl-num">3</span><span class="decl-text">Been a party to a lawsuit?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="cg_lawsuit" id="cg_ls_y" value="Yes"><label for="cg_ls_y">Y</label><input type="radio" name="cg_lawsuit" id="cg_ls_n" value="No"><label for="cg_ls_n">N</label></div></span></div>
+          <div class="decl-row"><span class="decl-num">4</span><span class="decl-text">Obligated on a loan resulting in foreclosure or judgment?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="cg_loan_default" id="cg_ld_y" value="Yes"><label for="cg_ld_y">Y</label><input type="radio" name="cg_loan_default" id="cg_ld_n" value="No"><label for="cg_ld_n">N</label></div></span></div>
+          <div class="decl-row"><span class="decl-num">5</span><span class="decl-text">Delinquent or in default on any Federal debt?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="cg_federal_debt" id="cg_fd_y" value="Yes"><label for="cg_fd_y">Y</label><input type="radio" name="cg_federal_debt" id="cg_fd_n" value="No"><label for="cg_fd_n">N</label></div></span></div>
+          <div class="decl-row"><span class="decl-num">6</span><span class="decl-text">Charged with or convicted of a felony?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="cg_felony" id="cg_fe_y" value="Yes"><label for="cg_fe_y">Y</label><input type="radio" name="cg_felony" id="cg_fe_n" value="No"><label for="cg_fe_n">N</label></div></span></div>
+          <div class="decl-row"><span class="decl-num">7</span><span class="decl-text">Outstanding judgments against you?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="cg_judgments" id="cg_jg_y" value="Yes"><label for="cg_jg_y">Y</label><input type="radio" name="cg_judgments" id="cg_jg_n" value="No"><label for="cg_jg_n">N</label></div></span></div>
+
+          <div class="decl-section-label">Property</div>
+          <div class="decl-row"><span class="decl-num">8</span><span class="decl-text">Occupy or intend to occupy the subject property?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="cg_occupy_property" id="cg_op_y" value="Yes"><label for="cg_op_y">Y</label><input type="radio" name="cg_occupy_property" id="cg_op_n" value="No"><label for="cg_op_n">N</label></div></span></div>
+          <div class="decl-row"><span class="decl-num">9</span><span class="decl-text">Ever occupied the subject property?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="cg_ever_occupied" id="cg_eo_y" value="Yes"><label for="cg_eo_y">Y</label><input type="radio" name="cg_ever_occupied" id="cg_eo_n" value="No"><label for="cg_eo_n">N</label></div></span></div>
+          <div class="decl-row"><span class="decl-num">10</span><span class="decl-text">Subject property currently under construction?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="cg_under_construction" id="cg_uc_y" value="Yes"><label for="cg_uc_y">Y</label><input type="radio" name="cg_under_construction" id="cg_uc_n" value="No"><label for="cg_uc_n">N</label></div></span></div>
+          <div class="decl-row"><span class="decl-num">11</span><span class="decl-text">Known hazards or safety issues?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="cg_hazards" id="cg_hz_y" value="Yes"><label for="cg_hz_y">Y</label><input type="radio" name="cg_hazards" id="cg_hz_n" value="No"><label for="cg_hz_n">N</label></div></span></div>
+          <div class="decl-row"><span class="decl-num">12</span><span class="decl-text">Relationship with seller, closing agent, or title agent?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="cg_seller_relationship" id="cg_sr_y" value="Yes"><label for="cg_sr_y">Y</label><input type="radio" name="cg_seller_relationship" id="cg_sr_n" value="No"><label for="cg_sr_n">N</label></div></span></div>
+          <div class="decl-row"><span class="decl-num">13</span><span class="decl-text">Property purchased from a wholesaler?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="cg_wholesaler" id="cg_wh_y" value="Yes"><label for="cg_wh_y">Y</label><input type="radio" name="cg_wholesaler" id="cg_wh_n" value="No"><label for="cg_wh_n">N</label></div></span></div>
+          <div class="decl-row"><span class="decl-num">14</span><span class="decl-text">Any part of the down payment borrowed?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="cg_down_payment" id="cg_dp_y" value="Yes"><label for="cg_dp_y">Y</label><input type="radio" name="cg_down_payment" id="cg_dp_n" value="No"><label for="cg_dp_n">N</label></div></span></div>
+          <div class="decl-row"><span class="decl-num">15</span><span class="decl-text">Transaction subject to short sale approval?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="cg_short_sale" id="cg_ss_y" value="Yes"><label for="cg_ss_y">Y</label><input type="radio" name="cg_short_sale" id="cg_ss_n" value="No"><label for="cg_ss_n">N</label></div></span></div>
+        </div>
+      </div>
+
+      <div class="loan-nav">
+        <button type="button" class="btn-back" onclick="loanWizard.prev()">&larr; Back</button>
+        <button type="button" class="btn-next" onclick="loanWizard.next()">Next: Title & Insurance &rarr;</button>
+      </div>
+    </div>
+
+    <!-- ═══════════ STEP 3: Title & Insurance ═══════════ -->
+    <div class="loan-step" data-step="3">
+      <div class="form-section-bar"><span class="form-section-num">V</span> Title & Insurance</div>
+
+      <div style="margin-bottom:0.75rem; font-size:0.85rem; font-weight:600; color:var(--green);">Preferred Title Company</div>
+      <label class="ti-option">
+        <input type="checkbox" name="title_first_integrity" id="title_fi"> First Integrity Title Company (Ledger preferred)
+      </label>
+      <label class="ti-option">
+        <input type="checkbox" name="title_own_choice" id="title_own"> I would rather choose my own title company
+      </label>
+
+      <div class="ti-conditional" id="titleOwnFields">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="title_company_name">Company Name</label>
+            <input type="text" id="title_company_name" name="title_company_name">
+          </div>
+          <div class="form-group">
+            <label for="title_company_contact">Primary Contact</label>
+            <input type="text" id="title_company_contact" name="title_company_contact">
+          </div>
+          <div class="form-group">
+            <label for="title_company_phone">Phone</label>
+            <input type="tel" id="title_company_phone" name="title_company_phone">
+          </div>
+          <div class="form-group">
+            <label for="title_company_email">Email</label>
+            <input type="email" id="title_company_email" name="title_company_email">
+          </div>
+          <div class="form-group full">
+            <label for="title_company_address">Address</label>
+            <input type="text" id="title_company_address" name="title_company_address">
+          </div>
+        </div>
+      </div>
+
+      <div style="margin: 1.25rem 0 0.75rem; font-size:0.85rem; font-weight:600; color:var(--green);">Insurance Company</div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="insurance_company">Company Name</label>
+          <input type="text" id="insurance_company" name="insurance_company">
+        </div>
+        <div class="form-group">
+          <label for="insurance_contact">Primary Contact</label>
+          <input type="text" id="insurance_contact" name="insurance_contact">
+        </div>
+        <div class="form-group">
+          <label for="insurance_email">Email</label>
+          <input type="email" id="insurance_email" name="insurance_email">
+        </div>
+      </div>
+
+      <div class="loan-nav">
+        <button type="button" class="btn-back" onclick="loanWizard.prev()">&larr; Back</button>
+        <button type="button" class="btn-next" onclick="loanWizard.next()">Next: Review &rarr;</button>
+      </div>
+    </div>
+
+    <!-- ═══════════ STEP 4: Review & Submit ═══════════ -->
+    <div class="loan-step" data-step="4">
+      <div class="form-section-bar"><span class="form-section-num">&#10003;</span> Review & Submit</div>
+      <p style="font-size:0.85rem; color:var(--gray-600); margin-bottom:1rem;">Please review your information below. Click "Back" to make changes, or "Submit & Sign" to proceed to the e-signature step.</p>
+
+      <div id="reviewContent"></div>
+
+      <div class="review-legal">
+        <strong>Acknowledgement & Agreement.</strong> Each of the undersigned specifically represents to Ledger Trading LLC ("Lender") and to Lender's actual or potential agents, brokers, processors, attorneys, insurers, servicers, lending partners, successors and assigns and agrees and acknowledges that: (1) the information provided in this application is true and correct as of the date set forth below and that any intentional or negligent misrepresentation of this information contained in this application may result in civil liability, including monetary damages, to any person who may suffer any loss due to reliance upon any misrepresentation that I have made on this application, and/or in criminal penalties; (2) the loan requested pursuant to this application (the "Loan") will be secured by a mortgage or deed of trust on the property(ies) described in this application; (3) the property(ies) will not be used for any illegal or prohibited purpose or use; (4) all statements made in this application are made for the purpose of obtaining a non-owner occupied business purpose mortgage loan; (5) the Lender, its servicers, successors or assigns may retain the original and/or an electronic record of this application, whether or not the Loan is approved; (6) the Lender and its agents, brokers, insurers, servicers, successors and assigns may continuously rely on the information contained in the application, and I am obligated to amend and/or supplement the information provided in this application if any of the material facts that I have represented herein should change prior to closing of the Loan; (7) in the event that my payments on the Loan become delinquent, the Lender, its servicers, successors or assigns may, in addition to any other rights and remedies that it may have relating to such delinquency, report my name and account information to one or more consumer reporting agencies; (8) ownership of the Loan and/or administration of the Loan account may be transferred with such notice as may be required by law; and (9) my transmission of this application as an "electronic record" containing my "electronic signature," as those terms are defined in applicable federal and/or state laws (excluding audio and video recordings), or my facsimile transmission of this application containing a facsimile of my signature, shall be as effective, enforceable and valid as if a paper version of this application were delivered containing my original written signature.<br><br>
+        <strong>E-Sign Consent.</strong> By executing this application, the undersigned consents to having all documents and disclosures provided or made available in electronic form and to doing business with us electronically.<br><br>
+        <strong>Credit Pull Authorization.</strong> By signing below, you authorize Ledger Trade & Capital, "LTC," its affiliates, or agents to obtain a credit report and/or credit scores from one or more credit reporting agencies. This authorization is valid for the duration of the application process and may extend to subsequent credit pulls as necessary.
+      </div>
+
+      <div class="cf-turnstile" data-sitekey="0x4AAAAAACtw1TOxqy4xMX4D" data-theme="light"></div>
+
+      <div class="loan-nav">
+        <button type="button" class="btn-back" onclick="loanWizard.prev()">&larr; Back</button>
+        <button type="submit" class="btn-submit" id="submitBtn">Submit & Sign</button>
+      </div>
+    </div>
+  </form>
+
+  <!-- Signature Embed (shown after form submission) -->
+  <div class="signature-embed" id="signatureEmbed">
+    <div class="signature-intro">
+      <h2>Almost Done! Sign Below</h2>
+      <p>Your application has been submitted. Please sign below to complete it.</p>
+    </div>
+    <div id="signatureFormContainer"></div>
   </div>
 
   <div class="loan-app-help">
@@ -361,7 +920,314 @@ if (window.location.hostname === 'ledgertc.com') {
   </div>
 </footer>
 
-<!-- HubSpot tracking – production only -->
+<script>
+// ─── Loan Application Wizard ─────────────────────────────────────
+var loanWizard = (function() {
+  var currentStep = 1;
+  var totalSteps = 4;
+  var form = document.getElementById('loanAppForm');
+  var errorEl = document.getElementById('loanError');
+
+  // Set form load timestamp
+  document.getElementById('form_loaded_at').value = Date.now();
+
+  function showError(msg) {
+    errorEl.textContent = msg;
+    errorEl.style.display = 'block';
+    window.scrollTo({ top: errorEl.offsetTop - 120, behavior: 'smooth' });
+  }
+  function hideError() { errorEl.style.display = 'none'; }
+
+  function showStep(n) {
+    document.querySelectorAll('.loan-step').forEach(function(el) { el.classList.remove('active'); });
+    document.querySelector('.loan-step[data-step="' + n + '"]').classList.add('active');
+    // Update progress bar
+    document.querySelectorAll('.loan-progress-num').forEach(function(el) {
+      var s = parseInt(el.getAttribute('data-step'));
+      el.classList.remove('active', 'done');
+      if (s === n) el.classList.add('active');
+      else if (s < n) el.classList.add('done');
+    });
+    document.querySelectorAll('.loan-progress-line').forEach(function(el) {
+      var l = parseInt(el.getAttribute('data-line'));
+      el.classList.toggle('done', l < n);
+    });
+    window.scrollTo({ top: document.querySelector('.loan-app-wrap').offsetTop - 100, behavior: 'smooth' });
+    hideError();
+  }
+
+  function validateStep(n) {
+    if (n === 1) {
+      var req = ['entity_name', 'property_address', 'guarantor_name', 'guarantor_ssn', 'guarantor_dob', 'guarantor_phone', 'guarantor_email', 'guarantor_address'];
+      for (var i = 0; i < req.length; i++) {
+        var el = document.getElementById(req[i]);
+        if (!el || !el.value.trim()) {
+          showError('Please fill in all required fields (marked with *).');
+          el && el.focus();
+          return false;
+        }
+      }
+      // Validate SSN format
+      var ssn = document.getElementById('guarantor_ssn').value.replace(/\D/g, '');
+      if (ssn.length !== 9) {
+        showError('Please enter a valid 9-digit Social Security Number.');
+        document.getElementById('guarantor_ssn').focus();
+        return false;
+      }
+      // Validate email
+      var email = document.getElementById('guarantor_email');
+      if (email.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+        showError('Please enter a valid email address.');
+        email.focus();
+        return false;
+      }
+    }
+    // Step 4: build review before showing
+    if (n === 3) { buildReview(); }
+    return true;
+  }
+
+  function next() {
+    if (!validateStep(currentStep)) return;
+    if (currentStep < totalSteps) { currentStep++; showStep(currentStep); }
+  }
+  function prev() {
+    if (currentStep > 1) { currentStep--; showStep(currentStep); }
+  }
+
+  // ── Review builder ──
+  function val(name) {
+    var el = form.elements[name];
+    if (!el) return '';
+    if (el.type === 'checkbox') return el.checked ? 'Yes' : 'No';
+    if (el.length) { // radio
+      for (var i = 0; i < el.length; i++) { if (el[i].checked) return el[i].value; }
+      return '';
+    }
+    return el.value || '';
+  }
+  function maskSSN(v) { return v ? '***-**-' + v.replace(/\D/g, '').slice(-4) : ''; }
+
+  function buildReview() {
+    var hasCG = val('has_co_guarantor') === 'Yes';
+    var html = '';
+
+    html += '<div class="review-section"><h3>Entity & Property</h3>';
+    html += reviewRow('Entity Name', val('entity_name'));
+    html += reviewRow('EIN', val('ein'));
+    html += reviewRow('Property Address', val('property_address'));
+    html += reviewRow('Cross-Collateralized', val('cross_collateralized'));
+    html += '</div>';
+
+    html += '<div class="review-section"><h3>Guarantor</h3>';
+    html += reviewRow('Name', val('guarantor_name'));
+    html += reviewRow('Ownership %', val('guarantor_ownership'));
+    html += reviewRow('SSN', maskSSN(val('guarantor_ssn')));
+    html += reviewRow('DOB', val('guarantor_dob'));
+    html += reviewRow('Credit Score', val('guarantor_credit'));
+    html += reviewRow('Phone', val('guarantor_phone'));
+    html += reviewRow('Email', val('guarantor_email'));
+    html += reviewRow('Address', val('guarantor_address'));
+    html += '</div>';
+
+    if (hasCG) {
+      html += '<div class="review-section"><h3>Co-Guarantor</h3>';
+      html += reviewRow('Name', val('co_guarantor_name'));
+      html += reviewRow('SSN', maskSSN(val('co_guarantor_ssn')));
+      html += reviewRow('Phone', val('co_guarantor_phone'));
+      html += reviewRow('Email', val('co_guarantor_email'));
+      html += '</div>';
+    }
+
+    html += '<div class="review-section"><h3>Declarations</h3>';
+    html += reviewRow('US Citizen', val('g_us_citizen'));
+    html += reviewRow('Permanent Resident', val('g_permanent_resident'));
+    if (val('g_confirm_all_no') === 'Yes') {
+      html += reviewRow('All declarations', 'Confirmed No');
+    }
+    html += '</div>';
+
+    html += '<div class="review-section"><h3>Title & Insurance</h3>';
+    if (val('title_first_integrity') === 'Yes') html += reviewRow('Title', 'First Integrity Title Company');
+    if (val('title_own_choice') === 'Yes') html += reviewRow('Title', val('title_company_name'));
+    if (val('insurance_company')) html += reviewRow('Insurance', val('insurance_company'));
+    html += '</div>';
+
+    document.getElementById('reviewContent').innerHTML = html;
+  }
+
+  function reviewRow(label, value) {
+    return '<div class="review-row"><span class="review-label">' + label + '</span><span class="review-value">' + (value || '-') + '</span></div>';
+  }
+
+  return { next: next, prev: prev, showError: showError };
+})();
+
+// ─── Co-Guarantor Toggle ─────────────────────────────────────────
+(function() {
+  var radios = document.querySelectorAll('input[name="has_co_guarantor"]');
+  var infoSection = document.getElementById('coGuarantorInfo');
+  var declSection = document.getElementById('coGuarantorDecl');
+  radios.forEach(function(r) {
+    r.addEventListener('change', function() {
+      var show = this.value === 'Yes';
+      infoSection.classList.toggle('visible', show);
+      declSection.classList.toggle('visible', show);
+    });
+  });
+})();
+
+// ─── Confirm All No ──────────────────────────────────────────────
+(function() {
+  function setupConfirmAll(checkboxId, declListId) {
+    var cb = document.getElementById(checkboxId);
+    var list = document.getElementById(declListId);
+    if (!cb || !list) return;
+    cb.addEventListener('change', function() {
+      var noRadios = list.querySelectorAll('input[type="radio"][value="No"]');
+      noRadios.forEach(function(r) { r.checked = cb.checked; });
+      if (!cb.checked) {
+        // Also uncheck Yes radios when unchecking confirm-all
+        var yesRadios = list.querySelectorAll('input[type="radio"][value="Yes"]');
+        yesRadios.forEach(function(r) { r.checked = false; });
+      }
+    });
+    // If user clicks any individual Yes, uncheck the confirm-all
+    list.addEventListener('change', function(e) {
+      if (e.target.type === 'radio' && e.target.value === 'Yes') {
+        cb.checked = false;
+      }
+    });
+  }
+  setupConfirmAll('g_confirm_all_no', 'gDeclList');
+  setupConfirmAll('cg_confirm_all_no', 'cgDeclList');
+})();
+
+// ─── Title Company Toggle ────────────────────────────────────────
+(function() {
+  var cb = document.getElementById('title_own');
+  var fields = document.getElementById('titleOwnFields');
+  if (cb && fields) {
+    cb.addEventListener('change', function() {
+      fields.classList.toggle('visible', cb.checked);
+    });
+  }
+})();
+
+// ─── SSN Formatting ──────────────────────────────────────────────
+(function() {
+  function formatSSN(input) {
+    var raw = input.value.replace(/\D/g, '').substring(0, 9);
+    if (raw.length > 5) input.value = raw.slice(0,3) + '-' + raw.slice(3,5) + '-' + raw.slice(5);
+    else if (raw.length > 3) input.value = raw.slice(0,3) + '-' + raw.slice(3);
+    else input.value = raw;
+  }
+  ['guarantor_ssn', 'co_guarantor_ssn'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener('input', function() { formatSSN(el); });
+  });
+})();
+
+// ─── Phone Formatting ────────────────────────────────────────────
+(function() {
+  function formatPhone(input) {
+    var digits = input.value.replace(/\D/g, '');
+    if (digits.length > 0 && digits[0] === '1') digits = digits.substring(1);
+    digits = digits.substring(0, 10);
+    if (digits.length >= 7) input.value = '(' + digits.slice(0,3) + ') ' + digits.slice(3,6) + '-' + digits.slice(6);
+    else if (digits.length >= 4) input.value = '(' + digits.slice(0,3) + ') ' + digits.slice(3);
+    else if (digits.length > 0) input.value = '(' + digits;
+    else input.value = '';
+  }
+  ['guarantor_phone', 'co_guarantor_phone', 'title_company_phone'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) el.addEventListener('input', function() { formatPhone(el); });
+  });
+})();
+
+// ─── Form Submission ─────────────────────────────────────────────
+(function() {
+  var form = document.getElementById('loanAppForm');
+  var submitBtn = document.getElementById('submitBtn');
+
+  function getHubspotCookie() {
+    var match = document.cookie.match(/hubspotutk=([^;]+)/);
+    return match ? match[1] : '';
+  }
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting...';
+
+    // Collect all form data
+    var data = {};
+    var fd = new FormData(form);
+    fd.forEach(function(v, k) { data[k] = v; });
+
+    // Checkboxes need special handling (unchecked = not in FormData)
+    ['g_confirm_all_no', 'cg_confirm_all_no', 'title_first_integrity', 'title_own_choice'].forEach(function(name) {
+      var el = form.elements[name];
+      data[name] = el && el.checked ? 'true' : 'false';
+    });
+
+    // Add tracking data
+    data.page_url = window.location.href;
+    data.hutk = getHubspotCookie();
+    data.page_name = document.title;
+
+    // Get Turnstile token
+    var turnstileInput = form.querySelector('[name="cf-turnstile-response"]');
+    if (turnstileInput) data['cf-turnstile-response'] = turnstileInput.value;
+
+    // UTM params
+    var params = new URLSearchParams(window.location.search);
+    ['gclid','gbraid','wbraid','utm_source','utm_medium','utm_campaign','utm_term','utm_content'].forEach(function(k) {
+      var v = params.get(k);
+      if (v) data[k] = v;
+    });
+
+    fetch('/.netlify/functions/submit-loan-app', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    })
+    .then(function(res) { return res.json(); })
+    .then(function(result) {
+      if (result.success && result.embed_src) {
+        // Track conversion
+        if (typeof gtag === 'function') {
+          gtag('event', 'loan_app_submit', { 'event_category': 'form', 'event_label': 'loan_application' });
+        }
+
+        // Hide form, show signature embed
+        form.style.display = 'none';
+        document.getElementById('loanProgress').style.display = 'none';
+
+        var embedDiv = document.getElementById('signatureEmbed');
+        embedDiv.classList.add('active');
+
+        var container = document.getElementById('signatureFormContainer');
+        container.innerHTML = '<docuseal-form data-src="' + result.embed_src + '" data-expand="true" data-with-title="false" data-logo="https://ledgertc.com/logo-color.png" data-background-color="#ffffff" data-custom-css="#submit_form_button { background-color: #c49a3c !important; font-weight: 700 !important; font-size: 1.05rem !important; padding: 0.75rem 2rem !important; border-radius: 6px !important; } #submit_form_button:hover { background-color: #b08832 !important; }"></docuseal-form>';
+
+        window.scrollTo({ top: embedDiv.offsetTop - 100, behavior: 'smooth' });
+      } else {
+        loanWizard.showError(result.error || 'Something went wrong. Please try again.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit & Sign';
+      }
+    })
+    .catch(function() {
+      loanWizard.showError('A network error occurred. Please check your connection and try again.');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit & Sign';
+    });
+  });
+})();
+</script>
+
+<!-- HubSpot tracking - production only -->
 <script>
 if (window.location.hostname === 'ledgertc.com') {
   var hs = document.createElement('script');
@@ -371,7 +1237,7 @@ if (window.location.hostname === 'ledgertc.com') {
   document.body.appendChild(hs);
 }
 </script>
-<!-- CallRail – production only -->
+<!-- CallRail - production only -->
 <script>
 if (window.location.hostname === 'ledgertc.com') {
   var cr = document.createElement('script');
