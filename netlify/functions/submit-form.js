@@ -122,6 +122,34 @@ async function associateHutkWithContact(email, hutk, pageUri, pageName) {
   }
 }
 
+// ─── Re-assert tracking after hutk association ───────────────────
+// The hutk association call (v1 createOrUpdate) triggers HubSpot's analytics
+// engine which can overwrite hs_analytics_source. This PATCH runs after hutk
+// to force our Google Ads attribution back onto the contact.
+async function ensureTrackingAfterHutk(contactId, formData) {
+  if (!formData.isGoogleAds) return;
+
+  const props = {
+    hs_analytics_source: "PAID_SEARCH",
+    hs_analytics_source_data_1: "Auto-tagged PPC",
+  };
+  if (formData.googleClickId) {
+    props.hs_google_click_id = formData.googleClickId;
+  }
+  if (formData.gadCampaignId) {
+    props.gad_campaignid = formData.gadCampaignId;
+  }
+
+  const result = await hubspot("PATCH", `/crm/v3/objects/contacts/${contactId}`, {
+    properties: props,
+  });
+  if (!result.error) {
+    console.log(`Re-asserted tracking on contact ${contactId} after hutk`);
+  } else {
+    console.error(`Failed to re-assert tracking on ${contactId}:`, result.data);
+  }
+}
+
 // ─── Step 1: Contact lookup / creation ────────────────────────────
 async function findOrCreateContact(formData) {
   // Search by email
@@ -129,51 +157,13 @@ async function findOrCreateContact(formData) {
     filterGroups: [{
       filters: [{ propertyName: "email", operator: "EQ", value: formData.email }]
     }],
-    properties: ["email", "firstname", "lastname", "hubspot_owner_id", "hs_google_click_id", "gad_campaignid", "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"],
+    properties: ["email", "firstname", "lastname", "hubspot_owner_id", "hs_google_click_id", "gad_campaignid", "source_website"],
   });
 
   if (search.total > 0) {
     const existing = search.results[0];
     console.log(`Contact found: ${existing.id} (${formData.email})`);
-
-    // Backfill tracking data on existing contacts that don't have it yet
-    const updateProps = {};
-    if (formData.googleClickId && !existing.properties.hs_google_click_id) {
-      updateProps.hs_google_click_id = formData.googleClickId;
-    }
-    if (formData.gadCampaignId && !existing.properties.gad_campaignid) {
-      updateProps.gad_campaignid = formData.gadCampaignId;
-    }
-    if (formData.utmSource && !existing.properties.utm_source) {
-      updateProps.utm_source = formData.utmSource;
-    }
-    if (formData.utmMedium && !existing.properties.utm_medium) {
-      updateProps.utm_medium = formData.utmMedium;
-    }
-    if (formData.utmCampaign && !existing.properties.utm_campaign) {
-      updateProps.utm_campaign = formData.utmCampaign;
-    }
-    if (formData.utmTerm && !existing.properties.utm_term) {
-      updateProps.utm_term = formData.utmTerm;
-    }
-    if (formData.utmContent && !existing.properties.utm_content) {
-      updateProps.utm_content = formData.utmContent;
-    }
-    if (formData.isGoogleAds && Object.keys(updateProps).length > 0) {
-      updateProps.hs_analytics_source = "PAID_SEARCH";
-      updateProps.hs_analytics_source_data_1 = "Auto-tagged PPC";
-    }
-    if (Object.keys(updateProps).length > 0) {
-      const updated = await hubspot("PATCH", `/crm/v3/objects/contacts/${existing.id}`, {
-        properties: updateProps,
-      });
-      if (!updated.error) {
-        console.log(`Backfilled tracking on existing contact ${existing.id}:`, Object.keys(updateProps).join(', '));
-      } else {
-        console.error(`Failed to backfill tracking on ${existing.id}:`, updated.data);
-      }
-    }
-
+    await backfillTracking(existing, formData);
     return { contact: existing, isNew: false };
   }
 
@@ -186,11 +176,6 @@ async function findOrCreateContact(formData) {
     lifecyclestage: "lead",
     source_website: "Yes",
     ...(formData.googleClickId && { hs_google_click_id: formData.googleClickId }),
-    ...(formData.utmSource && { utm_source: formData.utmSource }),
-    ...(formData.utmMedium && { utm_medium: formData.utmMedium }),
-    ...(formData.utmCampaign && { utm_campaign: formData.utmCampaign }),
-    ...(formData.utmTerm && { utm_term: formData.utmTerm }),
-    ...(formData.utmContent && { utm_content: formData.utmContent }),
     ...(formData.gadCampaignId && { gad_campaignid: formData.gadCampaignId }),
   };
 
@@ -198,8 +183,6 @@ async function findOrCreateContact(formData) {
   if (formData.isGoogleAds) {
     contactProps.hs_analytics_source = "PAID_SEARCH";
     contactProps.hs_analytics_source_data_1 = "Auto-tagged PPC";
-    if (!formData.utmSource) contactProps.utm_source = "google";
-    if (!formData.utmMedium) contactProps.utm_medium = "cpc";
   }
 
   const created = await hubspot("POST", "/crm/v3/objects/contacts", {
@@ -207,11 +190,56 @@ async function findOrCreateContact(formData) {
   });
 
   if (created.error) {
+    // Race condition: HubSpot collected forms may have created the contact
+    // between our search and create. Search again and backfill.
+    if (created.status === 409) {
+      console.log(`Contact create conflict for ${formData.email} — retrying search`);
+      const retry = await hubspot("POST", "/crm/v3/objects/contacts/search", {
+        filterGroups: [{
+          filters: [{ propertyName: "email", operator: "EQ", value: formData.email }]
+        }],
+        properties: ["email", "firstname", "lastname", "hubspot_owner_id", "hs_google_click_id", "gad_campaignid", "source_website"],
+      });
+      if (retry.total > 0) {
+        const existing = retry.results[0];
+        console.log(`Contact found on retry: ${existing.id} (${formData.email})`);
+        await backfillTracking(existing, formData);
+        return { contact: existing, isNew: false };
+      }
+    }
     throw new Error(`Failed to create contact: ${JSON.stringify(created.data)}`);
   }
 
   console.log(`Contact created: ${created.id} (${formData.email})`);
   return { contact: created, isNew: true };
+}
+
+// Backfill tracking properties on existing contacts (e.g. created by HubSpot collected forms)
+async function backfillTracking(existing, formData) {
+  const updateProps = {};
+  if (formData.googleClickId && !existing.properties.hs_google_click_id) {
+    updateProps.hs_google_click_id = formData.googleClickId;
+  }
+  if (formData.gadCampaignId && !existing.properties.gad_campaignid) {
+    updateProps.gad_campaignid = formData.gadCampaignId;
+  }
+  if (!existing.properties.source_website) {
+    updateProps.source_website = "Yes";
+  }
+  if (formData.isGoogleAds) {
+    updateProps.hs_analytics_source = "PAID_SEARCH";
+    updateProps.hs_analytics_source_data_1 = "Auto-tagged PPC";
+  }
+  if (Object.keys(updateProps).length > 0) {
+    const updated = await hubspot("PATCH", `/crm/v3/objects/contacts/${existing.id}`, {
+      properties: updateProps,
+    });
+    if (!updated.error) {
+      console.log(`Backfilled tracking on contact ${existing.id}:`, Object.keys(updateProps).join(', '));
+    } else {
+      console.error(`Failed to backfill tracking on ${existing.id}:`, updated.data);
+    }
+  }
 }
 
 // ─── Step 2: Company lookup / creation ────────────────────────────
@@ -724,8 +752,11 @@ exports.handler = async function (event) {
       const contactResult = await findOrCreateContact(formData);
       const contactId = contactResult.contact.id;
 
-      // Associate hutk for Google Ads attribution
+      // Associate hutk for HubSpot visitor tracking
       await associateHutkWithContact(formData.email, formData.hutk, formData.pageUrl, formData.pageName);
+
+      // Re-assert tracking properties after hutk association (hutk can overwrite hs_analytics_source)
+      await ensureTrackingAfterHutk(contactId, formData);
 
       // Step 2: Company — check existing association first, then find/create
       let companyResult = null;
@@ -768,8 +799,11 @@ exports.handler = async function (event) {
       const contactResult = await findOrCreateContact(formData);
       const contactId = contactResult.contact.id;
 
-      // Associate hutk for Google Ads attribution
+      // Associate hutk for HubSpot visitor tracking
       await associateHutkWithContact(formData.email, formData.hutk, formData.pageUrl, formData.pageName);
+
+      // Re-assert tracking properties after hutk association (hutk can overwrite hs_analytics_source)
+      await ensureTrackingAfterHutk(contactId, formData);
 
       // Step 2: Company — check existing association first, then find/create
       let companyResult = null;
