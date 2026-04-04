@@ -1272,10 +1272,6 @@ function toggleFaq(btn){
         if(typeof gtag==='function'&&!sessionStorage.getItem('dscr_lp_converted')){
           sessionStorage.setItem('dscr_lp_converted','1');
           gtag('event','form_submit',{'form_id':'dscr-lp'});
-          gtag('event','conversion',{
-            send_to:'AW-17993082803/hf9SCKCquoccELPP4oND',
-            event_callback:function(){}
-          });
         }
       }else{
         var msg=result.data.error||'Something went wrong. Please try again or call us at (201) 749-1691.';
