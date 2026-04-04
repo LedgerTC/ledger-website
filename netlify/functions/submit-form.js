@@ -129,27 +129,48 @@ async function findOrCreateContact(formData) {
     filterGroups: [{
       filters: [{ propertyName: "email", operator: "EQ", value: formData.email }]
     }],
-    properties: ["email", "firstname", "lastname", "hubspot_owner_id", "hs_google_click_id"],
+    properties: ["email", "firstname", "lastname", "hubspot_owner_id", "hs_google_click_id", "gad_campaignid", "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"],
   });
 
   if (search.total > 0) {
     const existing = search.results[0];
     console.log(`Contact found: ${existing.id} (${formData.email})`);
 
-    // Backfill gclid on existing contacts that don't have one yet
+    // Backfill tracking data on existing contacts that don't have it yet
+    const updateProps = {};
     if (formData.googleClickId && !existing.properties.hs_google_click_id) {
-      const updateProps = { hs_google_click_id: formData.googleClickId };
-      if (formData.isGoogleAds) {
-        updateProps.hs_analytics_source = "PAID_SEARCH";
-        updateProps.hs_analytics_source_data_1 = "Auto-tagged PPC";
-      }
+      updateProps.hs_google_click_id = formData.googleClickId;
+    }
+    if (formData.gadCampaignId && !existing.properties.gad_campaignid) {
+      updateProps.gad_campaignid = formData.gadCampaignId;
+    }
+    if (formData.utmSource && !existing.properties.utm_source) {
+      updateProps.utm_source = formData.utmSource;
+    }
+    if (formData.utmMedium && !existing.properties.utm_medium) {
+      updateProps.utm_medium = formData.utmMedium;
+    }
+    if (formData.utmCampaign && !existing.properties.utm_campaign) {
+      updateProps.utm_campaign = formData.utmCampaign;
+    }
+    if (formData.utmTerm && !existing.properties.utm_term) {
+      updateProps.utm_term = formData.utmTerm;
+    }
+    if (formData.utmContent && !existing.properties.utm_content) {
+      updateProps.utm_content = formData.utmContent;
+    }
+    if (formData.isGoogleAds && Object.keys(updateProps).length > 0) {
+      updateProps.hs_analytics_source = "PAID_SEARCH";
+      updateProps.hs_analytics_source_data_1 = "Auto-tagged PPC";
+    }
+    if (Object.keys(updateProps).length > 0) {
       const updated = await hubspot("PATCH", `/crm/v3/objects/contacts/${existing.id}`, {
         properties: updateProps,
       });
       if (!updated.error) {
-        console.log(`Backfilled gclid on existing contact ${existing.id}`);
+        console.log(`Backfilled tracking on existing contact ${existing.id}:`, Object.keys(updateProps).join(', '));
       } else {
-        console.error(`Failed to backfill gclid on ${existing.id}:`, updated.data);
+        console.error(`Failed to backfill tracking on ${existing.id}:`, updated.data);
       }
     }
 
@@ -170,6 +191,7 @@ async function findOrCreateContact(formData) {
     ...(formData.utmCampaign && { utm_campaign: formData.utmCampaign }),
     ...(formData.utmTerm && { utm_term: formData.utmTerm }),
     ...(formData.utmContent && { utm_content: formData.utmContent }),
+    ...(formData.gadCampaignId && { gad_campaignid: formData.gadCampaignId }),
   };
 
   // Set source attribution for Google Ads contacts

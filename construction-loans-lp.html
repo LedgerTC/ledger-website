@@ -1302,6 +1302,23 @@ if (window.location.hostname === 'ledgertc.com') {
   })();
   </script>
 
+  <!-- Capture tracking params to sessionStorage on page load -->
+  <script>
+  (function() {
+    var TRACKING_KEYS = ['gclid','gbraid','wbraid','gad_source','gad_campaignid',
+      'utm_source','utm_medium','utm_campaign','utm_term','utm_content'];
+    var lp = new URLSearchParams(window.location.search);
+    var found = {};
+    TRACKING_KEYS.forEach(function(k) {
+      var v = lp.get(k);
+      if (v) found[k] = v;
+    });
+    if (Object.keys(found).length > 0) {
+      try { sessionStorage.setItem('ltc_tracking', JSON.stringify(found)); } catch(e) {}
+    }
+  })();
+  </script>
+
   <!-- Form submission handler -->
   <script>
   (function(){
@@ -1325,9 +1342,11 @@ if (window.location.hostname === 'ledgertc.com') {
 
       var formData = new URLSearchParams(new FormData(form));
       formData.set('page_url', window.location.href);
+      var stored = {};
+      try { stored = JSON.parse(sessionStorage.getItem('ltc_tracking') || '{}'); } catch(e) {}
       var lp = new URLSearchParams(window.location.search);
       ['gclid','gbraid','wbraid','gad_source','gad_campaignid','utm_source','utm_medium','utm_campaign','utm_term','utm_content'].forEach(function(k) {
-        var v = lp.get(k);
+        var v = lp.get(k) || stored[k];
         if (v) formData.set(k, v);
       });
 
