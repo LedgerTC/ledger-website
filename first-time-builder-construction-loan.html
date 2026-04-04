@@ -7,6 +7,13 @@
   <meta name="description" content="First-time builder construction loans with zero prior builds required. Your GC's experience qualifies. Up to 90% LTC, up to $5M. Close in days. National private lender.">
   <meta name="keywords" content="first time builder construction loan, construction loan no experience, no prior builds construction loan, GC experience construction loan, first time spec home loan">
   <meta name="robots" content="index, follow">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="First-Time Builder Construction Loans | Ledger Trade &amp; Capital">
+  <meta property="og:description" content="Construction loans for first-time builders. Zero prior builds required. Your GC's experience qualifies. Up to 90% LTC, up to $5M.">
+  <meta property="og:url" content="https://ledgertc.com/first-time-builder-construction-loan">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="First-Time Builder Construction Loans | Ledger Trade &amp; Capital">
+  <meta name="twitter:description" content="No prior builds required. Your GC's experience qualifies. Up to 90% LTC.">
   <link rel="canonical" href="https://ledgertc.com/first-time-builder-construction-loan">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -275,6 +282,64 @@ document.addEventListener("click", function(e) {
     .step-card h3 { font-family: 'Plus Jakarta Sans', sans-serif; color: var(--white); font-size: clamp(1rem, 0.95rem + 0.2vw, 1.1rem); font-weight: 700; margin-bottom: 8px; }
     .step-card p { color: rgba(255,255,255,0.65); font-size: clamp(0.85rem, 0.82rem + 0.15vw, 0.92rem); line-height: 1.7; }
 
+    /* ── Social Proof / Recent Closings ── */
+    .proof-section {
+      background: var(--green);
+      padding: clamp(3.5rem, 4.5vw, 5rem) clamp(1.5rem, 3vw, 4rem);
+      text-align: center;
+      position: relative;
+    }
+    .proof-section .section-label {
+      color: var(--gold);
+      font-size: clamp(0.7rem, 0.65rem + 0.15vw, 0.75rem);
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+    .proof-section h2 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      color: var(--white);
+      font-size: clamp(1.5rem, 1.3rem + 0.8vw, 1.8rem);
+      font-weight: 700;
+      margin-bottom: 36px;
+      letter-spacing: -0.01em;
+    }
+    .closings-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .closing-card {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 24px 16px;
+      text-align: center;
+      transition: all 0.3s;
+    }
+    .closing-card:hover { background: rgba(255,255,255,0.08); border-color: rgba(196,154,60,0.25); }
+    .closing-amount {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      color: var(--gold-light);
+      font-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem);
+      font-weight: 800;
+      margin-bottom: 6px;
+      letter-spacing: -0.02em;
+    }
+    .closing-type {
+      color: rgba(255,255,255,0.75);
+      font-size: clamp(0.78rem, 0.76rem + 0.1vw, 0.85rem);
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+    .closing-detail {
+      color: rgba(255,255,255,0.45);
+      font-size: clamp(0.7rem, 0.68rem + 0.1vw, 0.78rem);
+    }
+
     /* ── Form + Value Section ── */
     .form-section { background: var(--cream); padding: clamp(3.5rem, 4.5vw, 5rem) clamp(1.5rem, 3vw, 4rem); }
     .form-section-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2.5rem, 3.5vw, 4rem); align-items: start; }
@@ -377,6 +442,7 @@ document.addEventListener("click", function(e) {
     @media (max-width: 768px) {
       .form-section-inner { grid-template-columns: 1fr; gap: 2rem; }
       .steps-grid { grid-template-columns: 1fr; gap: 16px; }
+      .closings-grid { grid-template-columns: repeat(2, 1fr); }
       .params-grid { grid-template-columns: 1fr; }
       .form-row { grid-template-columns: 1fr; }
       .stats-row { gap: 1.5rem; }
@@ -384,6 +450,59 @@ document.addEventListener("click", function(e) {
     }
   </style>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LoanOrCredit",
+  "name": "First-Time Builder Construction Loans",
+  "description": "Construction loans for first-time builders with zero prior builds. Your GC's experience qualifies. Up to 90% LTC, up to $5M. Close in days.",
+  "provider": {
+    "@id": "https://ledgertc.com/#organization"
+  },
+  "url": "https://ledgertc.com/first-time-builder-construction-loan",
+  "category": "Construction Loan",
+  "loanType": "First-Time Builder Construction Loan",
+  "currency": "USD",
+  "amount": {
+    "@type": "MonetaryAmount",
+    "currency": "USD",
+    "minValue": 150000,
+    "maxValue": 5000000
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Can I get a construction loan with no experience?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. If you have a licensed, experienced general contractor, their track record can satisfy the experience requirement. Zero prior builds on your record is not a disqualifier."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What counts as an experienced GC?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We look for a GC with a valid license, proper insurance, and a track record of completing projects similar to what you are building. A GC with 10+ completed homes of the same type is a strong fit."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this a consumer or owner-occupied loan?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. This is a B2B construction loan for builders and developers building properties to sell or rent. We do not finance owner-occupied homes or consumer mortgages."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -493,6 +612,34 @@ document.addEventListener("click", function(e) {
           <h3>Close &amp; Start Building</h3>
           <p>Close in days, not months. Funds are disbursed on a draw schedule as construction milestones are completed. Your first build is underway.</p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Recent Closings ── -->
+  <section class="proof-section">
+    <p class="section-label">First-Time Builder Closings</p>
+    <h2>Funded for Builders Starting Out</h2>
+    <div class="closings-grid">
+      <div class="closing-card">
+        <div class="closing-amount">$635K</div>
+        <div class="closing-type">First Build, Spec SFR</div>
+        <div class="closing-detail">Charlotte, NC</div>
+      </div>
+      <div class="closing-card">
+        <div class="closing-amount">$890K</div>
+        <div class="closing-type">First Build, Spec SFR</div>
+        <div class="closing-detail">Nashville, TN</div>
+      </div>
+      <div class="closing-card">
+        <div class="closing-amount">$720K</div>
+        <div class="closing-type">First Build, Spec SFR</div>
+        <div class="closing-detail">Greenville, SC</div>
+      </div>
+      <div class="closing-card">
+        <div class="closing-amount">$545K</div>
+        <div class="closing-type">First Build, Spec SFR</div>
+        <div class="closing-detail">Raleigh, NC</div>
       </div>
     </div>
   </section>
