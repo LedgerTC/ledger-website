@@ -36,6 +36,43 @@ function deriveAdCampaign(formSource, utmCampaign) {
   return "";
 }
 
+// ─── Disposable / throwaway email domains (silent-reject on match) ──
+const DISPOSABLE_EMAIL_DOMAINS = new Set([
+  // High-volume throwaway services
+  "mailinator.com", "guerrillamail.com", "guerrillamail.de", "guerrillamail.net",
+  "guerrillamail.org", "guerrillamailblock.com", "grr.la", "sharklasers.com",
+  "guerrillamail.info", "tempmail.com", "temp-mail.org", "temp-mail.io",
+  "throwaway.email", "throwaway.cc", "throwamail.com",
+  "yopmail.com", "yopmail.fr", "yopmail.net", "yopmail.gq",
+  "trashmail.com", "trashmail.me", "trashmail.net", "trashmail.org",
+  "dispostable.com", "mailnesia.com", "maildrop.cc",
+  "fakeinbox.com", "fakemail.net", "10minutemail.com", "10minutemail.net",
+  "20minutemail.com", "tempail.com", "tempr.email",
+  "discard.email", "discardmail.com", "discardmail.de",
+  "mailcatch.com", "mailexpire.com", "mailnull.com",
+  "mailinater.com", "mailforspam.com",
+  "getnada.com", "nada.email", "anonbox.net",
+  "mytemp.email", "mohmal.com", "emailondeck.com",
+  "mintemail.com", "tempinbox.com", "harakirimail.com",
+  "mailsac.com", "inboxkitten.com", "burnermail.io",
+  "crazymailing.com", "armyspy.com", "dayrep.com",
+  "einrot.com", "fleckens.hu", "gustr.com", "jourrapide.com",
+  "rhyta.com", "superrito.com", "teleworm.us",
+  // Russian / international spam favorites
+  "mail.ru", "bk.ru", "list.ru", "inbox.ru",
+  "rambler.ru", "autorambler.ru", "myrambler.ru",
+  "ro.ru", "front.ru", "hotbox.ru",
+  // Other commonly abused
+  "sharklasers.com", "spam4.me", "spamgourmet.com",
+  "trashymail.com", "uggsrock.com", "wegwerfmail.de",
+  "zoemail.org", "mailzilla.com", "spamfree24.org",
+  "objectmail.com",
+  "emltmp.com", "tmpmail.net", "tmpmail.org",
+  "guerrillamailblock.com", "clrmail.com",
+  "mailtemp.net", "emailfake.com", "tempmailo.com",
+  "tempmailaddress.com", "tmails.net",
+]);
+
 // ─── Rate-limiting & daily-cap stores (in-memory, per instance) ──
 const ipSubmissions = new Map();   // ip -> [timestamp, …]
 const IP_MAX = 5;
@@ -766,6 +803,17 @@ exports.handler = async function (event) {
         statusCode: 400,
         headers,
         body: JSON.stringify({ error: "Invalid email address" }),
+      };
+    }
+
+    // ── Disposable / spam email domain blocking ───────────────
+    const emailDomain = formData.email.split("@")[1].toLowerCase();
+    if (DISPOSABLE_EMAIL_DOMAINS.has(emailDomain)) {
+      console.log(`Disposable email domain blocked: ${emailDomain} (${formData.email})`);
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify({ success: true, message: "Thank you for your submission." }),
       };
     }
 
