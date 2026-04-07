@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="robots" content="index, follow">
+<meta name="robots" content="noindex, follow">
 <link rel="canonical" href="https://ledgertc.com/dscr-lp">
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -833,6 +833,11 @@ img{max-width:100%;height:auto;display:block;}
     gap:0.75rem;
   }
 }
+.scroll-indicator{text-align:center;margin-top:1.5rem;animation:bounce 2s infinite;}
+.scroll-indicator span{display:block;color:rgba(255,255,255,0.7);font-size:0.85rem;margin-top:0.25rem;}
+.scroll-indicator svg{opacity:0.7;}
+@keyframes bounce{0%,20%,50%,80%,100%{transform:translateY(0);}40%{transform:translateY(-8px);}60%{transform:translateY(-4px);}}
+@media(max-width:600px){.hero-inner{padding-top:2rem!important;padding-bottom:1.5rem!important;}}
 </style>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <script type="application/ld+json">
@@ -909,7 +914,7 @@ img{max-width:100%;height:auto;display:block;}
   <div class="hero-inner">
     <div class="hero-badge">National Direct Lender</div>
     <h1>DSCR Rental Loans from <span>5.875%</span></h1>
-    <p class="hero-subtitle">No-doc investment property loans. Qualify on property cash flow, not personal income. No tax returns. No W-2s. 30-year fixed for rental investors.</p>
+    <p class="hero-subtitle">Qualify on property cash flow, not personal income. No tax returns, no W-2s, no employment verification. 30-year fixed rates for buy-and-hold rental investors scaling their portfolios.</p>
     <div class="hero-stats">
       <div class="hero-stat">
         <div class="hero-stat-value">80%</div>
@@ -931,6 +936,10 @@ img{max-width:100%;height:auto;display:block;}
     <div class="hero-ctas">
       <a href="#form" class="btn-gold">Get Your Rate</a>
       <a href="tel:2017491691" class="btn-outline">Call Now</a>
+    </div>
+    <div class="scroll-indicator">
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      <span>See our programs</span>
     </div>
   </div>
 </section>
