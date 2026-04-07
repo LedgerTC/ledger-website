@@ -149,7 +149,6 @@ async function ensureTrackingAfterHutk(contactId, formData) {
 
   const props = {
     hs_analytics_source: "PAID_SEARCH",
-    hs_analytics_source_data_1: "Auto-tagged PPC",
   };
   if (formData.googleClickId) {
     props.hs_google_click_id = formData.googleClickId;
@@ -203,7 +202,6 @@ async function findOrCreateContact(formData) {
   // Set source attribution for Google Ads contacts
   if (formData.isGoogleAds) {
     contactProps.hs_analytics_source = "PAID_SEARCH";
-    contactProps.hs_analytics_source_data_1 = "Auto-tagged PPC";
   }
 
   const created = await hubspot("POST", "/crm/v3/objects/contacts", {
@@ -258,7 +256,6 @@ async function backfillTracking(existing, formData) {
   }
   if (formData.isGoogleAds) {
     updateProps.hs_analytics_source = "PAID_SEARCH";
-    updateProps.hs_analytics_source_data_1 = "Auto-tagged PPC";
   }
   if (Object.keys(updateProps).length > 0) {
     const updated = await hubspot("PATCH", `/crm/v3/objects/contacts/${existing.id}`, {
