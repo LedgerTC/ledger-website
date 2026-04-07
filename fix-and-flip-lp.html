@@ -598,6 +598,186 @@ img{max-width:100%;height:auto;display:block;}
   line-height:1.4;
 }
 
+/* ── Rate Breakdown ── */
+.rates-section{
+  background:var(--green);
+  padding:clamp(3rem,6vw,5rem) 2rem;
+}
+.rates-inner{
+  max-width:900px;
+  margin:0 auto;
+  text-align:center;
+}
+.rates-inner h2{
+  font-size:clamp(1.5rem,3.5vw,2.25rem);
+  font-weight:800;
+  color:var(--white);
+  margin-bottom:0.5rem;
+}
+.rates-subtitle{
+  font-size:clamp(0.9rem,0.88rem + 0.15vw,1rem);
+  color:rgba(255,255,255,0.7);
+  max-width:600px;
+  margin:0 auto 2rem;
+  line-height:1.6;
+}
+.rates-base{
+  display:inline-block;
+  background:rgba(255,255,255,0.1);
+  border-radius:12px;
+  padding:1.25rem 2rem;
+  margin-bottom:2rem;
+}
+.rates-base-label{
+  font-size:0.8rem;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.06em;
+  color:var(--gold);
+  margin-bottom:0.25rem;
+}
+.rates-base-value{
+  font-family:'Plus Jakarta Sans','DM Sans',sans-serif;
+  font-size:clamp(1.5rem,3vw,2rem);
+  font-weight:800;
+  color:var(--white);
+}
+.rates-factors{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:1rem;
+  max-width:700px;
+  margin:0 auto 2rem;
+  text-align:left;
+}
+.rates-factor{
+  background:rgba(255,255,255,0.08);
+  border-radius:10px;
+  padding:1.25rem;
+}
+.rates-factor-title{
+  font-size:0.85rem;
+  font-weight:700;
+  color:var(--gold);
+  margin-bottom:0.5rem;
+}
+.rates-factor-desc{
+  font-size:0.85rem;
+  color:rgba(255,255,255,0.75);
+  line-height:1.5;
+}
+.rates-examples{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1rem;
+  max-width:700px;
+  margin:0 auto 2rem;
+}
+.rates-example{
+  background:rgba(255,255,255,0.08);
+  border-radius:10px;
+  padding:1.25rem;
+  text-align:center;
+}
+.rates-example-label{
+  font-size:0.75rem;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.06em;
+  color:var(--gold);
+  margin-bottom:0.5rem;
+}
+.rates-example-profile{
+  font-size:0.82rem;
+  color:rgba(255,255,255,0.6);
+  line-height:1.5;
+  margin-bottom:0.75rem;
+}
+.rates-example-rate{
+  font-family:'Plus Jakarta Sans','DM Sans',sans-serif;
+  font-size:1.2rem;
+  font-weight:800;
+  color:var(--white);
+}
+.rates-cta{
+  margin-top:0.5rem;
+}
+.rates-cta a{
+  color:rgba(255,255,255,0.7);
+  font-weight:500;
+  font-size:0.9rem;
+}
+.rates-cta a:hover{
+  color:var(--white);
+}
+@media(max-width:768px){
+  .rates-factors{grid-template-columns:1fr;}
+  .rates-examples{grid-template-columns:1fr;}
+}
+
+/* ── Requirements ── */
+.requirements-section{
+  background:var(--white);
+  padding:clamp(3rem,6vw,5rem) 2rem;
+}
+.requirements-inner{
+  max-width:900px;
+  margin:0 auto;
+  text-align:center;
+}
+.requirements-inner h2{
+  font-size:clamp(1.5rem,3.5vw,2.25rem);
+  font-weight:800;
+  color:var(--green);
+  margin-bottom:0.5rem;
+}
+.requirements-subtitle{
+  font-size:clamp(0.9rem,0.88rem + 0.15vw,1rem);
+  color:var(--gray-600);
+  max-width:600px;
+  margin:0 auto 2rem;
+  line-height:1.6;
+}
+.requirements-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:2rem;
+  max-width:750px;
+  margin:0 auto;
+  text-align:left;
+}
+.requirements-col h3{
+  font-size:1rem;
+  font-weight:700;
+  color:var(--green);
+  margin-bottom:1rem;
+}
+.requirements-list{
+  list-style:none;
+  padding:0;
+  margin:0;
+}
+.requirements-list li{
+  display:flex;
+  align-items:flex-start;
+  gap:0.6rem;
+  font-size:0.9rem;
+  color:#444;
+  line-height:1.5;
+  margin-bottom:0.75rem;
+}
+.requirements-list li svg{
+  flex-shrink:0;
+  width:18px;
+  height:18px;
+  margin-top:2px;
+}
+.req-check{color:#2b8a3e;}
+.req-x{color:#c92a2a;}
+@media(max-width:768px){
+  .requirements-grid{grid-template-columns:1fr;}
+}
+
 /* ── Estimate Section ── */
 .estimate-section{
   background:var(--cream);
@@ -892,7 +1072,7 @@ img{max-width:100%;height:auto;display:block;}
   <div class="hero-inner">
     <div class="hero-badge">National Private Lender</div>
     <h1>Fix &amp; Flip Loans from <span>8.875%</span></h1>
-    <p class="hero-subtitle">House flipping loans for investors. Acquire and renovate in a single loan, then flip it or hold it as a rental. Up to 90% of purchase, 95% LTC. No prepayment penalty. As fast as 2 weeks to close.</p>
+    <p class="hero-subtitle">House flipping loans and fix &amp; flip financing for investors. Acquire and renovate in a single loan, then flip it or hold it as a rental. Up to 90% of purchase, 95% LTC. No prepayment penalty. As fast as 2 weeks to close.</p>
     <div class="hero-stats">
       <div class="hero-stat">
         <div class="hero-stat-value">90%</div>
@@ -1108,6 +1288,91 @@ img{max-width:100%;height:auto;display:block;}
         <div class="param-label">Min Credit Score</div>
         <div class="param-value">680</div>
         <div class="param-note">Deal quality matters most</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── How Rates Work ── -->
+<section class="rates-section" id="rates">
+  <div class="rates-inner">
+    <div class="section-label" style="color:var(--gold);">Pricing</div>
+    <h2>How Fix &amp; Flip Rates Work</h2>
+    <p class="rates-subtitle">Your rate depends on four factors. Experienced flippers with strong credit and lower leverage get the best pricing.</p>
+    <div class="rates-base">
+      <div class="rates-base-label">Base Rate</div>
+      <div class="rates-base-value">8.875%</div>
+    </div>
+    <div class="rates-factors">
+      <div class="rates-factor">
+        <div class="rates-factor-title">Experience Level</div>
+        <div class="rates-factor-desc">Borrowers with 5+ completed projects receive better pricing. First-time flippers are welcome but start at a higher tier.</div>
+      </div>
+      <div class="rates-factor">
+        <div class="rates-factor-title">Credit Score</div>
+        <div class="rates-factor-desc">Minimum 680 FICO. Scores above 720 qualify for lower rates. Higher credit signals lower risk to the lender.</div>
+      </div>
+      <div class="rates-factor">
+        <div class="rates-factor-title">Leverage</div>
+        <div class="rates-factor-desc">Lower loan-to-cost and loan-to-ARV ratios earn better rates. More skin in the game means better pricing.</div>
+      </div>
+      <div class="rates-factor">
+        <div class="rates-factor-title">Rehab Scope</div>
+        <div class="rates-factor-desc">Light cosmetic rehabs price better than heavy gut renovations. Smaller rehab budgets relative to purchase price reduce risk.</div>
+      </div>
+    </div>
+    <div class="rates-examples">
+      <div class="rates-example">
+        <div class="rates-example-label">Experienced Flipper</div>
+        <div class="rates-example-profile">720+ FICO<br>5+ deals<br>85% LTC</div>
+        <div class="rates-example-rate">9.750%</div>
+      </div>
+      <div class="rates-example">
+        <div class="rates-example-label">Mid-Range</div>
+        <div class="rates-example-profile">700 FICO<br>2-4 deals<br>90% LTC</div>
+        <div class="rates-example-rate">10.250%</div>
+      </div>
+      <div class="rates-example">
+        <div class="rates-example-label">First-Time Flip</div>
+        <div class="rates-example-profile">680 FICO<br>0 deals<br>90% LTC</div>
+        <div class="rates-example-rate">10.750%</div>
+      </div>
+    </div>
+    <div class="rates-cta">
+      <a href="/construction-loan-calculator" target="_blank">Try the calculator for your exact rate &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Requirements ── -->
+<section class="requirements-section" id="requirements">
+  <div class="requirements-inner">
+    <div class="section-label" style="color:var(--gold);">Eligibility</div>
+    <h2>What You Need to Qualify</h2>
+    <p class="requirements-subtitle">Fix and flip loans, house flipping loans, and rehab financing share the same basic requirements.</p>
+    <div class="requirements-grid">
+      <div class="requirements-col">
+        <h3>Eligible</h3>
+        <ul class="requirements-list">
+          <li><svg class="req-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>680+ credit score</li>
+          <li><svg class="req-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Single-family residences</li>
+          <li><svg class="req-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Townhomes and condos</li>
+          <li><svg class="req-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>2-4 unit residential</li>
+          <li><svg class="req-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Purchase price up to $5M</li>
+          <li><svg class="req-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Clear exit strategy (sell or refi)</li>
+          <li><svg class="req-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>First-time flippers welcome</li>
+        </ul>
+      </div>
+      <div class="requirements-col">
+        <h3>Not Eligible</h3>
+        <ul class="requirements-list">
+          <li><svg class="req-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Owner-occupied properties</li>
+          <li><svg class="req-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Commercial properties</li>
+          <li><svg class="req-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Land-only (no structure)</li>
+          <li><svg class="req-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Mobile or manufactured homes</li>
+          <li><svg class="req-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Credit score below 680</li>
+          <li><svg class="req-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>No exit strategy or plan</li>
+        </ul>
       </div>
     </div>
   </div>
