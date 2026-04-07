@@ -865,6 +865,130 @@ document.addEventListener("click", function(e) {
     .scroll-indicator svg { opacity: 0.7; }
     @keyframes bounce { 0%,20%,50%,80%,100%{ transform:translateY(0); } 40%{ transform:translateY(-8px); } 60%{ transform:translateY(-4px); } }
     @media (max-width: 600px) { .hero-inner { padding-top: 2rem !important; padding-bottom: 1.5rem !important; } }
+
+    /* ── How It Works ── */
+    .howitworks-section{
+      background:var(--white);
+      padding:clamp(2.5rem,5vw,4rem) 2rem 0;
+    }
+    .howitworks-inner{
+      max-width:900px;
+      margin:0 auto;
+    }
+    .howitworks-inner h2{
+      font-size:clamp(1.5rem,3.5vw,2.25rem);
+      font-weight:800;
+      color:var(--green);
+      margin-bottom:0.75rem;
+      text-align:center;
+    }
+    .howitworks-intro{
+      font-size:clamp(0.92rem,0.9rem + 0.15vw,1rem);
+      color:var(--gray-600);
+      line-height:1.7;
+      text-align:center;
+      max-width:720px;
+      margin:0 auto 2rem;
+    }
+    .howitworks-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:1.5rem;
+      margin-bottom:2.5rem;
+    }
+    .howitworks-card{
+      background:var(--cream);
+      border-radius:12px;
+      padding:1.5rem;
+    }
+    .howitworks-card h3{
+      font-family:'Plus Jakarta Sans','DM Sans',sans-serif;
+      font-size:1rem;
+      font-weight:700;
+      color:var(--green);
+      margin-bottom:0.5rem;
+    }
+    .howitworks-card p{
+      font-size:0.9rem;
+      color:var(--gray-600);
+      line-height:1.6;
+    }
+    .howitworks-text{
+      font-size:clamp(0.92rem,0.9rem + 0.15vw,1rem);
+      color:var(--gray-600);
+      line-height:1.75;
+      margin-bottom:1.5rem;
+    }
+    .howitworks-text strong{
+      color:var(--green);
+      font-weight:600;
+    }
+    @media(max-width:640px){
+      .howitworks-grid{grid-template-columns:1fr;}
+    }
+
+    /* ── Requirements ── */
+    .requirements-section{
+      background:var(--white);
+      padding:clamp(3rem,6vw,5rem) 2rem;
+    }
+    .requirements-inner{
+      max-width:900px;
+      margin:0 auto;
+      text-align:center;
+    }
+    .requirements-inner h2{
+      font-size:clamp(1.5rem,3.5vw,2.25rem);
+      font-weight:800;
+      color:var(--green);
+      margin-bottom:0.5rem;
+    }
+    .requirements-subtitle{
+      font-size:clamp(0.9rem,0.88rem + 0.15vw,1rem);
+      color:var(--gray-600);
+      max-width:600px;
+      margin:0 auto 2rem;
+      line-height:1.6;
+    }
+    .requirements-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:2rem;
+      max-width:750px;
+      margin:0 auto;
+      text-align:left;
+    }
+    .requirements-col h3{
+      font-size:1rem;
+      font-weight:700;
+      color:var(--green);
+      margin-bottom:1rem;
+    }
+    .requirements-list{
+      list-style:none;
+      padding:0;
+      margin:0;
+    }
+    .requirements-list li{
+      display:flex;
+      align-items:flex-start;
+      gap:0.6rem;
+      font-size:0.9rem;
+      color:#444;
+      line-height:1.5;
+      margin-bottom:0.75rem;
+    }
+    .requirements-list li svg{
+      flex-shrink:0;
+      width:18px;
+      height:18px;
+      margin-top:2px;
+    }
+    .req-check{color:#2b8a3e;}
+    .req-x{color:#c92a2a;}
+    @media(max-width:768px){
+      .requirements-grid{grid-template-columns:1fr;}
+    }
   </style>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <script type="application/ld+json">
@@ -1167,6 +1291,70 @@ document.addEventListener("click", function(e) {
           <div class="param-label">Recourse</div>
           <div class="param-value">Non-Recourse</div>
           <div class="param-note">Available for qualified borrowers</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── How Construction Loans Work ── -->
+  <section class="howitworks-section">
+    <div class="howitworks-inner">
+      <div class="section-label" style="color:var(--gold);">How It Works</div>
+      <h2>How Construction Loans Work</h2>
+      <p class="howitworks-intro">A construction loan is short-term financing that covers the cost of building a new home or developing a residential property. Unlike a traditional mortgage, funds are disbursed in stages as construction progresses.</p>
+
+      <div class="howitworks-grid">
+        <div class="howitworks-card">
+          <h3>Draw-based funding</h3>
+          <p>Construction loans don't fund all at once. Your total loan is held in escrow and released in draws as you complete each phase of the build: foundation, framing, mechanical, finish. This protects the lender and keeps your project funded on schedule.</p>
+        </div>
+        <div class="howitworks-card">
+          <h3>LTC and LTARV explained</h3>
+          <p>Loan-to-Cost (LTC) measures how much of your total project cost is covered by the loan. Loan-to-After-Repair-Value (LTARV) measures the loan against the finished property value. We lend up to 100% LTC and 75% LTARV, meaning experienced builders can finance the entire build cost.</p>
+        </div>
+        <div class="howitworks-card">
+          <h3>Timeline and terms</h3>
+          <p>Construction loan terms are typically 15 to 18 months, with extension options if needed. You pay interest only on the amount drawn, not the full loan amount. Once the build is complete, you sell the property or refinance into a permanent loan (DSCR or conventional).</p>
+        </div>
+        <div class="howitworks-card">
+          <h3>Who qualifies</h3>
+          <p>Licensed builders, experienced developers, and real estate investors building spec homes, custom homes, or build-to-rent properties. We evaluate the borrower, the project plan, and the local market. First-time builders can qualify by partnering with an experienced third-party general contractor, a program most private construction lenders don't offer.</p>
+        </div>
+      </div>
+
+      <p class="howitworks-text"><strong>How Ledger is different:</strong> We are a direct private construction lender, not a broker. Our capital comes from institutional sources, which means faster decisions, flexible draw schedules, and no middleman markup. We fund ground-up construction, spec homes, new builds, and build-to-rent projects across 40+ states. There is no prepayment penalty, and non-recourse is available for qualified borrowers.</p>
+    </div>
+  </section>
+
+  <!-- ── Requirements ── -->
+  <section class="requirements-section" id="requirements">
+    <div class="requirements-inner">
+      <div class="section-label" style="color:var(--gold);">Eligibility</div>
+      <h2>What You Need to Qualify</h2>
+      <p class="requirements-subtitle">Ground-up construction loans, spec home loans, and new build financing share the same core requirements.</p>
+      <div class="requirements-grid">
+        <div class="requirements-col">
+          <h3>Eligible</h3>
+          <ul class="requirements-list">
+            <li><svg class="req-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>680+ credit score</li>
+            <li><svg class="req-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Single-family new construction</li>
+            <li><svg class="req-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Townhomes and 2-4 unit builds</li>
+            <li><svg class="req-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Spec homes and build-to-rent</li>
+            <li><svg class="req-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Loans from $150K to $5M</li>
+            <li><svg class="req-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Entity borrowers (LLC, Corp)</li>
+            <li><svg class="req-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>First-time builders considered</li>
+          </ul>
+        </div>
+        <div class="requirements-col">
+          <h3>Not Eligible</h3>
+          <ul class="requirements-list">
+            <li><svg class="req-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Owner-occupied primary residence</li>
+            <li><svg class="req-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Commercial or mixed-use</li>
+            <li><svg class="req-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Raw land with no build plan</li>
+            <li><svg class="req-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Mobile or manufactured homes</li>
+            <li><svg class="req-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Credit score below 680</li>
+            <li><svg class="req-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>No exit strategy or budget</li>
+          </ul>
         </div>
       </div>
     </div>
