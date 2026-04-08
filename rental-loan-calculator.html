@@ -134,17 +134,46 @@ input[type="range"]::-moz-range-thumb { width: 22px; height: 22px; border-radius
 .prepay-toggle-btn { flex: 1; padding: 10px 12px; border: 1.5px solid var(--gray-100); border-radius: 8px; background: var(--white); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500; color: var(--text-secondary); cursor: pointer; text-align: center; transition: all 0.2s; }
 .prepay-toggle-btn.selected { border-color: var(--green); background: var(--green); color: var(--white); }
 
-.lead-form-section { background: var(--green); border-radius: 12px; padding: 32px; margin-top: 32px; color: var(--white); }
-.lead-form-section h3 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: 22px; font-weight: 700; margin-bottom: 6px; }
-.lead-form-section .lead-subtitle { font-size: 14px; opacity: 0.75; margin-bottom: 24px; }
-.lead-form-section input, .lead-form-section textarea { width: 100%; padding: 12px 14px; border: 1.5px solid rgba(255,255,255,0.2); border-radius: 8px; font-size: 15px; font-family: 'DM Sans', sans-serif; color: var(--white); background: rgba(255,255,255,0.1); margin-bottom: 12px; }
-.lead-form-section input::placeholder, .lead-form-section textarea::placeholder { color: rgba(255,255,255,0.5); }
-.lead-form-section input:focus, .lead-form-section textarea:focus { outline: none; border-color: var(--gold); }
-.lead-form-section textarea { resize: vertical; min-height: 80px; }
-.lead-form-section .btn-primary { width: 100%; margin-top: 8px; padding: 14px; font-size: 16px; }
+.lead-gate {
+  background: var(--green); border-radius: 12px;
+  padding: 32px; margin: 24px 0; color: var(--white);
+  text-align: center;
+}
+.lead-gate h3 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 22px; font-weight: 700; margin-bottom: 6px;
+}
+.lead-gate .lead-gate-teaser p {
+  font-size: 14px; opacity: 0.75; margin-bottom: 24px;
+  max-width: 420px; margin-left: auto; margin-right: auto;
+}
+.lead-gate .lead-gate-icon { font-size: 32px; margin-bottom: 12px; opacity: 0.8; }
+.lead-gate input,
+.lead-gate textarea {
+  width: 100%; padding: 12px 14px;
+  border: 1.5px solid rgba(255,255,255,0.2); border-radius: 8px;
+  font-size: 15px; font-family: 'DM Sans', sans-serif;
+  color: var(--white); background: rgba(255,255,255,0.1);
+  margin-bottom: 12px; text-align: left;
+}
+.lead-gate input::placeholder,
+.lead-gate textarea::placeholder { color: rgba(255,255,255,0.5); }
+.lead-gate input:focus,
+.lead-gate textarea:focus { outline: none; border-color: var(--gold); }
+.lead-gate textarea { resize: vertical; min-height: 80px; }
+.lead-gate .btn-primary {
+  width: 100%; margin-top: 8px; padding: 14px; font-size: 16px;
+}
 .lead-success { text-align: center; padding: 20px; display: none; }
 .lead-success .checkmark { font-size: 48px; margin-bottom: 12px; }
 .lead-success p { font-size: 16px; opacity: 0.9; }
+.gated-content.revealed {
+  animation: fadeSlideIn 0.5s ease-out;
+}
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 
 .program-badge { display: inline-block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 3px 10px; border-radius: 4px; background: var(--gold); color: var(--white); margin-top: 6px; }
 
@@ -161,7 +190,7 @@ input[type="range"]::-moz-range-thumb { width: 22px; height: 22px; border-radius
   .result-card .result-value { font-size: 24px; }
   .result-card.highlight .result-value { font-size: 28px; }
   .progress-line { width: 30px; }
-  .lead-form-section { padding: 24px 20px; }
+  .lead-gate { padding: 24px 20px; }
   .prepay-toggle-group { flex-direction: column; }
 }
 
@@ -629,6 +658,40 @@ document.addEventListener("click", function(e) {
 
     </div>
 
+    <!-- Lead Gate (shown before form submission) -->
+    <div class="lead-gate" id="lead-gate">
+      <div class="lead-gate-teaser">
+        <div class="lead-gate-icon">&#128274;</div>
+        <h3>Your full loan breakdown is ready</h3>
+        <p>Enter your contact info to see cash flow analysis, monthly breakdown, and adjust your terms.</p>
+      </div>
+      <div id="lead-form-content">
+        <form name="dscr-calculator-lead" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="leadForm" onsubmit="return submitLead(event)">
+          <input type="hidden" name="form-name" value="dscr-calculator-lead">
+          <input type="hidden" name="bot-field">
+          <input type="hidden" name="calculator-results" id="hidden-results">
+          <input type="hidden" name="form_loaded_at" id="form_loaded_at_calc">
+          <input type="hidden" name="form_source" value="dscr-calculator">
+          <div class="field-row" style="gap:12px;">
+            <input type="text" name="first-name" placeholder="First name" required>
+            <input type="text" name="last-name" placeholder="Last name" required>
+          </div>
+          <input type="email" name="email" placeholder="Email address" id="lead-email">
+          <input type="tel" name="phone" placeholder="Phone number" id="lead-phone">
+          <p style="font-size:12px; opacity:0.6; margin:-8px 0 8px;">Email or phone required (at least one).</p>
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAACtw1TOxqy4xMX4D" data-theme="dark" style="margin-bottom:12px;"></div>
+          <button type="submit" class="btn btn-primary">See Full Breakdown &rarr;</button>
+        </form>
+      </div>
+      <div class="lead-success" id="lead-success">
+        <div class="checkmark">&#10003;</div>
+        <p>Thanks! Your full breakdown is below. A loan officer will be in touch within one business day.</p>
+      </div>
+    </div>
+
+    <!-- Gated content (revealed after form submission) -->
+    <div class="gated-content" id="gated-content" style="display:none;">
+
     <!-- Sliders: LTV and Prepay -->
     <div class="slider-section" id="dscr-slider-section" style="display:none;">
       <h3>Adjust Your Terms</h3>
@@ -695,33 +758,7 @@ document.addEventListener("click", function(e) {
       <button class="btn btn-primary" onclick="showEditInputsDSCR()" style="display:block; margin:0 auto;">Edit Inputs</button>
     </div>
 
-    <div class="lead-form-section" id="lead-section">
-      <div id="lead-form-content">
-        <h3>Want a Formal Quote?</h3>
-        <p class="lead-subtitle">Enter your details and a loan officer will reach out within one business day.</p>
-        <form name="dscr-calculator-lead" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="leadForm" onsubmit="return submitLead(event)">
-          <input type="hidden" name="form-name" value="dscr-calculator-lead">
-          <input type="hidden" name="bot-field">
-          <input type="hidden" name="calculator-results" id="hidden-results">
-          <input type="hidden" name="form_loaded_at" id="form_loaded_at_calc">
-          <input type="hidden" name="form_source" value="dscr-calculator">
-          <div class="field-row" style="gap:12px;">
-            <input type="text" name="first-name" placeholder="First name" required>
-            <input type="text" name="last-name" placeholder="Last name" required>
-          </div>
-          <input type="email" name="email" placeholder="Email address" id="lead-email">
-          <input type="tel" name="phone" placeholder="Phone number" id="lead-phone">
-          <p style="font-size:12px; opacity:0.6; margin:-8px 0 8px;">Email or phone required (at least one).</p>
-          <textarea name="notes" placeholder="Anything else we should know? (optional)"></textarea>
-          <div class="cf-turnstile" data-sitekey="0x4AAAAAACtw1TOxqy4xMX4D" data-theme="dark" style="margin-bottom:12px;"></div>
-          <button type="submit" class="btn btn-primary">Submit Request &rarr;</button>
-        </form>
-      </div>
-      <div class="lead-success" id="lead-success">
-        <div class="checkmark">&#10003;</div>
-        <p>Thanks! A loan officer will be in touch within one business day.</p>
-      </div>
-    </div>
+    </div><!-- /gated-content -->
   </div>
   <!-- STEP 5: Edit Inputs -->
   <div class="step-card" id="step-5">
@@ -814,32 +851,6 @@ document.addEventListener("click", function(e) {
       <button class="btn btn-primary" onclick="recalcFromEditDSCR()">Recalculate &rarr;</button>
     </div>
 
-    <div class="lead-form-section">
-      <div>
-        <h3>Want a Formal Quote?</h3>
-        <p class="lead-subtitle">Enter your details and a loan officer will reach out within one business day.</p>
-        <form name="dscr-calculator-lead-edit" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="return submitLead(event)">
-          <input type="hidden" name="form-name" value="dscr-calculator-lead">
-          <input type="hidden" name="form_loaded_at" id="form_loaded_at_calc_edit">
-          <input type="hidden" name="form_source" value="dscr-calculator">
-          <input type="hidden" name="bot-field">
-          <input type="hidden" name="calculator-results" id="hidden-results-edit">
-          <div class="field-row" style="gap:12px;">
-            <input type="text" name="first-name" placeholder="First name" required>
-            <input type="text" name="last-name" placeholder="Last name" required>
-          </div>
-          <input type="email" name="email" placeholder="Email address">
-          <input type="tel" name="phone" placeholder="Phone number">
-          <p style="font-size:12px; opacity:0.6; margin:-8px 0 8px;">Email or phone required.</p>
-          <textarea name="notes" placeholder="Anything else? (optional)"></textarea>
-          <button type="submit" class="btn btn-primary">Submit Request &rarr;</button>
-        </form>
-      </div>
-      <div class="lead-success" style="display:none;">
-        <div class="checkmark">&#10003;</div>
-        <p>Thanks! A loan officer will be in touch within one business day.</p>
-      </div>
-    </div>
   </div>
 
 </div>
@@ -865,6 +876,7 @@ document.addEventListener("click", function(e) {
 <script>
 let currentStep = 1;
 const toggleValues = { interestOnly: 'Yes', cashOut: 'No' };
+let leadUnlocked = sessionStorage.getItem('calcLeadUnlocked_dscr') === 'true';
 
 // State-to-tier mapping for Incentive program pricing
 const STATE_TIERS = {
@@ -889,8 +901,35 @@ function goToStep(step) {
     if (i < 4) document.getElementById('line-' + i).classList.toggle('active', i < step);
   }
   currentStep = step;
+  if (step === 4) applyGateState();
   window.scrollTo({ top: 200, behavior: 'smooth' });
 }
+
+// ─── LEAD GATE ───
+function unlockGatedContent() {
+  leadUnlocked = true;
+  sessionStorage.setItem('calcLeadUnlocked_dscr', 'true');
+  var gate = document.getElementById('lead-gate');
+  var gated = document.getElementById('gated-content');
+  if (gate) gate.style.display = 'none';
+  if (gated) {
+    gated.style.display = 'block';
+    gated.classList.add('revealed');
+  }
+}
+
+function applyGateState() {
+  var gate = document.getElementById('lead-gate');
+  var gated = document.getElementById('gated-content');
+  if (leadUnlocked) {
+    if (gate) gate.style.display = 'none';
+    if (gated) { gated.style.display = 'block'; gated.classList.remove('revealed'); }
+  } else {
+    if (gate) gate.style.display = '';
+    if (gated) gated.style.display = 'none';
+  }
+}
+
 function nextStep(from) { if (validateStep(from)) goToStep(from + 1); }
 function prevStep(from) { goToStep(from - 1); }
 
@@ -1003,13 +1042,13 @@ const BASE_FICO = {
     '48':   { 0.50:0.25, 0.55:0.25, 0.60:0.25, 0.65:0.25, 0.70:0.25, 0.75:0.25, 0.80:0.25 },
     '60':   { 0.50:0.5, 0.55:0.5, 0.60:0.5, 0.65:0.5, 0.70:0.5, 0.75:0.5, 0.80:0.5 },
   },
-  // Rate table: rate -> 30yr par price (3/16 pricing)
+  // Rate table: rate -> 30yr par price (4/7 pricing, +25bps shift)
   rateTable: [
-    [8.875, 107.700], [8.75, 107.442], [8.625, 107.184], [8.5, 106.926], [8.375, 106.668],
-    [8.25, 106.410], [8.125, 106.152], [8.0, 105.894], [7.875, 105.636], [7.75, 105.378],
-    [7.625, 105.120], [7.5, 104.862], [7.375, 104.604], [7.25, 104.221], [7.125, 103.838],
-    [7.0, 103.455], [6.875, 102.885], [6.75, 102.314], [6.625, 101.556], [6.5, 100.798],
-    [6.375, 100.040], [6.25, 99.282], [6.125, 98.524], [6.0, 97.766], [5.875, 97.008], [5.75, 96.250],
+    [9.125, 107.700], [9.0, 107.442], [8.875, 107.184], [8.75, 106.926], [8.625, 106.668],
+    [8.5, 106.410], [8.375, 106.152], [8.25, 105.894], [8.125, 105.636], [8.0, 105.378],
+    [7.875, 105.120], [7.75, 104.862], [7.625, 104.604], [7.5, 104.221], [7.375, 103.838],
+    [7.25, 103.455], [7.125, 102.885], [7.0, 102.314], [6.875, 101.556], [6.75, 100.798],
+    [6.625, 100.040], [6.5, 99.282], [6.375, 98.524], [6.25, 97.766], [6.125, 97.008], [6.0, 96.250],
   ],
   targetPar: 101.0,
 };
@@ -1073,13 +1112,13 @@ const ADVANTAGE = {
     '48':   { 0.50:1.0, 0.55:1.0, 0.60:1.0, 0.65:1.0, 0.70:1.0, 0.75:1.0, 0.80:1.0 },
     '60':   { 0.50:1.5, 0.55:1.5, 0.60:1.5, 0.65:1.5, 0.70:1.5, 0.75:1.5, 0.80:1.5 },
   },
-  // 3/16 pricing: prices dropped -0.127 (high rates) to -0.301 (low rates)
+  // 4/7 pricing: +25bps shift from 3/16 rates
   rateTable: [
-    [8.625,107.468],[8.5,107.212],[8.375,106.934],[8.25,106.653],[8.125,106.369],
-    [8.0,106.064],[7.875,105.752],[7.75,105.413],[7.625,105.068],[7.5,104.696],
-    [7.375,104.307],[7.25,103.889],[7.125,103.433],[7.0,102.961],[6.875,102.442],
-    [6.75,101.898],[6.625,101.305],[6.5,100.682],[6.375,100.029],[6.25,99.346],
-    [6.125,98.622],[6.0,97.879],[5.875,96.949],
+    [8.875,107.468],[8.75,107.212],[8.625,106.934],[8.5,106.653],[8.375,106.369],
+    [8.25,106.064],[8.125,105.752],[8.0,105.413],[7.875,105.068],[7.75,104.696],
+    [7.625,104.307],[7.5,103.889],[7.375,103.433],[7.25,102.961],[7.125,102.442],
+    [7.0,101.898],[6.875,101.305],[6.75,100.682],[6.625,100.029],[6.5,99.346],
+    [6.375,98.622],[6.25,97.879],[6.125,96.949],
   ],
   targetPar: 101.0,
 };
@@ -1137,13 +1176,13 @@ const INCENTIVE = {
     '48':   { 0.50:0.5, 0.55:0.5, 0.60:0.5, 0.65:0.5, 0.70:0.5, 0.75:0.5, 0.80:0.5 },
     '60':   { 0.50:1.0, 0.55:1.0, 0.60:1.0, 0.65:1.0, 0.70:1.0, 0.75:1.0, 0.80:1.0 },
   },
-  // 3/16 pricing: uniform -0.040 price drop
+  // 4/7 pricing: +25bps shift from 3/16 rates
   rateTable: [
-    [8.75,105.745],[8.625,105.495],[8.5,105.245],[8.375,104.995],[8.25,104.745],
-    [8.125,104.464],[8.0,104.151],[7.875,103.839],[7.75,103.526],[7.625,103.214],
-    [7.5,102.839],[7.375,102.464],[7.25,102.026],[7.125,101.589],[7.0,101.089],
-    [6.875,100.589],[6.75,100.026],[6.625,99.464],[6.5,98.839],[6.375,98.214],
-    [6.25,97.526],[6.125,96.838],[6.0,96.151],[5.875,95.401],
+    [9.0,105.745],[8.875,105.495],[8.75,105.245],[8.625,104.995],[8.5,104.745],
+    [8.375,104.464],[8.25,104.151],[8.125,103.839],[8.0,103.526],[7.875,103.214],
+    [7.75,102.839],[7.625,102.464],[7.5,102.026],[7.375,101.589],[7.25,101.089],
+    [7.125,100.589],[7.0,100.026],[6.875,99.464],[6.75,98.839],[6.625,98.214],
+    [6.5,97.526],[6.375,96.838],[6.25,96.151],[6.125,95.401],
   ],
   targetPar: 101.0,
 };
@@ -1692,7 +1731,7 @@ function submitLead(e) {
     alert('Please provide either an email address or phone number.');
     return false;
   }
-  const section = form.closest('.lead-form-section');
+  const section = form.closest('.lead-gate') || form.closest('.lead-form-section');
   const params = new URLSearchParams(new FormData(form));
   params.set('page_url', window.location.href);
   params.set('page_name', document.title);
@@ -1716,10 +1755,12 @@ function submitLead(e) {
       gtag('event', 'form_submit', {'form_id': 'dscr-calculator'});
       gtag('event', 'conversion', {'send_to': 'AW-17993082803/mJ3YCMrRm5ccELPP4oND'});
     }
+    setTimeout(unlockGatedContent, 1200);
   }).catch(() => {
     form.parentElement.style.display = 'none';
     const success = section.querySelector('.lead-success');
     if (success) success.style.display = 'block';
+    setTimeout(unlockGatedContent, 1200);
   });
   return false;
 }
