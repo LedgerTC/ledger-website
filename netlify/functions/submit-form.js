@@ -22,6 +22,7 @@ const HUBSPOT_API = "https://api.hubapi.com";
 const FORM_SOURCE_TO_CAMPAIGN = {
   "construction-landing-page-google-ads": "GUC",
   "first-time-builder-landing-page-google-ads": "GUC",
+  "first-time-builder-landing-page": "GUC",
   "dscr-landing-page-google-ads": "DSCR",
   "fix-and-flip-landing-page-google-ads": "FnF",
   "broker-partner": "Broker",
@@ -907,6 +908,7 @@ exports.handler = async function (event) {
       const ticketCategoryMap = {
         "construction-landing-page-google-ads": "Campaign",
         "first-time-builder-landing-page-google-ads": "First Time Campaign",
+        "first-time-builder-landing-page": "First Time Campaign",
         "dscr-landing-page-google-ads": "DSCR Campaign",
         "fix-and-flip-landing-page-google-ads": "Fix and Flip Campaign",
       };
