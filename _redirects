@@ -1,25 +1,25 @@
 # Redirects from old WordPress site (ledgertc.com) to new site
-/about/          /what-we-do.html    301
-/about           /what-we-do.html    301
-/portfolio-term-loans/         /dscr.html          301
-/portfolio-term-loans          /dscr.html          301
-/private-sale/   /index.html       301
-/private-sale    /index.html       301
-/public-offering/  /index.html     301
-/public-offering   /index.html     301
-/landing-page-2/   /index.html     301
-/landing-page-2    /index.html     301
-/refund_returns/   /index.html     301
-/refund_returns    /index.html     301
-/portfolio-acquisitions/   /what-we-do.html  301
-/portfolio-acquisitions    /what-we-do.html  301
-/investment-sales-brokerage/  /what-we-do.html  301
-/investment-sales-brokerage   /what-we-do.html  301
+/about/          /what-we-do    301
+/about           /what-we-do    301
+/portfolio-term-loans/         /dscr          301
+/portfolio-term-loans          /dscr          301
+/private-sale/   /    301
+/private-sale    /    301
+/public-offering/  /     301
+/public-offering   /     301
+/landing-page-2/   /     301
+/landing-page-2    /     301
+/refund_returns/   /     301
+/refund_returns    /     301
+/portfolio-acquisitions/   /what-we-do  301
+/portfolio-acquisitions    /what-we-do  301
+/investment-sales-brokerage/  /what-we-do  301
+/investment-sales-brokerage   /what-we-do  301
 /sitemap/        /sitemap.xml      301
 # Old filenames redirect to new names
-/construction.html  /vertical-construction-loans.html  301
-/whatwedo.html       /what-we-do.html                   301
-/contact.html        /get-in-touch.html                 301
+/construction.html  /vertical-construction-loans  301
+/whatwedo.html       /what-we-do                   301
+/contact.html        /get-in-touch                 301
 # Core page .html redirects
 /team.html    /team    301!
 /what-we-do.html    /what-we-do    301!
