@@ -6,7 +6,7 @@
   <title>First-Time Builder Construction Loans | Ledger Trade & Capital</title>
   <meta name="description" content="First-time builder construction loans with zero prior builds required. Your GC's experience qualifies. Up to 90% LTC, up to $5M. Close in days. National private lender.">
   <meta name="keywords" content="first time builder construction loan, construction loan no experience, no prior builds construction loan, GC experience construction loan, first time spec home loan">
-  <meta name="robots" content="noindex, follow">
+  <meta name="robots" content="index, follow">
   <meta property="og:type" content="website">
   <meta property="og:title" content="First-Time Builder Construction Loans | Ledger Trade &amp; Capital">
   <meta property="og:description" content="Construction loans for first-time builders. Zero prior builds required. Your GC's experience qualifies. Up to 90% LTC, up to $5M.">
@@ -583,7 +583,7 @@ document.addEventListener("click", function(e) {
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
         </div>
         <div class="solution-text">
-          <h3>Not a lowered standard &mdash; a smarter one</h3>
+          <h3>Not a lowered standard, a smarter one</h3>
           <p>This isn't about lending to anyone with a pulse. We're looking at the actual risk: does the team executing this project know what they're doing? A first-time builder paired with a GC who has 50 completed homes is a strong deal.</p>
         </div>
       </div>
@@ -697,7 +697,7 @@ document.addEventListener("click", function(e) {
             <textarea id="details" name="details" placeholder="Tell us about your project &#8212; location, property type, estimated budget, and your GC's experience" rows="3" style="resize:vertical;min-height:72px;"></textarea>
           </div>
           <div style="position:absolute;left:-9999px;"><input type="text" name="website" tabindex="-1" autocomplete="off"></div>
-          <input type="hidden" name="form_source" value="first-time-builder-landing-page-google-ads">
+          <input type="hidden" name="form_source" id="form_source" value="first-time-builder-landing-page">
           <input type="hidden" name="form_loaded_at" id="form_loaded_at">
           <div class="cf-turnstile" data-sitekey="0x4AAAAAACtw1TOxqy4xMX4D" data-theme="light"></div>
           <button type="submit" class="form-submit">Check My Eligibility &rarr;</button>
@@ -769,7 +769,7 @@ document.addEventListener("click", function(e) {
   <!-- ── Final CTA ── -->
   <section class="final-cta">
     <h2>Ready to Build Your First Project?</h2>
-    <p>Tell us about your deal and your GC. No obligation, no credit pull &mdash; just a straight answer on whether we can fund it.</p>
+    <p>Tell us about your deal and your GC. No obligation, no credit pull. Just a straight answer on whether we can fund it.</p>
     <div class="final-cta-buttons">
       <a href="#form" class="btn-gold">See If You Qualify &uarr;</a>
       <a href="tel:2017491691" class="btn-outline">
@@ -785,7 +785,7 @@ document.addEventListener("click", function(e) {
       <div class="footer-logo-wrap"><img src="logo-inverse.png" alt="Ledger Trade &amp; Capital" width="269" height="67"></div>
       <div class="footer-center">
         <div class="footer-copy">&copy; 2026 Ledger Trade &amp; Capital. All rights reserved.</div>
-        <div class="footer-legal"><a href="https://ledgertc.com/terms-and-conditions.html">Terms of Service</a><span class="footer-sep">|</span><a href="https://ledgertc.com/privacy-policy.html">Privacy Policy</a></div>
+        <div class="footer-legal"><a href="https://ledgertc.com/terms-and-conditions">Terms of Service</a><span class="footer-sep">|</span><a href="https://ledgertc.com/privacy-policy">Privacy Policy</a></div>
       </div>
       <div class="footer-contact">
         60 Broad Street, Suite 2428, New York, NY 10004<br>
@@ -818,6 +818,16 @@ if (window.location.hostname === 'ledgertc.com') {
     });
     if (Object.keys(found).length > 0) {
       try { sessionStorage.setItem('ltc_tracking', JSON.stringify(found)); } catch(e) {}
+    }
+    // Tag form_source with channel so HubSpot attribution is accurate
+    var fs = document.getElementById('form_source');
+    if (fs) {
+      var hasAdsParam = lp.get('gclid') || lp.get('gbraid') || lp.get('wbraid');
+      var stored2 = {};
+      try { stored2 = JSON.parse(sessionStorage.getItem('ltc_tracking') || '{}'); } catch(e2) {}
+      if (hasAdsParam || stored2.gclid || stored2.gbraid || stored2.wbraid) {
+        fs.value = 'first-time-builder-landing-page-google-ads';
+      }
     }
   })();
   </script>
