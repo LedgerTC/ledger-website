@@ -27,6 +27,8 @@ const FORM_SOURCE_TO_CAMPAIGN = {
   "fix-and-flip-landing-page-google-ads": "FnF",
   "broker-partner": "Broker",
   "get-in-touch": "Website",
+  "rtl-calculator": "RTL Calculator",
+  "dscr-calculator": "DSCR Calculator",
 };
 
 function deriveAdCampaign(formSource, utmCampaign) {
