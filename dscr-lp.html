@@ -416,7 +416,7 @@ img{max-width:100%;height:auto;display:block;}
   margin-bottom:0.75rem;
 }
 .closings-inner h2{
-  font-size:clamp(1.5rem,3.5vw,2.25rem);
+  font-size:clamp(1.75rem,4vw,2.75rem);
   font-weight:800;
   margin-bottom:2.5rem;
 }
@@ -460,7 +460,7 @@ img{max-width:100%;height:auto;display:block;}
   text-align:center;
 }
 .params-inner h2{
-  font-size:clamp(1.5rem,3.5vw,2.25rem);
+  font-size:clamp(1.75rem,4vw,2.75rem);
   font-weight:800;
   color:var(--green);
   margin-bottom:2.5rem;
@@ -508,7 +508,7 @@ img{max-width:100%;height:auto;display:block;}
   text-align:center;
 }
 .estimate-inner h2{
-  font-size:clamp(1.5rem,3.5vw,2.25rem);
+  font-size:clamp(1.75rem,4vw,2.75rem);
   font-weight:800;
   color:var(--green);
   margin-bottom:0.5rem;
@@ -585,14 +585,15 @@ img{max-width:100%;height:auto;display:block;}
 /* ── How It Works ── */
 .howitworks-section{
   background:var(--white);
-  padding:clamp(2.5rem,5vw,4rem) 2rem 0;
+  padding:clamp(2.5rem,5vw,4rem) 2rem clamp(2.5rem,5vw,4rem);
 }
 .howitworks-inner{
   max-width:900px;
   margin:0 auto;
+  text-align:center;
 }
 .howitworks-inner h2{
-  font-size:clamp(1.5rem,3.5vw,2.25rem);
+  font-size:clamp(1.75rem,4vw,2.75rem);
   font-weight:800;
   color:var(--green);
   margin-bottom:0.75rem;
@@ -634,6 +635,7 @@ img{max-width:100%;height:auto;display:block;}
   color:var(--gray-600);
   line-height:1.75;
   margin-bottom:1.5rem;
+  text-align:left;
 }
 .howitworks-text strong{
   color:var(--green);
@@ -641,6 +643,85 @@ img{max-width:100%;height:auto;display:block;}
 }
 @media(max-width:640px){
   .howitworks-grid{grid-template-columns:1fr;}
+}
+
+/* ── LLC / Entity Section ── */
+.llc-section{
+  background:var(--green);
+  padding:clamp(3rem,6vw,5rem) 2rem;
+}
+.llc-inner{
+  max-width:900px;
+  margin:0 auto;
+  text-align:center;
+}
+.llc-inner h2{
+  font-size:clamp(1.75rem,4vw,2.75rem);
+  font-weight:800;
+  color:var(--white);
+  margin-bottom:0.75rem;
+}
+.llc-subtitle{
+  font-size:clamp(0.92rem,0.9rem + 0.15vw,1rem);
+  color:rgba(255,255,255,0.75);
+  line-height:1.7;
+  max-width:720px;
+  margin:0 auto 2.5rem;
+}
+.llc-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1.5rem;
+  margin-bottom:2.5rem;
+  text-align:left;
+}
+.llc-card{
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:12px;
+  padding:1.5rem;
+}
+.llc-card h3{
+  font-family:'Plus Jakarta Sans','DM Sans',sans-serif;
+  font-size:1rem;
+  font-weight:700;
+  color:var(--gold);
+  margin-bottom:0.5rem;
+}
+.llc-card p{
+  font-size:0.9rem;
+  color:rgba(255,255,255,0.8);
+  line-height:1.6;
+}
+.llc-bottom{
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.15);
+  border-radius:12px;
+  padding:1.75rem 2rem;
+  max-width:720px;
+  margin:0 auto;
+}
+.llc-bottom h3{
+  font-family:'Plus Jakarta Sans','DM Sans',sans-serif;
+  font-size:1.1rem;
+  font-weight:700;
+  color:var(--gold);
+  margin-bottom:0.5rem;
+}
+.llc-bottom p{
+  font-size:0.92rem;
+  color:rgba(255,255,255,0.8);
+  line-height:1.7;
+}
+.llc-bottom a{
+  color:var(--gold);
+  font-weight:600;
+}
+.llc-bottom a:hover{
+  text-decoration:underline;
+}
+@media(max-width:640px){
+  .llc-grid{grid-template-columns:1fr;}
 }
 
 /* ── FAQ ── */
@@ -654,7 +735,7 @@ img{max-width:100%;height:auto;display:block;}
   text-align:center;
 }
 .faq-inner h2{
-  font-size:clamp(1.5rem,3.5vw,2.25rem);
+  font-size:clamp(1.75rem,4vw,2.75rem);
   font-weight:800;
   color:var(--green);
   margin-bottom:2rem;
@@ -721,7 +802,7 @@ img{max-width:100%;height:auto;display:block;}
   padding:clamp(3rem,6vw,5rem) 2rem;
 }
 .final-cta h2{
-  font-size:clamp(1.5rem,3.5vw,2.25rem);
+  font-size:clamp(1.75rem,4vw,2.75rem);
   font-weight:800;
   margin-bottom:1rem;
 }
@@ -737,6 +818,7 @@ img{max-width:100%;height:auto;display:block;}
   gap:1rem;
   justify-content:center;
   flex-wrap:wrap;
+  margin-bottom:1.5rem;
 }
 
 /* ── Footer ── */
@@ -1163,9 +1245,42 @@ img{max-width:100%;height:auto;display:block;}
       </div>
     </div>
 
-    <p class="howitworks-text"><strong>How Ledger is different:</strong> We are a direct private lender, not a broker. Our capital comes from institutional sources, which means faster decisions, flexible structuring, and no middleman markup. We offer 30-year fully amortizing fixed rates with interest-only options up to 10 years, cash-out refinance with no seasoning requirement, and the ability to close in your LLC or corporate entity for asset protection. There is no yield maintenance or prepayment penalty.</p>
+    <p class="howitworks-text"><strong>How Ledger is different:</strong> We are a direct private lender, not a broker. Our capital comes from institutional sources, which means faster decisions, flexible structuring, and no middleman markup. We offer 30-year fully amortizing fixed rates with interest-only options up to 10 years, cash-out refinance with no seasoning requirement, and the ability to close in your LLC or corporate entity for asset protection. No yield maintenance penalty, stepdown prepayment structures only.</p>
 
     <p class="howitworks-text"><strong>Eligible states:</strong> We lend in 40+ states and DC. Our top markets include North Carolina, South Carolina, Virginia, Ohio, Florida, and Texas, but we serve investors nationwide with consistent terms and a streamlined process regardless of location.</p>
+  </div>
+</section>
+
+<!-- ── LLC / Entity Education ── -->
+<section class="llc-section">
+  <div class="llc-inner">
+    <div class="section-label" style="color:var(--gold);">Entity Structure</div>
+    <h2>LLC vs. Personal Name: What Rental Investors Need to Know</h2>
+    <p class="llc-subtitle">Most DSCR lenders require the property to be held in an LLC or business entity. If you currently own rentals in your personal name, here's why that matters and how to make the switch.</p>
+
+    <div class="llc-grid">
+      <div class="llc-card">
+        <h3>Why lenders require an LLC</h3>
+        <p>DSCR loans are investment loans, not consumer mortgages. Closing in an LLC separates the investment from your personal finances, which is how these loans are designed to work. It also means no personal income documentation is needed.</p>
+      </div>
+      <div class="llc-card">
+        <h3>Asset protection</h3>
+        <p>An LLC creates a legal barrier between your rental properties and your personal assets. If a tenant lawsuit or property claim arises, only the assets inside the LLC are exposed, not your home, savings, or other investments.</p>
+      </div>
+      <div class="llc-card">
+        <h3>Already own in personal name?</h3>
+        <p>You can transfer existing properties into an LLC and then refinance with a DSCR loan. Many investors use a cash-out refinance to pull equity from properties they originally purchased in their own name.</p>
+      </div>
+      <div class="llc-card">
+        <h3>Setting up is straightforward</h3>
+        <p>Forming an LLC typically takes a few days and costs a few hundred dollars depending on your state. You'll need an EIN from the IRS (free, takes 10 minutes online). That's it.</p>
+      </div>
+    </div>
+
+    <div class="llc-bottom">
+      <h3>We walk you through it</h3>
+      <p>If you're new to entity structuring, we'll guide you through the process. Our borrowers close in their LLC or corporate entity as standard practice, and we can help you understand what's needed before you apply. <a href="#form">Get in touch</a> and we'll point you in the right direction.</p>
+    </div>
   </div>
 </section>
 
@@ -1232,6 +1347,10 @@ img{max-width:100%;height:auto;display:block;}
       <div class="faq-item">
         <button class="faq-question" onclick="toggleFaq(this)">Do you lend nationwide?<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
         <div class="faq-answer"><div class="faq-answer-inner">Yes, we lend in 40+ states and DC. Whether your rental property is in Texas, Florida, Ohio, North Carolina, or Virginia, we can provide DSCR financing with consistent terms and a streamlined process.</div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">Do I need an LLC to get a DSCR loan?<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
+        <div class="faq-answer"><div class="faq-answer-inner">Yes, DSCR loans are closed in the name of an LLC or business entity, not in your personal name. If you don't have an LLC yet, it's simple to set one up. You'll need to form the LLC in your state, get an EIN from the IRS, and open a business bank account. We can walk you through the process and help you understand what's needed before closing.</div></div>
       </div>
       <div class="faq-item">
         <button class="faq-question" onclick="toggleFaq(this)">How is my rate calculated?<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
