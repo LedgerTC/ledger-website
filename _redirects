@@ -20,6 +20,27 @@
 /construction.html  /vertical-construction-loans.html  301
 /whatwedo.html       /what-we-do.html                   301
 /contact.html        /get-in-touch.html                 301
+# Core page .html redirects
+/team.html    /team    301!
+/what-we-do.html    /what-we-do    301!
+/get-in-touch.html    /get-in-touch    301!
+/bridge.html    /bridge    301!
+/dscr.html    /dscr    301!
+/vertical-construction-loans.html    /vertical-construction-loans    301!
+/broker-partners.html    /broker-partners    301!
+/where-we-lend.html    /where-we-lend    301!
+/fix-and-flip.html    /fix-and-flip    301!
+/construction-loan-calculator.html    /construction-loan-calculator    301!
+/rental-loan-calculator.html    /rental-loan-calculator    301!
+/build-to-rent.html    /build-to-rent    301!
+/fix-and-flip-lp.html    /fix-and-flip-lp    301!
+/construction-loans-lp.html    /construction-loans-lp    301!
+/dscr-lp.html    /dscr-lp    301!
+/first-time-builder-construction-loan.html    /first-time-builder-construction-loan    301!
+/loan-application.html    /loan-application    301!
+/privacy-policy.html    /privacy-policy    301!
+/terms-and-conditions.html    /terms-and-conditions    301!
+/thank-you.html    /thank-you    301!
 # State page .html redirects
 /private-lending-alabama.html    /private-lending-alabama    301!
 /private-lending-alaska.html    /private-lending-alaska    301!
