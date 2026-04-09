@@ -1044,6 +1044,14 @@ document.addEventListener("click", function(e) {
         "@type": "Answer",
         "text": "Up to 100% of construction costs and 75% of the after-repair value (LTARV). Loan amounts up to $5M per project."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use this loan to build my own home?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. These are business-purpose loans for builders and developers constructing homes for resale or rental. We do not finance primary or personal residences, or any home the borrower intends to occupy. Borrowers close in an LLC, LP, or corporation."
+      }
     }
   ]
 }
@@ -1067,7 +1075,7 @@ document.addEventListener("click", function(e) {
     <div class="hero-inner">
       <div class="hero-badge">National Direct Lender</div>
       <h1>Ground-Up Construction Loans for Builders from <span class="rate">8.875%</span></h1>
-      <p class="hero-sub">Close in as fast as 21 days. Draws in 48 hours. Built for builders who move fast.</p>
+      <p class="hero-sub">Close in as fast as 21 days. Draws in 48 hours. Built for builders who move fast. Business-purpose loans only, not for primary or personal residences.</p>
 
       <div class="stats-row">
         <div class="stat-item">
@@ -1161,7 +1169,7 @@ document.addEventListener("click", function(e) {
       <!-- Right: Form -->
       <div class="form-card">
         <h3>Get Your Custom Rate</h3>
-        <p class="form-sub">We respond within one business day.</p>
+        <p class="form-sub">We respond within one business day. Business-purpose loans only, not for primary or personal residences.</p>
 
         <form id="constructionLPForm">
           <div class="form-row">
@@ -1403,6 +1411,16 @@ document.addEventListener("click", function(e) {
         </button>
         <div class="faq-answer">
           <div class="faq-answer-inner">As fast as 21 days from completed application. We self-fund, so there's no waiting on third-party approvals or committee decisions. Repeat borrowers with clean files often close even faster.</div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="this.parentElement.classList.toggle('open')">
+          Can I use this loan to build my own home?
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">No. These are business-purpose loans for builders and developers constructing homes for resale or rental. We do not finance primary or personal residences, or any home the borrower intends to occupy. Borrowers close in an LLC, LP, or corporation.</div>
         </div>
       </div>
 

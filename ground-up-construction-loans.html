@@ -126,6 +126,14 @@ document.addEventListener("click", function(e) {
   "mainEntity": [
     {
       "@type": "Question",
+      "name": "Can I use this loan to build my own home?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. These are business-purpose loans for builders and developers constructing homes for resale or rental. We do not finance primary or personal residences, or any home the borrower intends to occupy. Borrowers close in an LLC, LP, or corporation."
+      }
+    },
+    {
+      "@type": "Question",
       "name": "How does the draw process work on a ground-up construction loan?",
       "acceptedAnswer": {
         "@type": "Answer",
@@ -244,6 +252,7 @@ document.addEventListener("click", function(e) {
 <section class="page-hero">
   <h1>Ground-Up Construction Loans</h1>
   <p>Draw-based financing for residential new builds. Fund your project from foundation to certificate of occupancy with competitive leverage and fast closings nationwide.</p>
+  <p style="font-size: 0.92rem; opacity: 0.85; margin-top: 0.75rem;">Business-purpose financing for licensed builders and developers. Not available for primary or personal residences.</p>
 </section>
 
 <section class="content-section">
@@ -346,6 +355,10 @@ document.addEventListener("click", function(e) {
   </div>
 
   <div class="faq-list">
+    <div class="faq-item">
+      <button class="faq-question">Can I use this loan to build my own home?<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
+      <div class="faq-answer"><div class="faq-answer-inner">No. These are business-purpose loans for builders and developers constructing homes for resale or rental. We do not finance primary or personal residences, or any home the borrower intends to occupy. Borrowers close in an LLC, LP, or corporation.</div></div>
+    </div>
     <div class="faq-item">
       <button class="faq-question">How does the draw process work on a ground-up construction loan?<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
       <div class="faq-answer"><div class="faq-answer-inner">After closing, loan funds are released through a series of <a href="construction-loan-draws.html" style="color:var(--gold);text-decoration:underline;">draws</a> tied to construction milestones in your approved budget. As each phase of work is completed, you request a draw, our team verifies the progress, and funds are released (typically within 48 hours). This keeps capital flowing to match your build schedule without tying up excess funds.</div></div>
