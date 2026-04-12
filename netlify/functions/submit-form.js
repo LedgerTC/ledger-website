@@ -39,6 +39,46 @@ function deriveAdCampaign(formSource, utmCampaign) {
   return "";
 }
 
+// ─── Format calculator results JSON into a readable one-liner ────
+function formatCalculatorResults(jsonStr) {
+  if (!jsonStr) return "";
+  try {
+    const d = JSON.parse(jsonStr);
+    const parts = [];
+    // DSCR calculator fields
+    if (d.program) parts.push(d.program);
+    if (d.loanAmt) parts.push("Loan $" + Number(d.loanAmt).toLocaleString());
+    if (d.propertyValue) parts.push("Property $" + Number(d.propertyValue).toLocaleString());
+    if (d.ltv) parts.push("LTV " + d.ltv);
+    if (d.dscr) parts.push("DSCR " + d.dscr);
+    if (d.rate) parts.push("Rate " + d.rate + "%");
+    if (d.monthlyPayment) parts.push("PITIA $" + Number(d.monthlyPayment).toLocaleString());
+    if (d.loanPurpose) parts.push(d.loanPurpose);
+    if (d.io) parts.push("Interest-Only");
+    if (d.propertyType) parts.push(d.propertyType);
+    if (d.stateName) parts.push(d.stateName);
+    // RTL/construction calculator fields
+    if (d.tla) parts.push("TLA $" + Number(d.tla).toLocaleString());
+    if (d.day1) parts.push("Day1 $" + Number(d.day1).toLocaleString());
+    if (d.holdback) parts.push("Holdback $" + Number(d.holdback).toLocaleString());
+    if (d.ltc) parts.push("LTC " + d.ltc);
+    if (d.ltaiv) parts.push("LTAIV " + d.ltaiv);
+    if (d.purchasePrice) parts.push("Purchase $" + Number(d.purchasePrice).toLocaleString());
+    if (d.rehabBudget) parts.push("Rehab $" + Number(d.rehabBudget).toLocaleString());
+    if (d.arv) parts.push("ARV $" + Number(d.arv).toLocaleString());
+    if (d.asIsValue) parts.push("As-Is $" + Number(d.asIsValue).toLocaleString());
+    if (d.fico) parts.push("FICO " + d.fico);
+    if (d.experience !== undefined && d.experience !== "") parts.push("Exp " + d.experience);
+    if (d.assetType) parts.push(d.assetType);
+    if (d.dealType) parts.push(d.dealType);
+    if (d.loanTerm) parts.push(d.loanTerm + "mo");
+    if (d.tier) parts.push("Tier " + d.tier);
+    return parts.join(" | ");
+  } catch (e) {
+    return jsonStr;
+  }
+}
+
 // ─── Disposable / throwaway email domains (silent-reject on match) ──
 const DISPOSABLE_EMAIL_DOMAINS = new Set([
   // High-volume throwaway services
@@ -237,6 +277,7 @@ async function findOrCreateContact(formData) {
     ...(formData.formSource && { form_source: formData.formSource }),
     ...(formData.adCampaign && { ad_campaign: formData.adCampaign }),
     ...(formData.utmCampaign && { utm_campaign: formData.utmCampaign }),
+    ...(formData.projectDetails && { project_details: formData.projectDetails }),
   };
 
   // Set source attribution for Google Ads contacts
@@ -296,6 +337,9 @@ async function backfillTracking(existing, formData) {
   }
   if (formData.isGoogleAds) {
     updateProps.hs_analytics_source = "PAID_SEARCH";
+  }
+  if (formData.projectDetails) {
+    updateProps.project_details = formData.projectDetails;
   }
   if (Object.keys(updateProps).length > 0) {
     const updated = await hubspot("PATCH", `/crm/v3/objects/contacts/${existing.id}`, {
@@ -705,6 +749,11 @@ exports.handler = async function (event) {
     // Campaign attribution from form_source and/or UTMs
     formData.formSource = raw.form_source || "";
     formData.adCampaign = deriveAdCampaign(formData.formSource, formData.utmCampaign);
+
+    // Calculator results and project details -> project_details contact property
+    const calcSummary = formatCalculatorResults(raw["calculator-results"] || "");
+    const projectText = formData.projectOverview || "";
+    formData.projectDetails = [calcSummary, projectText].filter(Boolean).join(" | ") || "";
 
     // ── Honeypot check ──────────────────────────────────────────
     if (formData.website) {
