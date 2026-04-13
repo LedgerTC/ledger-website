@@ -1743,6 +1743,8 @@ function submitLead(e) {
   ['gclid','gbraid','wbraid','gad_source','gad_campaignid','utm_source','utm_medium','utm_campaign','utm_term','utm_content'].forEach(function(k) {
     var v = lp.get(k) || stored[k]; if (v) params.set(k, v);
   });
+  var adsLp = ''; try { adsLp = sessionStorage.getItem('ltc_ads_lp') || ''; } catch(e) {}
+  if (adsLp) params.set('ads_lp', adsLp);
   fetch('/.netlify/functions/submit-form', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },

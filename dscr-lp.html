@@ -1440,6 +1440,8 @@ function toggleFaq(btn){
   if (Object.keys(found).length > 0) {
     try { sessionStorage.setItem('ltc_tracking', JSON.stringify(found)); } catch(e) {}
   }
+  // Flag ads LP origin for cross-page attribution (works even if gclid stripped)
+  try { sessionStorage.setItem('ltc_ads_lp', 'dscr-lp'); } catch(e) {}
 })();
 </script>
 
@@ -1477,6 +1479,8 @@ function toggleFaq(btn){
     }
     formData.set('hutk', getHubspotCookie());
     formData.set('page_name', document.title);
+    var adsLp=''; try{adsLp=sessionStorage.getItem('ltc_ads_lp')||'';}catch(e){}
+    if(adsLp)formData.set('ads_lp',adsLp);
 
     fetch('/.netlify/functions/submit-form',{
       method:'POST',

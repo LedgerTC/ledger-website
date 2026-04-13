@@ -31,11 +31,19 @@ const FORM_SOURCE_TO_CAMPAIGN = {
   "dscr-calculator": "DSCR Calculator",
 };
 
-function deriveAdCampaign(formSource, utmCampaign) {
+// Map ads LP sessionStorage flag to campaign (fallback when gclid stripped)
+const ADS_LP_TO_CAMPAIGN = {
+  "fix-and-flip-lp": "FnF",
+  "construction-loans-lp": "GUC",
+  "dscr-lp": "DSCR",
+};
+
+function deriveAdCampaign(formSource, utmCampaign, adsLp) {
   if (formSource && FORM_SOURCE_TO_CAMPAIGN[formSource]) {
     return FORM_SOURCE_TO_CAMPAIGN[formSource];
   }
   if (utmCampaign) return utmCampaign;
+  if (adsLp && ADS_LP_TO_CAMPAIGN[adsLp]) return ADS_LP_TO_CAMPAIGN[adsLp];
   return "";
 }
 
@@ -745,11 +753,12 @@ exports.handler = async function (event) {
     // Resolve Google click ID: gclid > gbraid > wbraid
     formData.googleClickId = formData.gclid || formData.gbraid || formData.wbraid || "";
     const formSource = raw.form_source || "";
-    formData.isGoogleAds = !!(formData.googleClickId || formData.gadSource || formData.gadCampaignId || formSource.includes("google-ads"));
+    formData.adsLp = raw.ads_lp || "";
+    formData.isGoogleAds = !!(formData.googleClickId || formData.gadSource || formData.gadCampaignId || formSource.includes("google-ads") || formData.adsLp);
 
     // Campaign attribution from form_source and/or UTMs
     formData.formSource = raw.form_source || "";
-    formData.adCampaign = deriveAdCampaign(formData.formSource, formData.utmCampaign);
+    formData.adCampaign = deriveAdCampaign(formData.formSource, formData.utmCampaign, formData.adsLp);
 
     // Calculator results and project details -> project_details contact property
     const calcSummary = formatCalculatorResults(raw["calculator-results"] || "");

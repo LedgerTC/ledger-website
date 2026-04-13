@@ -524,6 +524,8 @@ document.addEventListener("click", function(e) {
     }
     formData.set('hutk', getHubspotCookie());
     formData.set('page_name', document.title);
+    var adsLp=''; try{adsLp=sessionStorage.getItem('ltc_ads_lp')||'';}catch(e){}
+    if(adsLp)formData.set('ads_lp',adsLp);
 
     fetch('/.netlify/functions/submit-form', {
       method: 'POST',
