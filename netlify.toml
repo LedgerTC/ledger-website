@@ -2,5 +2,5 @@
   included_files = ["netlify/functions/documents/**"]
 
 [build]
-  command = "if [ \"$IS_PRODUCTION\" = 'true' ]; then echo 'User-agent: *' > robots.txt && echo 'Allow: /' >> robots.txt && echo 'Sitemap: https://ledgertc.com/sitemap.xml' >> robots.txt; else echo 'User-agent: *' > robots.txt && echo 'Disallow: /' >> robots.txt; fi"
+  command = "if [ \"$IS_PRODUCTION\" != 'true' ]; then echo 'User-agent: *' > robots.txt && echo 'Disallow: /' >> robots.txt; fi"
   publish = "."
