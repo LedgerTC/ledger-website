@@ -1,0 +1,38 @@
+# Ledger Trade & Capital
+
+> Ledger Trade & Capital is a private residential construction lender serving licensed builders and experienced real estate developers across 40 states and Washington, D.C. The company provides ground-up construction loans, DSCR rental loans, fix-and-flip loans, bridge loans, spec home construction loans, and build-to-rent financing for investment properties up to $5M. Ledger is a B2B lender (not a consumer lender) with a builder-focused approach, offering up to 90% loan-to-cost, flexible draw schedules, no prepayment penalties, and fast closings.
+
+## Loan Products
+
+- [Vertical Construction Loans](https://ledgertc.com/vertical-construction-loans): Short-term financing for new residential construction projects, covering vertical build costs with flexible draw schedules.
+- [Ground-Up Construction Loans](https://ledgertc.com/ground-up-construction-loans): Financing for builders constructing new residential properties from the ground up, including land and vertical costs.
+- [Spec Home Construction Loans](https://ledgertc.com/spec-home-construction-loans): Construction financing for speculative home builds where the property is not pre-sold to a buyer.
+- [DSCR Rental Loans](https://ledgertc.com/dscr): Long-term rental property loans qualified on property cash flow (debt service coverage ratio) rather than borrower income.
+- [Fix and Flip Loans](https://ledgertc.com/fix-and-flip): Short-term rehab financing for investors purchasing and renovating residential properties for resale.
+- [Bridge Loans](https://ledgertc.com/bridge): Short-term bridge financing for investors who need to close quickly or transition between loan products.
+- [Build to Rent](https://ledgertc.com/build-to-rent): Financing for builders constructing single-family or small multifamily properties intended for long-term rental.
+- [First-Time Builder Construction Loans](https://ledgertc.com/first-time-builder-construction-loan): Construction loan programs available to builders completing their first ground-up project.
+
+## Calculators and Tools
+
+- [Construction Loan Calculator](https://ledgertc.com/construction-loan-calculator): Interactive calculator for estimating construction loan payments, interest reserves, and total project costs.
+- [DSCR Rental Loan Calculator](https://ledgertc.com/rental-loan-calculator): Calculator for estimating DSCR rental loan payments and determining debt service coverage ratios.
+
+## Educational Content
+
+- [What is DSCR?](https://ledgertc.com/what-is-dscr): Explanation of the debt service coverage ratio, how it is calculated, and why lenders use it to qualify rental property loans.
+- [LTC vs LTV](https://ledgertc.com/ltc-vs-ltv): Comparison of loan-to-cost and loan-to-value metrics, explaining when each applies in construction and investment lending.
+- [BRRRR Strategy](https://ledgertc.com/brrrr-strategy): Overview of the Buy, Rehab, Rent, Refinance, Repeat investment strategy and how financing supports each step.
+- [How Construction Loan Draws Work](https://ledgertc.com/construction-loan-draws): Guide to the construction draw process, including inspection schedules, draw requests, and fund disbursement.
+
+## Company
+
+- [What We Do](https://ledgertc.com/what-we-do): Overview of Ledger's lending programs, target borrowers, and how the company works with builders and investors.
+- [Meet the Team](https://ledgertc.com/team): The people behind Ledger Trade & Capital.
+- [Where We Lend](https://ledgertc.com/where-we-lend): Geographic coverage map and list of all states where Ledger originates loans.
+- [Broker Partners](https://ledgertc.com/broker-partners): Information on Ledger's wholesale broker partner program for mortgage brokers and loan originators.
+- [Get in Touch](https://ledgertc.com/get-in-touch): Contact form and information for borrowers, brokers, and other inquiries.
+
+## State Coverage
+
+Ledger lends in 40 states plus Washington, D.C. Individual state pages with local lending details are available at `ledgertc.com/private-lending-{state}` (e.g., `/private-lending-north-carolina`, `/private-lending-florida`, `/private-lending-texas`). The full list of covered states is available on the [Where We Lend](https://ledgertc.com/where-we-lend) hub page.
