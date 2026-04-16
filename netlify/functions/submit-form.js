@@ -297,10 +297,10 @@ async function findOrCreateContact(formData) {
     // hutk association re-attributes to the true session source. This initial
     // value only sticks when hutk is absent. Without it, HS would otherwise
     // stamp the contact OFFLINE / INTEGRATION because we create via CRM API.
+    // (hs_analytics_source_data_1 is read-only via the API, so we can't
+    // overwrite the INTEGRATION stamp; the page URL is captured in
+    // hs_analytics_first_url and form_source for reporting.)
     contactProps.hs_analytics_source = "DIRECT_TRAFFIC";
-    if (formData.pageUrl) {
-      contactProps.hs_analytics_source_data_1 = formData.pageUrl;
-    }
   }
 
   const created = await hubspot("POST", "/crm/v3/objects/contacts", {
@@ -357,11 +357,10 @@ async function backfillTracking(existing, formData) {
     updateProps.hs_analytics_source = "PAID_SEARCH";
   } else if (existing.properties.hs_analytics_source_data_1 === "INTEGRATION") {
     // Previously stamped OFFLINE / INTEGRATION because hutk was missing on the
-    // first submit (blocked pixel). Repair it on resubmit.
+    // first submit (blocked pixel). Repair the source on resubmit.
+    // (source_data_1 itself is read-only via the API and will stay "INTEGRATION"
+    // on repaired contacts, but the headline source is what drives reporting.)
     updateProps.hs_analytics_source = "DIRECT_TRAFFIC";
-    if (formData.pageUrl) {
-      updateProps.hs_analytics_source_data_1 = formData.pageUrl;
-    }
   }
   if (formData.projectDetails) {
     updateProps.project_details = formData.projectDetails;
