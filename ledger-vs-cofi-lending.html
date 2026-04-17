@@ -90,29 +90,102 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    .top-bar {
+    /* ── SITE NAV ── */
+    .site-nav {
       background: rgba(242,239,233,0.95);
-      padding: 1.25rem clamp(1.5rem, 3vw, 4rem);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 100;
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--gray-100);
+      padding: 1.1rem clamp(1.5rem, 3vw, 4rem);
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; z-index: 100;
     }
-    .top-bar-logo img { height: 38px; width: auto; display: block; }
-    .top-bar-phone { display: flex; align-items: center; gap: 8px; }
-    .top-bar-phone a {
-      color: var(--green);
-      text-decoration: none;
-      font-size: clamp(0.85rem, 0.82rem + 0.2vw, 0.95rem);
-      font-weight: 600;
-      letter-spacing: 0.02em;
+    .site-nav-logo { margin-right: auto; display: inline-flex; align-items: center; }
+    .site-nav-logo img { height: 38px; width: auto; display: block; }
+    .site-nav-links {
+      display: flex; align-items: center; gap: clamp(1.25rem, 2vw, 2.25rem);
+      list-style: none; margin: 0 2rem 0 0; padding: 0;
     }
-    .top-bar-phone a:hover { color: var(--gold-dark); }
-    .top-bar-phone svg { color: var(--gold); }
+    .site-nav-links > li > a, .site-nav-links .dd > a {
+      color: var(--gray-600); text-decoration: none;
+      font-size: clamp(0.82rem, 0.78rem + 0.2vw, 0.9rem);
+      font-weight: 500; transition: color 0.2s; cursor: pointer;
+    }
+    .site-nav-links a:hover { color: var(--green); }
+    .site-nav-links .dd { position: relative; }
+    .site-nav-links .dd-menu {
+      display: none; position: absolute; top: 100%; left: -1rem;
+      padding-top: 0.75rem; min-width: 220px;
+    }
+    .site-nav-links .dd:hover .dd-menu { display: block; }
+    .site-nav-links .dd-menu ul {
+      background: #fff; border: 1px solid var(--gray-100); border-radius: 10px;
+      padding: 0.5rem 0; list-style: none; box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
+    .site-nav-links .dd-menu li a {
+      display: block; padding: 0.55rem 1.25rem;
+      font-size: clamp(0.8rem, 0.76rem + 0.15vw, 0.85rem);
+      color: var(--gray-600); text-decoration: none; transition: background 0.15s, color 0.15s;
+    }
+    .site-nav-links .dd-menu li a:hover { background: var(--cream); color: var(--green); }
+    .site-nav-cta {
+      background: var(--gold); color: #fff; padding: 0.6rem 1.5rem; border-radius: 6px;
+      font-weight: 700; font-size: clamp(0.8rem, 0.76rem + 0.15vw, 0.85rem);
+      text-decoration: none; transition: background 0.2s, transform 0.2s; letter-spacing: 0.02em;
+    }
+    .site-nav-cta:hover { background: var(--gold-dark); transform: translateY(-1px); }
+    .site-nav-phone {
+      display: inline-flex; align-items: center; gap: 8px; margin-right: 1rem;
+      color: var(--green); text-decoration: none; font-weight: 600;
+      font-size: clamp(0.82rem, 0.78rem + 0.15vw, 0.9rem);
+    }
+    .site-nav-phone:hover { color: var(--gold-dark); }
+    .site-nav-phone svg { color: var(--gold); }
+    .site-nav-hamburger {
+      display: none; background: none; border: none; cursor: pointer;
+      font-size: 1.6rem; color: var(--green); padding: 0.25rem; line-height: 1;
+    }
+    .site-mobile-menu {
+      display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(242,239,233,0.98); backdrop-filter: blur(12px);
+      z-index: 101; flex-direction: column; align-items: center; justify-content: flex-start;
+      padding: 3.5rem 2rem 2rem; overflow-y: auto;
+    }
+    .site-mobile-menu.open { display: flex; }
+    .site-mobile-menu a {
+      color: var(--gray-700); text-decoration: none;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.95rem; font-weight: 600; padding: 0.5rem 1.25rem; border-radius: 8px;
+      width: 100%; max-width: 320px; text-align: center; transition: color 0.2s, background 0.2s;
+    }
+    .site-mobile-menu a:hover { color: var(--green); background: rgba(196,154,60,0.06); }
+    .site-mobile-menu .sm-label {
+      font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.95rem; font-weight: 700;
+      color: var(--gray-700);
+      padding: 0.5rem 1.25rem 0.1rem; width: 100%; max-width: 320px; text-align: center;
+      border-top: 1px solid var(--gray-100); margin-top: 0.35rem;
+    }
+    .site-mobile-menu .sm-sub { display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 320px; }
+    .site-mobile-menu .sm-sub a { font-size: 0.88rem; font-weight: 500; color: var(--gray-500); padding: 0.35rem 1.25rem; }
+    .site-mobile-menu .sm-cta {
+      margin-top: 1.25rem; background: var(--gold); color: #fff !important;
+      padding: 0.85rem 2rem; border-radius: 8px; font-weight: 700;
+      border-top: none;
+    }
+    .site-mobile-menu .sm-cta:hover { background: var(--gold-dark); color: #fff !important; }
+    .site-mobile-close {
+      position: absolute; top: 1rem; right: 1.25rem; background: none; border: none;
+      font-size: 2rem; color: var(--green); cursor: pointer; line-height: 1; z-index: 102;
+    }
+    @media (max-width: 900px) {
+      .site-nav-links, .site-nav-cta, .site-nav-phone { display: none !important; }
+      .site-nav-hamburger { display: block; }
+    }
+    @media (min-width: 901px) and (max-width: 1180px) {
+      .site-nav-links { gap: 0.9rem; margin-right: 1rem; }
+      .site-nav-links a { font-size: 0.78rem; }
+      .site-nav-cta { font-size: 0.78rem; padding: 0.5rem 1rem; }
+      .site-nav-phone { font-size: 0.8rem; }
+    }
 
     .hero {
       background: var(--green);
@@ -662,17 +735,84 @@
 </head>
 <body>
 
-  <div class="top-bar">
-    <a class="top-bar-logo" href="https://ledgertc.com">
-      <img src="logo-color.png" alt="Ledger Trade &amp; Capital" width="269" height="67">
+  <nav class="site-nav">
+    <a class="site-nav-logo" href="https://ledgertc.com/"><img src="logo-color.png" alt="Ledger Trade &amp; Capital" width="269" height="67"></a>
+    <ul class="site-nav-links">
+      <li class="dd"><a>Loan Products &#9662;</a>
+        <div class="dd-menu"><ul>
+          <li><a href="https://ledgertc.com/vertical-construction-loans">New Construction</a></li>
+          <li><a href="https://ledgertc.com/first-time-builder-construction-loan">First-Time Builders</a></li>
+          <li><a href="https://ledgertc.com/dscr">DSCR Rental</a></li>
+          <li><a href="https://ledgertc.com/bridge">Bridge</a></li>
+          <li><a href="https://ledgertc.com/fix-and-flip">Fix &amp; Flip</a></li>
+          <li><a href="https://ledgertc.com/build-to-rent">Build to Rent</a></li>
+        </ul></div>
+      </li>
+      <li class="dd"><a>Who We Are &#9662;</a>
+        <div class="dd-menu"><ul>
+          <li><a href="https://ledgertc.com/what-we-do">What We Do</a></li>
+          <li><a href="https://ledgertc.com/team">Meet the Team</a></li>
+          <li><a href="https://ledgertc.com/where-we-lend">Where We Lend</a></li>
+        </ul></div>
+      </li>
+      <li><a href="https://ledgertc.com/broker-partners">Broker Partners</a></li>
+      <li class="dd"><a>Pricing Tools &#9662;</a>
+        <div class="dd-menu"><ul>
+          <li><a href="https://ledgertc.com/construction-loan-calculator">Construction</a></li>
+          <li><a href="https://ledgertc.com/rental-loan-calculator">DSCR Rental</a></li>
+        </ul></div>
+      </li>
+    </ul>
+    <a class="site-nav-phone" href="tel:2017491691">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      (201) 749-1691
     </a>
-    <div class="top-bar-phone">
-      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-      <a href="tel:2017491691">(201) 749-1691</a>
+    <a href="https://ledgertc.com/get-in-touch" class="site-nav-cta">Apply Now</a>
+    <button class="site-nav-hamburger" aria-label="Open menu">&#9776;</button>
+  </nav>
+
+  <div class="site-mobile-menu" id="siteMobileMenu">
+    <button class="site-mobile-close" aria-label="Close menu">&times;</button>
+    <a href="https://ledgertc.com/">Home</a>
+    <div class="sm-label">Loan Products</div>
+    <div class="sm-sub">
+      <a href="https://ledgertc.com/vertical-construction-loans">New Construction</a>
+      <a href="https://ledgertc.com/first-time-builder-construction-loan">First-Time Builders</a>
+      <a href="https://ledgertc.com/dscr">DSCR Rental</a>
+      <a href="https://ledgertc.com/bridge">Bridge</a>
+      <a href="https://ledgertc.com/fix-and-flip">Fix &amp; Flip</a>
+      <a href="https://ledgertc.com/build-to-rent">Build to Rent</a>
     </div>
+    <div class="sm-label">Who We Are</div>
+    <div class="sm-sub">
+      <a href="https://ledgertc.com/what-we-do">What We Do</a>
+      <a href="https://ledgertc.com/team">Meet the Team</a>
+      <a href="https://ledgertc.com/where-we-lend">Where We Lend</a>
+    </div>
+    <a href="https://ledgertc.com/broker-partners" class="sm-label" style="text-decoration: none;">Broker Partners</a>
+    <div class="sm-label">Pricing Tools</div>
+    <div class="sm-sub">
+      <a href="https://ledgertc.com/construction-loan-calculator">Construction</a>
+      <a href="https://ledgertc.com/rental-loan-calculator">DSCR Rental</a>
+    </div>
+    <a href="tel:2017491691">(201) 749-1691</a>
+    <a href="https://ledgertc.com/get-in-touch" class="sm-cta">Apply Now</a>
   </div>
+  <script>
+  (function(){
+    var btn=document.querySelector('.site-nav-hamburger'),
+        menu=document.getElementById('siteMobileMenu');
+    if(!btn||!menu) return;
+    var close=menu.querySelector('.site-mobile-close');
+    btn.addEventListener('click',function(){menu.classList.add('open');document.body.style.overflow='hidden';});
+    close.addEventListener('click',function(){menu.classList.remove('open');document.body.style.overflow='';});
+    menu.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){menu.classList.remove('open');document.body.style.overflow='';});});
+  })();
+  </script>
 
   <!-- Hero -->
+
+
   <section class="hero">
     <div class="hero-inner">
       <div class="hero-badge">Ledger vs. CoFi Lending</div>
@@ -690,8 +830,8 @@
   <section class="intro">
     <div class="intro-inner">
       <h2>Who Ledger is, and why this page exists</h2>
-      <p><strong>Ledger Trade &amp; Capital is a direct private lender</strong> purpose-built for licensed builders and experienced real estate developers. We finance ground-up construction, DSCR rental, spec home, fix-and-flip, and portfolio term loans up to $5M, in 40 states plus Washington, D.C. B2B only, never consumer. Every loan we write is underwritten, closed, and serviced by our in-house team, not brokered or routed to a third-party capital source.</p>
-      <p>Our entire product stack is built around the lifecycle of a single project: acquisition, vertical construction, spec-home exit, DSCR refinance for long-term hold, or portfolio term debt rolling multiple assets into one loan. A builder can stay with the same underwriter from groundbreak through stabilization.</p>
+      <p><strong>Ledger Trade &amp; Capital is a direct private lender</strong> purpose-built for licensed builders and experienced real estate developers. We finance ground-up construction, DSCR rental, and fix-and-flip loans up to $5M, in 40 states plus Washington, D.C. B2B only, never consumer. Every loan we write is underwritten, closed, and serviced by our in-house team, not brokered or routed to a third-party capital source.</p>
+      <p>Our entire product stack is built around the lifecycle of a single project: acquisition, vertical construction, and DSCR refinance for the long-term hold. A builder can stay with the same underwriter from groundbreak through stabilization.</p>
       <p>Headline numbers: up to 90% LTC on vertical construction, 80% LTV on DSCR, rates from 8.875%, no prepay penalty on construction, 48-hour draw turnaround, and named-underwriter deal handling. Pricing is program- and FICO-driven, not one advertised teaser rate.</p>
       <p>CoFi Lending (cofilending.com, d/b/a Construction Finance Corporation) is a direct construction lender focused squarely on one thing: building. They list New Construction, Production &amp; Tract, Fix &amp; Flip, and Manufactured Homes as their posted products. CoFi earned a 2024 Inc. 5000 ranking and positions itself as a construction specialist rather than a full-stack real estate lender.</p>
       <p>CoFi's footprint is narrow and deep: four western states (California, Idaho, Oregon, Utah). They don't offer a DSCR or long-term rental product, which means a builder working with CoFi needs a second lender for their refinance or hold exit. This page pulls the parameters each of us publishes on our own site as of April 17, 2026. Fields CoFi does not publish are marked &ldquo;not published&rdquo; rather than estimated.</p>
@@ -715,8 +855,6 @@
           <tr><td class="product">Ground-up construction</td><td class="check yes">✓</td><td class="check yes">✓</td></tr>
           <tr><td class="product">DSCR / rental</td><td class="check yes">✓</td><td class="check no">&mdash;</td></tr>
           <tr><td class="product">Fix &amp; flip</td><td class="check yes">✓</td><td class="check yes">✓</td></tr>
-          <tr><td class="product">Spec home</td><td class="check yes">✓</td><td class="check no">&mdash;</td></tr>
-          <tr><td class="product">Portfolio term</td><td class="check yes">✓</td><td class="check no">&mdash;</td></tr>
           <tr><td class="product">Bridge</td><td class="check no">&mdash;</td><td class="check no">&mdash;</td></tr>
         </tbody>
       </table>
@@ -741,7 +879,7 @@
           <tr><td class="param">Max LTV</td><td class="us">Sized by LTC</td><td class="them">Up to 75%</td></tr>
           <tr><td class="param">Max LTC (total project)</td><td class="us">90%</td><td class="them">Up to 85%</td></tr>
           <tr><td class="param">Term</td><td class="us">12&ndash;18 months</td><td class="them">Up to 18 months</td></tr>
-          <tr><td class="param">Min FICO</td><td class="us">Varies by program</td><td class="them">Greater than 660</td></tr>
+          <tr><td class="param">Min FICO</td><td class="us">680</td><td class="them">Greater than 660</td></tr>
           <tr><td class="param">Published starting rate</td><td class="us">From 8.875%</td><td class="them">Not published</td></tr>
           <tr><td class="param">Draw turnaround</td><td class="us">48 hours</td><td class="them">Not published</td></tr>
           <tr><td class="param">Prepay penalty</td><td class="us">None</td><td class="them">Not published</td></tr>
@@ -765,7 +903,7 @@
       <div class="narrative-box">
         <p><strong>CoFi doesn't publish a DSCR or rental product.</strong> Their entire posted stack is construction-focused: New Construction, Production &amp; Tract, Fix &amp; Flip, and Manufactured Homes. There is no long-term rental loan, no 30-year DSCR, no interest-only hold product on their site.</p>
         <p>For a builder who plans to refinance a completed spec into a long-term rental hold, that means CoFi covers only half the capital stack. You finance the build with CoFi, then you have to go source a separate DSCR lender to do the permanent refinance, re-apply, re-price, and re-underwrite the asset at stabilization.</p>
-        <p><strong>Ledger underwrites both under one roof.</strong> A single team handles the vertical construction loan, the spec-home exit if you sell, and the DSCR refinance if you hold. Up to 80% LTV on rental, 30-year fixed or ARM structures, interest-only options, across 40 states plus D.C.</p>
+        <p><strong>Ledger underwrites both under one roof.</strong> A single team handles the vertical construction loan and the DSCR refinance at stabilization. Up to 80% LTV on rental, 30-year fixed or ARM structures, interest-only options, across 40 states plus D.C.</p>
       </div>
     </div>
   </section>
@@ -816,7 +954,7 @@
             <li><strong>10 points more leverage on F&amp;F.</strong> 95% LTC combined vs. CoFi's 85%. On a $1M flip (purchase + rehab), that's $100K less equity needed.</li>
             <li><strong>National reach.</strong> 40 states + DC vs. CoFi's 4 (CA, ID, OR, UT). If your project isn't in those four western states, CoFi simply can't write it.</li>
             <li><strong>Published starting rate.</strong> Ledger posts from 8.875%. CoFi doesn't publish a rate floor, so you have to inquire to learn their pricing.</li>
-            <li><strong>Full product stack.</strong> Ground-up, DSCR, F&amp;F, spec home, and portfolio term loans under the same underwriter. CoFi posts four construction-adjacent products and stops there.</li>
+            <li><strong>Full product stack.</strong> Ground-up construction, DSCR rental, and fix-and-flip loans under the same underwriter. CoFi posts four construction-adjacent products and stops there.</li>
             <li><strong>Dedicated first-time builder program.</strong> Ledger runs a purpose-built program for first-time builders. CoFi addresses it in a single phrase on its lending page (&ldquo;can work with new builders&rdquo;).</li>
             <li><strong>Loans to $5M, published.</strong> Ledger publishes a $5M ceiling. CoFi doesn't publish a maximum loan size at all.</li>
           </ul>
@@ -868,7 +1006,7 @@
           <li>Up to 90% LTC, loans to $5M</li>
           <li>21-day close target, 48-hour draws</li>
           <li>National direct lender (40 states + DC)</li>
-          <li>Ground-up, DSCR, fix-and-flip, spec, and portfolio under one lender</li>
+          <li>Ground-up construction, DSCR rental, and fix-and-flip under one lender</li>
         </ul>
       </div>
       <div class="form-card">
@@ -923,7 +1061,7 @@
       <h3>Trademark &amp; affiliation</h3>
       <p>CoFi Lending and Construction Finance Corporation are trademarks of their respective owner. CoFi is referenced on this page solely to identify the company for the purpose of factual comparative information. CoFi is not affiliated with, endorsed by, or partnered with Ledger Trade &amp; Capital, and has not sponsored, reviewed, or approved the content of this page.</p>
       <h3>About Ledger</h3>
-      <p>Ledger Trade &amp; Capital is a private direct lender financing ground-up construction, DSCR rental, spec home, fix-and-flip, and portfolio loans for licensed builders and experienced real estate developers. Business-purpose loans only; not for primary or personal residences. See <a href="https://ledgertc.com">ledgertc.com</a> for the latest program sheets.</p>
+      <p>Ledger Trade &amp; Capital is a private direct lender financing ground-up construction, DSCR rental, and fix-and-flip loans for licensed builders and experienced real estate developers. Business-purpose loans only; not for primary or personal residences. See <a href="https://ledgertc.com">ledgertc.com</a> for the latest program sheets.</p>
     </div>
   </section>
 
