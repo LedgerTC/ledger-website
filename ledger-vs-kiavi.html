@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ledger vs. Kiavi | Compare Construction &amp; DSCR Loans | Ledger Trade &amp; Capital</title>
+  <meta name="description" content="Ledger Trade &amp; Capital vs. Kiavi. Side-by-side comparison of construction, DSCR, and fix-and-flip loan parameters pulled directly from kiavi.com and ledgertc.com. Verified April 2026.">
+  <meta name="robots" content="noindex, follow">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Ledger vs. Kiavi | Ledger Trade &amp; Capital">
+  <meta property="og:description" content="Construction, DSCR, and fix-and-flip comparison. Verified direct from each lender's site.">
+  <meta property="og:url" content="https://ledgertc.com/ledger-vs-kiavi">
+  <meta property="og:image" content="https://ledgertc.com/icon-color.png">
+  <meta property="og:site_name" content="Ledger Trade &amp; Capital">
+  <link rel="canonical" href="https://ledgertc.com/ledger-vs-kiavi">
+  <meta property="article:modified_time" content="2026-04-17T00:00:00-04:00">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"></noscript>
+
+  <script>
+  if (window.location.hostname === 'ledgertc.com') {
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=AW-17993082803';
+    document.head.appendChild(s);
+  }
+  </script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('consent', 'default', {
+      'ad_storage': 'granted',
+      'ad_user_data': 'granted',
+      'ad_personalization': 'granted',
+      'analytics_storage': 'granted'
+    });
+    if (window.location.hostname === 'ledgertc.com') {
+      gtag('config', 'G-P2E61PRS60');
+      gtag('config', 'AW-17993082803');
+    }
+  </script>
+  <script>
+  document.addEventListener("click", function(e) {
+    var link = e.target.closest && e.target.closest('a[href^="tel:"]');
+    if (!link) return;
+    if (window.location.hostname !== 'ledgertc.com') return;
+    gtag('event', 'phone_call_click', {
+      event_category: 'engagement',
+      event_label: link.href,
+      value: 1
+    });
+  });
+  </script>
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --green: #2b4a42;
+      --green-dark: #1e3830;
+      --green-light: #3a5f55;
+      --gold: #c49a3c;
+      --gold-dark: #b08832;
+      --gold-light: #d4ad52;
+      --white: #ffffff;
+      --cream: #f2efe9;
+      --cream-dark: #e8e4dc;
+      --gray-100: #e0ddd6;
+      --gray-300: #c5c1b8;
+      --gray-500: #6b7280;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-900: #111827;
+      --text-primary: var(--green);
+      --text-secondary: var(--gray-600);
+      --text-muted: var(--gray-500);
+    }
+
+    html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text-primary);
+      font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+      line-height: 1.6;
+      background: var(--cream);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .top-bar {
+      background: rgba(242,239,233,0.95);
+      padding: 1.25rem clamp(1.5rem, 3vw, 4rem);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .top-bar-logo img { height: 38px; width: auto; display: block; }
+    .top-bar-phone { display: flex; align-items: center; gap: 8px; }
+    .top-bar-phone a {
+      color: var(--green);
+      text-decoration: none;
+      font-size: clamp(0.85rem, 0.82rem + 0.2vw, 0.95rem);
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+    .top-bar-phone a:hover { color: var(--gold-dark); }
+    .top-bar-phone svg { color: var(--gold); }
+
+    .hero {
+      background: var(--green);
+      padding: clamp(3rem, 4.5vw, 4.5rem) clamp(1.5rem, 3vw, 4rem) clamp(2.5rem, 3.5vw, 3.5rem);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -30%;
+      right: -15%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(196,154,60,0.08) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .hero-inner { max-width: 860px; margin: 0 auto; position: relative; z-index: 1; }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(196,154,60,0.12);
+      color: var(--gold-light);
+      font-size: clamp(0.65rem, 0.6rem + 0.15vw, 0.72rem);
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      border: 1px solid rgba(196,154,60,0.25);
+    }
+    .hero h1 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      color: var(--white);
+      font-size: clamp(1.9rem, 1.5rem + 1.5vw, 2.8rem);
+      font-weight: 800;
+      line-height: 1.15;
+      margin-bottom: 14px;
+      letter-spacing: -0.02em;
+    }
+    .hero h1 .accent { color: var(--gold-light); }
+    .hero-sub {
+      color: rgba(255,255,255,0.78);
+      font-size: clamp(0.95rem, 0.9rem + 0.2vw, 1.08rem);
+      line-height: 1.65;
+      max-width: 680px;
+      margin: 0 auto 28px;
+    }
+    .hero-date {
+      color: rgba(255,255,255,0.5);
+      font-size: clamp(0.72rem, 0.7rem + 0.1vw, 0.8rem);
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 26px;
+    }
+    .hero-cta-row { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+    .btn-gold {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--gold); color: var(--white);
+      font-size: clamp(0.85rem, 0.82rem + 0.2vw, 0.95rem);
+      font-weight: 700;
+      padding: 0.85rem 1.75rem;
+      border: none; border-radius: 8px; cursor: pointer;
+      text-decoration: none; transition: all 0.2s;
+      letter-spacing: 0.02em;
+    }
+    .btn-gold:hover { background: var(--gold-dark); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(196,154,60,0.25); }
+    .btn-outline {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: transparent; color: var(--white);
+      font-size: clamp(0.85rem, 0.82rem + 0.2vw, 0.95rem);
+      font-weight: 600;
+      padding: 0.85rem 1.75rem;
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 8px; cursor: pointer;
+      text-decoration: none; transition: all 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--gold); background: rgba(196,154,60,0.08); }
+
+    /* Intro section */
+    .intro {
+      background: var(--cream);
+      padding: clamp(2.5rem, 3.5vw, 3.5rem) clamp(1.5rem, 3vw, 4rem) clamp(1.5rem, 2vw, 2rem);
+    }
+    .intro-inner { max-width: 860px; margin: 0 auto; }
+    .intro h2 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(1.4rem, 1.2rem + 0.6vw, 1.75rem);
+      font-weight: 700;
+      color: var(--green);
+      letter-spacing: -0.01em;
+      margin-bottom: 14px;
+    }
+    .intro p {
+      color: var(--text-secondary);
+      font-size: clamp(0.95rem, 0.92rem + 0.15vw, 1.02rem);
+      line-height: 1.7;
+      margin-bottom: 14px;
+    }
+    .intro p strong { color: var(--green); font-weight: 600; }
+
+    /* Product coverage matrix */
+    .matrix-section {
+      background: var(--cream);
+      padding: clamp(1.5rem, 2.5vw, 2.5rem) clamp(1.5rem, 3vw, 4rem);
+    }
+    .matrix-inner { max-width: 900px; margin: 0 auto; }
+    .matrix-inner h2 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(1.15rem, 1.05rem + 0.3vw, 1.3rem);
+      font-weight: 700;
+      color: var(--green);
+      margin-bottom: 6px;
+    }
+    .matrix-sub {
+      color: var(--text-secondary);
+      font-size: clamp(0.85rem, 0.82rem + 0.12vw, 0.92rem);
+      margin-bottom: 18px;
+    }
+    .matrix-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--white);
+      border: 1px solid var(--gray-100);
+      border-radius: 12px;
+      overflow: hidden;
+      font-size: 0.92rem;
+    }
+    .matrix-table thead {
+      background: var(--green);
+    }
+    .matrix-table thead th {
+      color: var(--white);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 12px 16px;
+      text-align: left;
+    }
+    .matrix-table thead th.col-us { color: var(--gold-light); }
+    .matrix-table thead th.col-center { text-align: center; }
+    .matrix-table tbody td {
+      padding: 11px 16px;
+      border-top: 1px solid var(--gray-100);
+      vertical-align: middle;
+    }
+    .matrix-table tbody td.product {
+      font-weight: 600;
+      color: var(--gray-700);
+      font-size: 0.9rem;
+    }
+    .matrix-table tbody td.check {
+      text-align: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+    .matrix-table tbody td.check.yes { color: var(--green); }
+    .matrix-table tbody td.check.yes-conditional { color: var(--gold-dark); font-size: 0.82rem; font-weight: 600; }
+    .matrix-table tbody td.check.no { color: var(--gray-300); }
+
+    /* Comparison tables */
+    .comp-block {
+      background: var(--white);
+      padding: clamp(2.5rem, 3.5vw, 3.5rem) clamp(1.5rem, 3vw, 4rem);
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .comp-block:nth-of-type(even) { background: var(--cream); }
+    .comp-block-inner { max-width: 900px; margin: 0 auto; }
+    .comp-block-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+    .comp-block h2 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(1.3rem, 1.15rem + 0.6vw, 1.65rem);
+      font-weight: 700;
+      color: var(--green);
+      letter-spacing: -0.01em;
+    }
+    .comp-block .verified {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--gold);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .comp-block .comp-sub {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      margin-bottom: 20px;
+    }
+    .comp-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--white);
+      border: 1px solid var(--gray-100);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 18px;
+      font-size: 0.92rem;
+    }
+    .comp-block:nth-of-type(even) .comp-table { background: var(--white); }
+    .comp-table thead { background: var(--green); }
+    .comp-table thead th {
+      color: var(--white);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 12px 16px;
+      text-align: left;
+    }
+    .comp-table thead th.col-us { color: var(--gold-light); }
+    .comp-table tbody td {
+      padding: 10px 16px;
+      border-top: 1px solid var(--gray-100);
+      vertical-align: top;
+      line-height: 1.45;
+    }
+    .comp-table tbody td.param {
+      font-weight: 600;
+      color: var(--gray-700);
+      font-size: 0.88rem;
+      width: 36%;
+    }
+    .comp-table tbody td.us { color: var(--green); font-weight: 600; }
+    .comp-table tbody td.them { color: var(--gray-700); }
+
+    /* Narrative two-column */
+    .fit-section {
+      background: var(--cream);
+      padding: clamp(3rem, 4vw, 4rem) clamp(1.5rem, 3vw, 4rem);
+    }
+    .fit-inner { max-width: 1040px; margin: 0 auto; }
+    .fit-header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .fit-header h2 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(1.4rem, 1.2rem + 0.6vw, 1.75rem);
+      font-weight: 700;
+      color: var(--green);
+      letter-spacing: -0.01em;
+      margin-bottom: 10px;
+    }
+    .fit-header p {
+      color: var(--text-secondary);
+      font-size: 0.96rem;
+      max-width: 620px;
+      margin: 0 auto;
+    }
+    .fit-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .fit-card {
+      background: var(--white);
+      border: 1px solid var(--gray-100);
+      border-radius: 14px;
+      padding: clamp(1.5rem, 2.2vw, 2rem);
+    }
+    .fit-card.ledger { border-top: 3px solid var(--gold); }
+    .fit-card.them { border-top: 3px solid var(--green-light); }
+    .fit-card h3 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--green);
+      margin-bottom: 14px;
+    }
+    .fit-card ul { list-style: none; }
+    .fit-card li {
+      color: var(--gray-700);
+      font-size: 0.93rem;
+      line-height: 1.55;
+      padding: 8px 0 8px 26px;
+      position: relative;
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .fit-card li:last-child { border-bottom: none; }
+    .fit-card li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      top: 8px;
+      color: var(--gold);
+      font-weight: 700;
+    }
+    .fit-card.them li::before { content: '→'; color: var(--green-light); }
+    .fit-card li strong { color: var(--green); font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 600; }
+
+    /* Mid-page CTA */
+    .mid-cta {
+      background: var(--green-dark);
+      padding: clamp(2.5rem, 3.5vw, 3.5rem) clamp(1.5rem, 3vw, 4rem);
+      text-align: center;
+    }
+    .mid-cta-inner { max-width: 720px; margin: 0 auto; }
+    .mid-cta h2 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      color: var(--white);
+      font-size: clamp(1.3rem, 1.15rem + 0.6vw, 1.6rem);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 10px;
+    }
+    .mid-cta p {
+      color: rgba(255,255,255,0.75);
+      font-size: 0.98rem;
+      line-height: 1.6;
+      margin-bottom: 22px;
+    }
+
+    /* Proof strip */
+    .proof {
+      background: var(--cream);
+      padding: clamp(2rem, 3vw, 3rem) clamp(1.5rem, 3vw, 4rem);
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .proof-inner { max-width: 1040px; margin: 0 auto; }
+    .proof-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .proof-stat {
+      background: var(--white);
+      border: 1px solid var(--gray-100);
+      border-radius: 12px;
+      padding: 1.25rem 1rem;
+      text-align: center;
+    }
+    .proof-stat .k {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(1.3rem, 1.1rem + 0.6vw, 1.65rem);
+      font-weight: 800;
+      color: var(--green);
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+    .proof-stat .v {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--gray-600);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* Form section */
+    .form-section {
+      background: var(--green);
+      padding: clamp(3.5rem, 4.5vw, 5rem) clamp(1.5rem, 3vw, 4rem);
+    }
+    .form-section-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(2.5rem, 3.5vw, 4rem);
+      align-items: start;
+    }
+    .form-left h2 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(1.6rem, 1.3rem + 1vw, 2.1rem);
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 12px;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+    .form-left p {
+      color: rgba(255,255,255,0.75);
+      font-size: clamp(0.95rem, 0.92rem + 0.15vw, 1.05rem);
+      line-height: 1.65;
+      margin-bottom: 22px;
+    }
+    .form-left ul { list-style: none; }
+    .form-left li {
+      color: rgba(255,255,255,0.85);
+      font-size: 0.95rem;
+      padding: 8px 0 8px 24px;
+      position: relative;
+    }
+    .form-left li::before {
+      content: '✓';
+      position: absolute;
+      left: 0;
+      color: var(--gold-light);
+      font-weight: 700;
+    }
+    .form-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: clamp(1.5rem, 3vw, 2.25rem);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+    .form-card h3 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(1.1rem, 1rem + 0.3vw, 1.25rem);
+      font-weight: 700;
+      color: var(--green);
+      margin-bottom: 4px;
+    }
+    .form-card .form-sub {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+    }
+    .form-group { margin-bottom: 14px; }
+    .form-group label {
+      display: block;
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--gray-600);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      font-size: 0.92rem;
+      font-family: 'DM Sans', sans-serif;
+      border: 1px solid var(--gray-100);
+      border-radius: 8px;
+      background: var(--cream);
+      color: var(--green);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 3px rgba(196,154,60,0.1);
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .form-submit {
+      width: 100%;
+      background: var(--gold);
+      color: var(--white);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      padding: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 8px;
+      letter-spacing: 0.02em;
+    }
+    .form-submit:hover { background: var(--gold-dark); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(196,154,60,0.2); }
+    .form-note {
+      text-align: center;
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      margin-top: 12px;
+    }
+
+    .fineprint {
+      background: var(--cream-dark);
+      padding: clamp(2rem, 3vw, 3rem) clamp(1.5rem, 3vw, 4rem);
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    .fineprint-inner { max-width: 900px; margin: 0 auto; }
+    .fineprint h3 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--gray-700);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .fineprint p { margin-bottom: 12px; }
+    .fineprint a { color: var(--gold-dark); }
+
+    .footer {
+      background: var(--green-dark);
+      color: rgba(255,255,255,0.7);
+      padding: 2.5rem clamp(1.5rem, 3vw, 4rem);
+      font-size: 0.85rem;
+    }
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1.5fr;
+      gap: 2rem;
+      align-items: center;
+    }
+    .footer-logo-wrap img { height: 48px; width: auto; }
+    .footer-center { text-align: center; }
+    .footer-copy { color: rgba(255,255,255,0.5); font-size: 0.78rem; margin-bottom: 6px; }
+    .footer-legal a { color: rgba(255,255,255,0.65); text-decoration: none; }
+    .footer-legal a:hover { color: var(--gold-light); }
+    .footer-sep { color: rgba(255,255,255,0.3); margin: 0 8px; }
+    .footer-contact { text-align: right; line-height: 1.7; }
+    .footer-contact a { color: rgba(255,255,255,0.7); text-decoration: none; }
+    .footer-contact a:hover { color: var(--gold-light); }
+
+    @media (max-width: 820px) {
+      .form-section-inner { grid-template-columns: 1fr; }
+      .fit-grid { grid-template-columns: 1fr; }
+      .proof-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-inner { grid-template-columns: 1fr; text-align: center; }
+      .footer-contact { text-align: center; }
+      .comp-table tbody td { font-size: 0.88rem; padding: 9px 12px; }
+      .comp-table thead th { padding: 10px 12px; }
+      .matrix-table tbody td { padding: 9px 12px; }
+      .matrix-table thead th { padding: 10px 12px; }
+    }
+  </style>
+
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+</head>
+<body>
+
+  <div class="top-bar">
+    <a class="top-bar-logo" href="https://ledgertc.com">
+      <img src="logo-color.png" alt="Ledger Trade &amp; Capital" width="269" height="67">
+    </a>
+    <div class="top-bar-phone">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      <a href="tel:2017491691">(201) 749-1691</a>
+    </div>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-badge">Ledger vs. Kiavi</div>
+      <h1>Ledger Trade &amp; Capital vs. <span class="accent">Kiavi</span></h1>
+      <p class="hero-sub">Side-by-side comparison of construction, DSCR, and fix-and-flip loan parameters pulled directly from each lender's own website. No third-party reviews, no guessed numbers, no sponsored placements.</p>
+      <div class="hero-date">Verified April 17, 2026</div>
+      <div class="hero-cta-row">
+        <a href="#comparison" class="btn-gold">See the comparison ↓</a>
+        <a href="#form" class="btn-outline">Get a rate on your deal</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ledger Intro -->
+  <section class="intro">
+    <div class="intro-inner">
+      <h2>Who Ledger is, and why this page exists</h2>
+      <p><strong>Ledger Trade &amp; Capital is a direct private lender</strong> for licensed builders and experienced real estate developers. We finance ground-up construction, DSCR rental, spec home, fix-and-flip, and portfolio term loans up to $5M, in 40 states plus Washington, D.C. We are not a broker and we are not a marketplace. Every loan on our book is underwritten, closed, and serviced by our team.</p>
+      <p>Kiavi (formerly LendingHome) is one of the largest volume lenders in the private-credit space, with an automated application flow, a jumbo program up to $10M, and coverage in 49 states plus D.C. They're a real peer on product breadth. <strong>The gap between us is in leverage, pricing, and workflow</strong>, not in product overlap.</p>
+      <p>This page compares the parameters each of us publishes on our own website as of April 17, 2026. Fields a lender does not publish are marked &ldquo;not published&rdquo; rather than estimated. If a rate is advertised with a qualifier (&ldquo;as low as,&rdquo; &ldquo;starting at&rdquo;), we quote the qualifier.</p>
+    </div>
+  </section>
+
+  <!-- Product Coverage Matrix -->
+  <section class="matrix-section" id="comparison">
+    <div class="matrix-inner">
+      <h2>Product coverage</h2>
+      <p class="matrix-sub">What each lender lists as a posted product on their site.</p>
+      <table class="matrix-table">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th class="col-us col-center">Ledger</th>
+            <th class="col-center">Kiavi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="product">Ground-up construction</td><td class="check yes">✓</td><td class="check yes">✓</td></tr>
+          <tr><td class="product">DSCR / rental</td><td class="check yes">✓</td><td class="check yes">✓</td></tr>
+          <tr><td class="product">Fix &amp; flip</td><td class="check yes">✓</td><td class="check yes">✓</td></tr>
+          <tr><td class="product">Spec home</td><td class="check yes">✓</td><td class="check no">&mdash;</td></tr>
+          <tr><td class="product">Portfolio term</td><td class="check yes">✓</td><td class="check no">&mdash;</td></tr>
+          <tr><td class="product">Bridge</td><td class="check no">&mdash;</td><td class="check yes">✓</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- GUC Comparison -->
+  <section class="comp-block">
+    <div class="comp-block-inner">
+      <div class="comp-block-header">
+        <h2>Ground-up construction</h2>
+        <span class="verified">Verified Apr 2026</span>
+      </div>
+      <p class="comp-sub">Ledger's construction product (ledgertc.com/vertical-construction-loans) vs. Kiavi's New Construction / Infill product (kiavi.com/loans/new-construction-infill).</p>
+      <table class="comp-table">
+        <thead>
+          <tr><th>Parameter</th><th class="col-us">Ledger</th><th>Kiavi</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="param">Loan size range</td><td class="us">Up to $5M</td><td class="them">$150K &ndash; $10M (jumbo)</td></tr>
+          <tr><td class="param">Max LTC (total project)</td><td class="us">90%</td><td class="them">Up to 85% of total costs</td></tr>
+          <tr><td class="param">Max LTARV</td><td class="us">75%</td><td class="them">Up to 70% of ARV</td></tr>
+          <tr><td class="param">Rehab coverage</td><td class="us">Included in 90% LTC</td><td class="them">Up to 100% of rehab cost</td></tr>
+          <tr><td class="param">Term</td><td class="us">12&ndash;18 months</td><td class="them">12, 18, or 24 months + 3- or 6-month extension</td></tr>
+          <tr><td class="param">Published starting rate</td><td class="us">From 8.875%</td><td class="them">&ldquo;Rates as low as 9.00%&rdquo;</td></tr>
+          <tr><td class="param">Draw turnaround</td><td class="us">48 hours</td><td class="them">Not published</td></tr>
+          <tr><td class="param">Prepay penalty</td><td class="us">None</td><td class="them">Not published on product page</td></tr>
+          <tr><td class="param">First-time builder</td><td class="us"><a href="first-time-builder-construction-loan" style="color:var(--green);text-decoration:underline;">Dedicated program</a></td><td class="them">Not published as a distinct program</td></tr>
+          <tr><td class="param">States</td><td class="us">40 + DC</td><td class="them">49 + DC</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- DSCR Comparison -->
+  <section class="comp-block">
+    <div class="comp-block-inner">
+      <div class="comp-block-header">
+        <h2>DSCR / rental</h2>
+        <span class="verified">Verified Apr 2026</span>
+      </div>
+      <p class="comp-sub">Ledger's DSCR product (ledgertc.com/dscr) vs. Kiavi's Rental product (kiavi.com/loans/rental).</p>
+      <table class="comp-table">
+        <thead>
+          <tr><th>Parameter</th><th class="col-us">Ledger</th><th>Kiavi</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="param">Max LTV (purchase)</td><td class="us">80%</td><td class="them">Up to 80%</td></tr>
+          <tr><td class="param">Loan size ceiling</td><td class="us">Up to $5M</td><td class="them">Not published on rental product page</td></tr>
+          <tr><td class="param">Term structures</td><td class="us">30-year fixed, ARMs, interest-only options</td><td class="them">30-year fixed, 5/1 ARM, 7/1 ARM, IO options</td></tr>
+          <tr><td class="param">Published starting rate</td><td class="us">See current rate sheet</td><td class="them">&ldquo;Rates as low as 6%&rdquo;</td></tr>
+          <tr><td class="param">Prepay structure</td><td class="us">Flexible</td><td class="them">No prepay penalty after year 3</td></tr>
+          <tr><td class="param">Min FICO / min DSCR</td><td class="us">Varies by program</td><td class="them">Not published on rental product page</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- F&F Comparison -->
+  <section class="comp-block">
+    <div class="comp-block-inner">
+      <div class="comp-block-header">
+        <h2>Fix &amp; flip</h2>
+        <span class="verified">Verified Apr 2026</span>
+      </div>
+      <p class="comp-sub">Ledger's fix-and-flip product (ledgertc.com/fix-and-flip) vs. Kiavi's Fix and Flip product (kiavi.com/loans/fix-and-flip).</p>
+      <table class="comp-table">
+        <thead>
+          <tr><th>Parameter</th><th class="col-us">Ledger</th><th>Kiavi</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="param">Loan size range</td><td class="us">$125K &ndash; $5M</td><td class="them">$100K &ndash; $5M</td></tr>
+          <tr><td class="param">Max purchase financing</td><td class="us">90% of purchase</td><td class="them">Up to 100% of purchase</td></tr>
+          <tr><td class="param">Max LTC (purchase + rehab)</td><td class="us">95%</td><td class="them">Not published as a combined figure</td></tr>
+          <tr><td class="param">Max LTARV</td><td class="us">75%</td><td class="them">Up to 80%</td></tr>
+          <tr><td class="param">Min FICO</td><td class="us">680</td><td class="them">Not published on product page</td></tr>
+          <tr><td class="param">Prior experience required</td><td class="us">None required</td><td class="them">Not specified as a hard requirement</td></tr>
+          <tr><td class="param">Published starting rate</td><td class="us">From 8.875%</td><td class="them">&ldquo;Rates as low as 7.75%&rdquo;</td></tr>
+          <tr><td class="param">Term</td><td class="us">15&ndash;18 months, interest-only</td><td class="them">12, 18, or 24 months</td></tr>
+          <tr><td class="param">Prepay penalty</td><td class="us">None</td><td class="them">&ldquo;No prepayment penalties&rdquo;</td></tr>
+          <tr><td class="param">Non-recourse option</td><td class="us">Available for qualifying borrowers</td><td class="them">Not published on product page</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Where each fits -->
+  <section class="fit-section">
+    <div class="fit-inner">
+      <div class="fit-header">
+        <h2>Where each lender fits better</h2>
+        <p>We're not going to tell you Ledger is better on every axis. Here's the honest read, based on what each of us publishes.</p>
+      </div>
+      <div class="fit-grid">
+        <div class="fit-card ledger">
+          <h3>Where Ledger fits better</h3>
+          <ul>
+            <li><strong>Higher published construction LTC.</strong> 90% of total project cost vs. Kiavi's 85%. On a $2M build, that's $100K less equity you have to put in at close.</li>
+            <li><strong>Higher construction LTARV.</strong> 75% vs. Kiavi's 70%. Matters on deals where the exit value is the constraint, not the cost basis.</li>
+            <li><strong>Lower published construction rate.</strong> 8.875% vs. Kiavi's &ldquo;as low as 9.00%.&rdquo; On $1M for 12 months, roughly $1,250 less interest.</li>
+            <li><strong>First-time builder program.</strong> Ledger has a dedicated product for builders on their first ground-up; Kiavi doesn't publish a distinct first-time path.</li>
+            <li><strong>Named underwriter, not a queue.</strong> You get one person on your deal from pre-approval through close. Kiavi's pitch is automated speed; ours is builder-workflow fit.</li>
+            <li><strong>No prepay on construction, from day one.</strong> Ledger publishes no prepay penalty on GUC. Kiavi's rental product removes prepay after year 3; their construction product page doesn't specify.</li>
+            <li><strong>Spec home and portfolio term loans under one lender.</strong> If your exit on the GUC is a sale plus a rental hold, Ledger can finance both. Kiavi does ground-up and rental separately; they don't publish a spec-home or portfolio-term product.</li>
+          </ul>
+        </div>
+        <div class="fit-card them">
+          <h3>Where Kiavi fits better</h3>
+          <ul>
+            <li><strong>Larger jumbo ceiling.</strong> $10M per loan vs. Ledger's $5M. On a single project over $5M, Kiavi is one of few private shops that will write it.</li>
+            <li><strong>Broader state footprint.</strong> 49 states + DC vs. Ledger's 40 + DC. If your project is in a state we don't currently cover, that's decisive.</li>
+            <li><strong>100% rehab financing on ground-up.</strong> Kiavi publishes up to 100% of rehab cost on the New Construction / Infill product; Ledger rolls rehab into the 90% LTC figure rather than breaking it out.</li>
+            <li><strong>Longer stated construction term.</strong> Up to 24 months plus extension options on their product page vs. Ledger's 12&ndash;18 months.</li>
+            <li><strong>Published DSCR rate floor.</strong> Kiavi advertises &ldquo;as low as 6%&rdquo; on rental. Ledger's DSCR pricing is disclosed on a per-deal basis.</li>
+            <li><strong>Fast automated application.</strong> If your deal is standard and you're comfortable with a tech-forward flow, Kiavi moves quickly. Worth knowing up-front that the automation is the product.</li>
+            <li><strong>Higher published F&amp;F LTARV.</strong> Up to 80% of ARV vs. Ledger's 75%. On pure flip deals with strong ARV comps, that's five points of additional leverage.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mid-page CTA -->
+  <section class="mid-cta">
+    <div class="mid-cta-inner">
+      <h2>Have a deal on the table? Send us the numbers.</h2>
+      <p>We'll tell you where we fit, where Kiavi is the better lender, and if neither of us is right, we'll tell you that too. One phone call, one written quote, no credit pull.</p>
+      <a href="#form" class="btn-gold">Get a written quote →</a>
+    </div>
+  </section>
+
+  <!-- Proof strip -->
+  <section class="proof">
+    <div class="proof-inner">
+      <div class="proof-grid">
+        <div class="proof-stat"><div class="k">$5M</div><div class="v">Max loan size</div></div>
+        <div class="proof-stat"><div class="k">90%</div><div class="v">Max LTC (GUC)</div></div>
+        <div class="proof-stat"><div class="k">40+DC</div><div class="v">States</div></div>
+        <div class="proof-stat"><div class="k">48h</div><div class="v">Draw turnaround</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Form Section -->
+  <section class="form-section" id="form">
+    <div class="form-section-inner">
+      <div class="form-left">
+        <h2>Shopping Kiavi? See Ledger's numbers on your deal.</h2>
+        <p>Business-purpose loans only, not for primary or personal residences. We respond within one business day.</p>
+        <ul>
+          <li>Construction loans from 8.875%</li>
+          <li>Up to 90% LTC, loans to $5M</li>
+          <li>21-day close target, 48-hour draws</li>
+          <li>National direct lender (40 states + DC)</li>
+          <li>Ground-up, DSCR, fix-and-flip, spec, and portfolio under one lender</li>
+        </ul>
+      </div>
+      <div class="form-card">
+        <h3>Get Your Custom Rate</h3>
+        <p class="form-sub">No credit pull. Written quote on the deal you're actually working.</p>
+        <form id="compareLPForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="fname">First Name</label>
+              <input type="text" id="fname" name="first_name" placeholder="John" required>
+            </div>
+            <div class="form-group">
+              <label for="lname">Last Name</label>
+              <input type="text" id="lname" name="last_name" placeholder="Smith" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="you@email.com" required>
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" name="phone" placeholder="(555) 000-0000" required>
+            <div id="phoneError" style="display:none; color:#dc2626; font-size:0.8rem; margin-top:0.25rem;">Please enter a valid phone number</div>
+          </div>
+          <div class="form-group">
+            <label for="details">Project Details <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--gray-500);">(optional)</span></label>
+            <textarea id="details" name="details" placeholder="Loan size, location, product, timing..." rows="2" style="resize:vertical;min-height:56px;"></textarea>
+          </div>
+          <div style="position:absolute;left:-9999px;"><input type="text" name="website" tabindex="-1" autocomplete="off"></div>
+          <input type="hidden" name="form_source" value="ledger-vs-kiavi-lp">
+          <input type="hidden" name="form_loaded_at" id="form_loaded_at">
+          <div class="cf-turnstile" data-sitekey="0x4AAAAAACtw1TOxqy4xMX4D" data-theme="light"></div>
+          <button type="submit" class="form-submit">Get My Rate &rarr;</button>
+          <p class="form-note">No obligation. No credit pull. Just a conversation.</p>
+        </form>
+        <div id="form-success" style="display:none; text-align:center; padding:24px 0;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2b4a42" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:12px;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          <h3 style="font-family:'Plus Jakarta Sans',sans-serif;color:var(--green);font-size:1.25rem;font-weight:700;margin-bottom:6px;">We got your info.</h3>
+          <p style="color:var(--text-secondary);font-size:0.9rem;">A member of our team will be in touch within one business day.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Fine Print -->
+  <section class="fineprint">
+    <div class="fineprint-inner">
+      <h3>Sources &amp; data notes</h3>
+      <p>Kiavi parameters were verified against kiavi.com on April 17, 2026. Pages referenced: kiavi.com, /loans/new-construction-infill, /loans/fix-and-flip, /loans/rental. Ledger parameters reflect current program guidelines published at ledgertc.com as of April 2026. Fields not publicly disclosed by a lender are marked &ldquo;not published&rdquo; rather than estimated. Rates advertised with qualifiers (&ldquo;as low as,&rdquo; &ldquo;starting at,&rdquo; &ldquo;from&rdquo;) are quoted with the qualifier.</p>
+      <p>Private lender guidelines change frequently. Rate, LTC, LTV, state, and product availability are subject to change without notice and do not constitute a commitment to lend. Always verify current terms directly with each lender before making a financing decision.</p>
+      <h3>Trademark &amp; affiliation</h3>
+      <p>Kiavi is a registered trademark of Kiavi Funding, Inc. Kiavi is referenced on this page solely to identify the company for the purpose of factual comparative information. Kiavi is not affiliated with, endorsed by, or partnered with Ledger Trade &amp; Capital, and has not sponsored, reviewed, or approved the content of this page.</p>
+      <h3>About Ledger</h3>
+      <p>Ledger Trade &amp; Capital is a private direct lender financing ground-up construction, DSCR rental, spec home, fix-and-flip, and portfolio loans for licensed builders and experienced real estate developers. Business-purpose loans only; not for primary or personal residences. See <a href="https://ledgertc.com">ledgertc.com</a> for the latest program sheets.</p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-logo-wrap">
+        <img src="logo-inverse.png" alt="Ledger Trade &amp; Capital" width="269" height="67">
+      </div>
+      <div class="footer-center">
+        <div class="footer-copy">&copy; 2026 Ledger Trade &amp; Capital. All rights reserved.</div>
+        <div class="footer-legal"><a href="terms-and-conditions">Terms of Service</a><span class="footer-sep">|</span><a href="privacy-policy">Privacy Policy</a></div>
+      </div>
+      <div class="footer-contact">
+        60 Broad Street, Suite 2428, New York, NY 10004<br>
+        <a href="tel:201-749-1691">201-749-1691</a><span class="footer-sep">|</span><a href="/cdn-cgi/l/email-protection#1d54737b725d7178797a786f697e337e7270"><span class="__cf_email__" data-cfemail="e3aa8d858ca38f86878486919780cd808c8e">[email&#160;protected]</span></a><span class="footer-sep">|</span><a href="https://www.linkedin.com/company/ledger-trade-capital/" target="_blank">LinkedIn</a>
+      </div>
+    </div>
+  </footer>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+  <script>
+  if (window.location.hostname === 'ledgertc.com') {
+    var hs = document.createElement('script');
+    hs.type = 'text/javascript';
+    hs.defer = true;
+    hs.src = '//js.hs-scripts.com/46107229.js';
+    document.body.appendChild(hs);
+  }
+  </script>
+
+  <script>
+  (function(){
+    var phoneInput = document.getElementById('phone');
+    var phoneError = document.getElementById('phoneError');
+
+    function isValidPhone(value) {
+      var stripped = value.replace(/[^\d]/g, '');
+      return /^1?\d{10}$/.test(stripped);
+    }
+
+    function validatePhone() {
+      var val = phoneInput.value.trim();
+      if (val && !isValidPhone(val)) {
+        phoneError.style.display = 'block';
+        return false;
+      }
+      phoneError.style.display = 'none';
+      return true;
+    }
+
+    function formatPhoneRealtime(e) {
+      var input = e.target;
+      var digits = input.value.replace(/\D/g, '').substring(0, 10);
+      var formatted = '';
+      if (digits.length > 6) {
+        formatted = '(' + digits.substring(0,3) + ') ' + digits.substring(3,6) + '-' + digits.substring(6);
+      } else if (digits.length > 3) {
+        formatted = '(' + digits.substring(0,3) + ') ' + digits.substring(3);
+      } else if (digits.length > 0) {
+        formatted = '(' + digits;
+      }
+      input.value = formatted;
+    }
+    phoneInput.addEventListener('input', formatPhoneRealtime);
+    phoneInput.addEventListener('blur', validatePhone);
+
+    function formatPhoneE164() {
+      var digits = phoneInput.value.replace(/[^\d]/g, '');
+      if (digits.length === 11 && digits[0] === '1') digits = digits.substring(1);
+      if (digits.length === 10) {
+        phoneInput.value = '+1 (' + digits.substring(0,3) + ') ' + digits.substring(3,6) + '-' + digits.substring(6);
+      }
+    }
+
+    window._ledgerValidation = {
+      validatePhone: validatePhone,
+      formatPhone: formatPhoneE164
+    };
+  })();
+  </script>
+
+  <script>
+  (function() {
+    var TRACKING_KEYS = ['gclid','gbraid','wbraid','gad_source','gad_campaignid',
+      'utm_source','utm_medium','utm_campaign','utm_term','utm_content'];
+    var lp = new URLSearchParams(window.location.search);
+    var found = {};
+    TRACKING_KEYS.forEach(function(k) {
+      var v = lp.get(k);
+      if (v) found[k] = v;
+    });
+    if (Object.keys(found).length > 0) {
+      try { sessionStorage.setItem('ltc_tracking', JSON.stringify(found)); } catch(e) {}
+    }
+    try { sessionStorage.setItem('ltc_ads_lp', 'ledger-vs-kiavi'); } catch(e) {}
+  })();
+  </script>
+
+  <script>
+  (function(){
+    var form = document.getElementById('compareLPForm');
+    var submitBtn = form.querySelector('.form-submit');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      if (form.querySelector('[name="website"]').value) return;
+      if (!window._ledgerValidation.validatePhone()) return;
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Submitting...';
+      window._ledgerValidation.formatPhone();
+
+      var formData = new URLSearchParams(new FormData(form));
+      formData.set('page_url', window.location.href);
+      var stored = {};
+      try { stored = JSON.parse(sessionStorage.getItem('ltc_tracking') || '{}'); } catch(e) {}
+      var lp = new URLSearchParams(window.location.search);
+      ['gclid','gbraid','wbraid','gad_source','gad_campaignid','utm_source','utm_medium','utm_campaign','utm_term','utm_content'].forEach(function(k) {
+        var v = lp.get(k) || stored[k];
+        if (v) formData.set(k, v);
+      });
+
+      function getHubspotCookie() {
+        var match = document.cookie.match(/hubspotutk=([^;]+)/);
+        return match ? match[1] : '';
+      }
+      formData.set('hutk', getHubspotCookie());
+      formData.set('page_name', document.title);
+      var adsLp=''; try{adsLp=sessionStorage.getItem('ltc_ads_lp')||'';}catch(e){}
+      if(adsLp)formData.set('ads_lp',adsLp);
+
+      fetch('/.netlify/functions/submit-form', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: formData.toString()
+      })
+      .then(function(res) {
+        return res.json().then(function(data) { return { ok: res.ok, status: res.status, data: data }; });
+      })
+      .then(function(result) {
+        if (result.ok && result.data.success) {
+          document.getElementById('compareLPForm').style.display = 'none';
+          document.getElementById('form-success').style.display = 'block';
+          if (typeof gtag === 'function') {
+            gtag('event', 'form_submit', { 'form_id': 'ledger-vs-kiavi-lp' });
+            gtag('event', 'conversion', { 'send_to': 'AW-17993082803/mJ3YCMrRm5ccELPP4oND' });
+          }
+        } else {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Get My Rate \u2192';
+          alert('Something went wrong. Please call us at (201) 749-1691.');
+        }
+      })
+      .catch(function() {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Get My Rate \u2192';
+        alert('A network error occurred. Please call us at (201) 749-1691.');
+      });
+    });
+  })();
+  </script>
+
+  <script>document.getElementById('form_loaded_at').value = Date.now();</script>
+
+  <script>
+  if (window.location.hostname === 'ledgertc.com') {
+    var cr = document.createElement('script');
+    cr.type = 'text/javascript';
+    cr.src = '//cdn.callrail.com/companies/260483659/40e1476c9c9954310f9a/12/swap.js';
+    document.body.appendChild(cr);
+  }
+  </script>
+
+</body>
+</html>
