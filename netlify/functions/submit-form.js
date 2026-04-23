@@ -250,7 +250,7 @@ async function hubspot(method, path, body) {
 
 // ─── Analytics: Associate hutk with contact ───────────────────────
 async function associateHutkWithContact(email, hutk, pageUri, pageName) {
-  if (!hutk) return;
+  if (!hutk || !email) return;
   try {
     const res = await fetch(`${HUBSPOT_API}/contacts/v1/contact/createOrUpdate/email/${encodeURIComponent(email)}`, {
       method: "POST",
@@ -303,29 +303,36 @@ async function ensureTrackingAfterHutk(contactId, formData) {
 
 // ─── Step 1: Contact lookup / creation ────────────────────────────
 async function findOrCreateContact(formData) {
-  // Search by email
-  const search = await hubspot("POST", "/crm/v3/objects/contacts/search", {
-    filterGroups: [{
-      filters: [{ propertyName: "email", operator: "EQ", value: formData.email }]
-    }],
-    properties: ["email", "firstname", "lastname", "hubspot_owner_id", "hs_google_click_id", "gad_campaignid", "source_website", "form_source", "ad_campaign", "utm_campaign", "hs_analytics_source", "hs_analytics_source_data_1"],
-  });
+  // Search by email (preferred) or phone (fallback for calc forms with no email)
+  const searchProps = ["email", "firstname", "lastname", "hubspot_owner_id", "hs_google_click_id", "gad_campaignid", "source_website", "form_source", "ad_campaign", "utm_campaign", "hs_analytics_source", "hs_analytics_source_data_1"];
+  let search = { total: 0 };
+  if (formData.email) {
+    search = await hubspot("POST", "/crm/v3/objects/contacts/search", {
+      filterGroups: [{ filters: [{ propertyName: "email", operator: "EQ", value: formData.email }] }],
+      properties: searchProps,
+    });
+  } else if (formData.phone) {
+    search = await hubspot("POST", "/crm/v3/objects/contacts/search", {
+      filterGroups: [{ filters: [{ propertyName: "phone", operator: "EQ", value: formData.phone }] }],
+      properties: searchProps,
+    });
+  }
 
   if (search.total > 0) {
     const existing = search.results[0];
-    console.log(`Contact found: ${existing.id} (${formData.email})`);
+    console.log(`Contact found: ${existing.id} (${formData.email || formData.phone})`);
     await backfillTracking(existing, formData);
     return { contact: existing, isNew: false };
   }
 
   // Create new contact
   const contactProps = {
-    email: formData.email,
     firstname: formData.firstName,
     lastname: formData.lastName,
-    phone: formData.phone,
     lifecyclestage: "lead",
     source_website: "Yes",
+    ...(formData.email && { email: formData.email }),
+    ...(formData.phone && { phone: formData.phone }),
     ...(formData.googleClickId && { hs_google_click_id: formData.googleClickId }),
     ...(formData.gadCampaignId && { gad_campaignid: formData.gadCampaignId }),
     ...(formData.formSource && { form_source: formData.formSource }),
@@ -357,16 +364,18 @@ async function findOrCreateContact(formData) {
     // Race condition: HubSpot collected forms may have created the contact
     // between our search and create. Search again and backfill.
     if (created.status === 409) {
-      console.log(`Contact create conflict for ${formData.email} — retrying search`);
+      console.log(`Contact create conflict for ${formData.email || formData.phone} — retrying search`);
+      const retryProp = formData.email ? "email" : "phone";
+      const retryVal = formData.email || formData.phone;
       const retry = await hubspot("POST", "/crm/v3/objects/contacts/search", {
         filterGroups: [{
-          filters: [{ propertyName: "email", operator: "EQ", value: formData.email }]
+          filters: [{ propertyName: retryProp, operator: "EQ", value: retryVal }]
         }],
         properties: ["email", "firstname", "lastname", "hubspot_owner_id", "hs_google_click_id", "gad_campaignid", "source_website", "form_source", "ad_campaign", "utm_campaign", "hs_analytics_source", "hs_analytics_source_data_1"],
       });
       if (retry.total > 0) {
         const existing = retry.results[0];
-        console.log(`Contact found on retry: ${existing.id} (${formData.email})`);
+        console.log(`Contact found on retry: ${existing.id} (${formData.email || formData.phone})`);
         await backfillTracking(existing, formData);
         return { contact: existing, isNew: false };
       }
@@ -374,7 +383,7 @@ async function findOrCreateContact(formData) {
     throw new Error(`Failed to create contact: ${JSON.stringify(created.data)}`);
   }
 
-  console.log(`Contact created: ${created.id} (${formData.email})`);
+  console.log(`Contact created: ${created.id} (${formData.email || formData.phone})`);
   return { contact: created, isNew: true };
 }
 
@@ -965,8 +974,14 @@ exports.handler = async function (event) {
       };
     }
 
+    // Calculator forms (rtl-calculator, dscr-calculator) accept email OR phone,
+    // matching the UI promise. All other forms require both.
+    const isCalcForm = formData.formSource === "rtl-calculator" || formData.formSource === "dscr-calculator";
+
     // Validate required fields
-    const required = ["firstName", "lastName", "email", "phone"];
+    const required = isCalcForm
+      ? ["firstName", "lastName"]
+      : ["firstName", "lastName", "email", "phone"];
     const missing = required.filter((f) => !formData[f] || formData[f].trim() === "");
     if (missing.length > 0) {
       return {
@@ -975,9 +990,16 @@ exports.handler = async function (event) {
         body: JSON.stringify({ error: `Missing required fields: ${missing.join(", ")}` }),
       };
     }
+    if (isCalcForm && !formData.email && !formData.phone) {
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ error: "Please provide either an email address or phone number." }),
+      };
+    }
 
-    // Basic email validation
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+    // Basic email validation (only when email is provided)
+    if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       return {
         statusCode: 400,
         headers,
@@ -986,14 +1008,16 @@ exports.handler = async function (event) {
     }
 
     // ── Disposable / spam email domain blocking ───────────────
-    const emailDomain = formData.email.split("@")[1].toLowerCase();
-    if (DISPOSABLE_EMAIL_DOMAINS.has(emailDomain)) {
-      console.log(`Disposable email domain blocked: ${emailDomain} (${formData.email})`);
-      return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify({ success: true, message: "Thank you for your submission." }),
-      };
+    if (formData.email) {
+      const emailDomain = formData.email.split("@")[1].toLowerCase();
+      if (DISPOSABLE_EMAIL_DOMAINS.has(emailDomain)) {
+        console.log(`Disposable email domain blocked: ${emailDomain} (${formData.email})`);
+        return {
+          statusCode: 200,
+          headers,
+          body: JSON.stringify({ success: true, message: "Thank you for your submission." }),
+        };
+      }
     }
 
     console.log(`Processing submission from ${formData.email}`);

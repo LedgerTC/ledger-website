@@ -1751,7 +1751,13 @@ function submitLead(e) {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: params.toString()
-  }).then(() => {
+  }).then(async (response) => {
+    if (!response.ok) {
+      let msg = 'Something went wrong. Please try again or contact us directly.';
+      try { const data = await response.json(); if (data && data.error) msg = data.error; } catch(e) {}
+      showLeadFormError(form, msg);
+      return;
+    }
     form.parentElement.style.display = 'none';
     const success = section.querySelector('.lead-success');
     if (success) success.style.display = 'block';
@@ -1761,12 +1767,20 @@ function submitLead(e) {
     }
     setTimeout(unlockGatedContent, 1200);
   }).catch(() => {
-    form.parentElement.style.display = 'none';
-    const success = section.querySelector('.lead-success');
-    if (success) success.style.display = 'block';
-    setTimeout(unlockGatedContent, 1200);
+    showLeadFormError(form, 'Connection error. Please check your network and try again.');
   });
   return false;
+}
+function showLeadFormError(form, msg) {
+  let errEl = form.querySelector('.lead-form-error');
+  if (!errEl) {
+    errEl = document.createElement('div');
+    errEl.className = 'lead-form-error';
+    errEl.style.cssText = 'color:#c0392b; background:rgba(192,57,43,0.08); padding:10px 12px; border-radius:6px; font-size:13px; margin-bottom:12px; border:1px solid rgba(192,57,43,0.3);';
+    form.insertBefore(errEl, form.firstChild);
+  }
+  errEl.textContent = msg;
+  errEl.scrollIntoView({behavior: 'smooth', block: 'center'});
 }
 // ─── EDIT INPUTS PAGE (DSCR) ───
 function showEditInputsDSCR() {
