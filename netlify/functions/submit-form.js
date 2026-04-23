@@ -19,6 +19,7 @@
 const HUBSPOT_API = "https://api.hubapi.com";
 
 // ─── Campaign attribution: map form_source to clean campaign name ──
+// Hard-channel forms always map to the same campaign regardless of traffic source.
 const FORM_SOURCE_TO_CAMPAIGN = {
   "construction-landing-page-google-ads": "GUC",
   "first-time-builder-landing-page-google-ads": "GUC",
@@ -26,10 +27,26 @@ const FORM_SOURCE_TO_CAMPAIGN = {
   "dscr-landing-page-google-ads": "DSCR",
   "fix-and-flip-landing-page-google-ads": "FnF",
   "broker-partner": "Broker",
-  "get-in-touch": "Website",
   "rtl-calculator": "RTL Calculator",
   "dscr-calculator": "DSCR Calculator",
 };
+
+// Pages that can be hit paid OR organic — attribution depends on traffic source.
+// Paid -> "Conquest" for competitor pages, or the real campaign via utm_campaign
+// for get-in-touch (which is in site nav and reachable from any ad LP).
+const COMPETITOR_FORM_SOURCES = new Set([
+  "ledger-vs-kiavi-lp",
+  "ledger-vs-civic-financial-services-lp",
+  "ledger-vs-lima-one-capital-lp",
+  "ledger-vs-renovo-financial-lp",
+  "ledger-vs-conventus-lp",
+  "ledger-vs-cofi-lending-lp",
+  "ledger-vs-housemax-funding-lp",
+  "ledger-vs-groundfloor-lp",
+  "ledger-vs-easy-street-capital-lp",
+  "ledger-vs-temple-view-capital-lp",
+  "compare-lenders-landing-page",
+]);
 
 // Map ads LP sessionStorage flag to campaign (fallback when gclid stripped)
 const ADS_LP_TO_CAMPAIGN = {
@@ -38,13 +55,105 @@ const ADS_LP_TO_CAMPAIGN = {
   "dscr-lp": "DSCR",
 };
 
-function deriveAdCampaign(formSource, utmCampaign, adsLp) {
+function deriveAdCampaign(formSource, utmCampaign, adsLp, isGoogleAds) {
+  // 1) Hard-channel forms
   if (formSource && FORM_SOURCE_TO_CAMPAIGN[formSource]) {
     return FORM_SOURCE_TO_CAMPAIGN[formSource];
   }
+  // 2) Competitor conquest pages: paid -> Conquest, organic -> Website
+  if (COMPETITOR_FORM_SOURCES.has(formSource)) {
+    return isGoogleAds ? "Conquest" : "Website";
+  }
+  // 3) Vertical construction product page (organic product content)
+  if (formSource === "construction-loan") {
+    return isGoogleAds ? (utmCampaign || "GUC") : "Website";
+  }
+  // 4) Get in Touch: accessible from site nav, so a paid ad click can land here
+  //    after bouncing around. Fall through to utm_campaign/adsLp when paid,
+  //    "Website" when organic.
+  if (formSource === "get-in-touch") {
+    if (isGoogleAds) {
+      if (utmCampaign) return utmCampaign;
+      if (adsLp && ADS_LP_TO_CAMPAIGN[adsLp]) return ADS_LP_TO_CAMPAIGN[adsLp];
+      return "Paid Search";
+    }
+    return "Website";
+  }
+  // 5) Generic fallbacks for anything else
   if (utmCampaign) return utmCampaign;
   if (adsLp && ADS_LP_TO_CAMPAIGN[adsLp]) return ADS_LP_TO_CAMPAIGN[adsLp];
   return "";
+}
+
+// ─── Forms API: register timeline event for a submission ──────────
+// Posts to HubSpot's form submission endpoint so "Submitted form: <name>"
+// appears on the contact's Activities timeline. Does NOT create a contact —
+// our own findOrCreateContact has already done that with full attribution.
+// Configured with createNewContactForNewEmail=false on the form side, so a
+// missing match is a no-op rather than a phantom contact.
+//
+// Form GUIDs are created by scripts/create_hubspot_forms.py and baked in.
+// Shared GUIDs: all 10 competitor pages roll up to compare_lenders; the two
+// FTB form_source variants (paid vs organic) roll up to first_time_builder.
+const HUBSPOT_PORTAL_ID = "46107229";
+const FORM_GUIDS = {
+  "get-in-touch":                              "453a5590-5369-4df7-ae57-6e7c3177264e",
+  "broker-partner":                            "6a45af48-942c-4ac5-8c32-e73b8375cd33",
+  "construction-landing-page-google-ads":      "e1827aa1-13a8-400d-9012-29fe493596f1",
+  "dscr-landing-page-google-ads":              "c02a39cf-158a-48c7-95a5-8fa05176ddfc",
+  "fix-and-flip-landing-page-google-ads":      "6099f525-8886-485f-a5cb-261677d3538e",
+  "first-time-builder-landing-page":           "2f55435d-b2e1-475d-b621-4cc74e1b3c8f",
+  "first-time-builder-landing-page-google-ads":"2f55435d-b2e1-475d-b621-4cc74e1b3c8f",
+  "construction-loan":                         "27670eb0-f770-46e8-8d9a-adede5e7911e",
+  "rtl-calculator":                            "88870c3a-2936-4071-8666-4f8bb3c8ad72",
+  "dscr-calculator":                           "d8d8fa08-3e9d-4716-829b-bb6f4d73ea20",
+  "compare-lenders-landing-page":              "596223ef-cc8c-4d71-a7ae-7cc87f4d5e40",
+  "ledger-vs-kiavi-lp":                        "596223ef-cc8c-4d71-a7ae-7cc87f4d5e40",
+  "ledger-vs-civic-financial-services-lp":     "596223ef-cc8c-4d71-a7ae-7cc87f4d5e40",
+  "ledger-vs-lima-one-capital-lp":             "596223ef-cc8c-4d71-a7ae-7cc87f4d5e40",
+  "ledger-vs-renovo-financial-lp":             "596223ef-cc8c-4d71-a7ae-7cc87f4d5e40",
+  "ledger-vs-conventus-lp":                    "596223ef-cc8c-4d71-a7ae-7cc87f4d5e40",
+  "ledger-vs-cofi-lending-lp":                 "596223ef-cc8c-4d71-a7ae-7cc87f4d5e40",
+  "ledger-vs-housemax-funding-lp":             "596223ef-cc8c-4d71-a7ae-7cc87f4d5e40",
+  "ledger-vs-groundfloor-lp":                  "596223ef-cc8c-4d71-a7ae-7cc87f4d5e40",
+  "ledger-vs-easy-street-capital-lp":          "596223ef-cc8c-4d71-a7ae-7cc87f4d5e40",
+  "ledger-vs-temple-view-capital-lp":          "596223ef-cc8c-4d71-a7ae-7cc87f4d5e40",
+};
+
+async function registerFormSubmission(formData) {
+  const guid = FORM_GUIDS[formData.formSource];
+  if (!guid || !formData.email) return;
+  const fields = [
+    { objectTypeId: "0-1", name: "email",        value: formData.email },
+    { objectTypeId: "0-1", name: "firstname",    value: formData.firstName || "" },
+    { objectTypeId: "0-1", name: "lastname",     value: formData.lastName || "" },
+    { objectTypeId: "0-1", name: "phone",        value: formData.phone || "" },
+    { objectTypeId: "0-1", name: "form_source",  value: formData.formSource || "" },
+    { objectTypeId: "0-1", name: "ad_campaign",  value: formData.adCampaign || "" },
+  ];
+  const context = {
+    pageUri:  formData.pageUrl || "",
+    pageName: formData.pageName || "",
+  };
+  if (formData.hutk) context.hutk = formData.hutk;
+  try {
+    const res = await fetch(
+      `https://api.hsforms.com/submissions/v3/integration/submit/${HUBSPOT_PORTAL_ID}/${guid}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ fields, context }),
+      }
+    );
+    if (res.ok) {
+      console.log(`Forms API event registered for ${formData.email} (form_source=${formData.formSource})`);
+    } else {
+      const text = await res.text();
+      console.error(`Forms API submission failed [${res.status}] for ${formData.formSource}: ${text.slice(0, 300)}`);
+    }
+  } catch (err) {
+    console.error("Forms API submission error:", err);
+  }
 }
 
 // ─── Extract structured HubSpot fields from calculator JSON ──────
@@ -876,7 +985,7 @@ exports.handler = async function (event) {
 
     // Campaign attribution from form_source and/or UTMs
     formData.formSource = raw.form_source || "";
-    formData.adCampaign = deriveAdCampaign(formData.formSource, formData.utmCampaign, formData.adsLp);
+    formData.adCampaign = deriveAdCampaign(formData.formSource, formData.utmCampaign, formData.adsLp, formData.isGoogleAds);
 
     // Calculator results and project details -> project_details contact property
     const calcSummary = formatCalculatorResults(raw["calculator-results"] || "");
@@ -1040,6 +1149,9 @@ exports.handler = async function (event) {
       // Associate hutk for HubSpot visitor tracking
       await associateHutkWithContact(formData.email, formData.hutk, formData.pageUrl, formData.pageName);
 
+      // Register form submission via Forms API (creates "Submitted form: X" timeline event)
+      await registerFormSubmission(formData);
+
       // Re-assert tracking properties after hutk association (hutk can overwrite hs_analytics_source)
       await ensureTrackingAfterHutk(contactId, formData);
 
@@ -1087,6 +1199,9 @@ exports.handler = async function (event) {
       // Associate hutk for HubSpot visitor tracking
       await associateHutkWithContact(formData.email, formData.hutk, formData.pageUrl, formData.pageName);
 
+      // Register form submission via Forms API (creates "Submitted form: X" timeline event)
+      await registerFormSubmission(formData);
+
       // Re-assert tracking properties after hutk association (hutk can overwrite hs_analytics_source)
       await ensureTrackingAfterHutk(contactId, formData);
 
@@ -1119,6 +1234,17 @@ exports.handler = async function (event) {
         "first-time-builder-landing-page": "First Time Campaign",
         "dscr-landing-page-google-ads": "DSCR Campaign",
         "fix-and-flip-landing-page-google-ads": "Fix and Flip Campaign",
+        "ledger-vs-kiavi-lp": "Conquest Campaign",
+        "ledger-vs-civic-financial-services-lp": "Conquest Campaign",
+        "ledger-vs-lima-one-capital-lp": "Conquest Campaign",
+        "ledger-vs-renovo-financial-lp": "Conquest Campaign",
+        "ledger-vs-conventus-lp": "Conquest Campaign",
+        "ledger-vs-cofi-lending-lp": "Conquest Campaign",
+        "ledger-vs-housemax-funding-lp": "Conquest Campaign",
+        "ledger-vs-groundfloor-lp": "Conquest Campaign",
+        "ledger-vs-easy-street-capital-lp": "Conquest Campaign",
+        "ledger-vs-temple-view-capital-lp": "Conquest Campaign",
+        "compare-lenders-landing-page": "Conquest Campaign",
       };
       const ticketCategory = ticketCategoryMap[raw.form_source] || "GENERAL_INQUIRY";
       const ticket = await createTicket(formData, ownerId, contactId, companyId, ticketCategory);
