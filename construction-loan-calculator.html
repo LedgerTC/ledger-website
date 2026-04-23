@@ -1348,7 +1348,9 @@ function determineTier(inputs, leverage) {
 
 // ─── RATE CALCULATION ───
 function calculateRate(tier, assetType, fico) {
-  const baseRate = tier === 1 ? 9.250 : 9.750;
+  // Base = buy rate + 100bps spread (Tier 1 buy 8.875, Tier 2 buy 9.375).
+  // Runs a touch below Churchill sales rate (9.950/10.500); 100bps spread = 25bps YSP rev.
+  const baseRate = tier === 1 ? 9.875 : 10.375;
   let adder = 0;
   // 100bp premium: Condo OR Multifamily OR FICO < 680 (non-additive per Churchill pricing matrix)
   if (assetType === 'Condominium' || assetType === 'Multifamily' || fico < 680) adder = 1.0;
@@ -1569,19 +1571,12 @@ function calculateRTL() {
 
   let rate = calculateRate(tier, assetType, fico);
 
-  // Small deal adder: TLA < $500K gets +50bps (fixed costs vs deal economics)
-  if (tla < 500000) rate = ceilEighth(rate + 0.500);
-
   // Heavy rehab adder: +50bps for execution risk not captured by tier
   if (program === 'FnF - Heavy') rate = ceilEighth(rate + 0.500);
 
-  // Tiered origination fees
-  let origPct;
-  if (tla < 500000) origPct = 0.025;
-  else if (tla <= 1000000) origPct = 0.02;
-  else if (tla <= 2000000) origPct = 0.0175;
-  else if (tla <= 3000000) origPct = 0.015;
-  else origPct = 0.01;
+  // Origination: flat 1.5% through $2M, 1.25% above. Targets ~2% avg net rev
+  // across book after $1,500/deal fixed processing cost.
+  const origPct = tla <= 2000000 ? 0.015 : 0.0125;
   const origFee = Math.round(tla * origPct);
 
   // Processing & closing costs: percentage-based, rounded to nearest $25
