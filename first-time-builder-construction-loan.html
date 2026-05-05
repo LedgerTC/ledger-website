@@ -249,6 +249,20 @@ document.addEventListener("click", function(e) {
     .problem-inner p:last-child { margin-bottom: 0; }
     .problem-inner strong { color: var(--green); }
 
+    /* ── Requirements Section ── */
+    .requirements-section { background: var(--white); padding: clamp(3rem, 4.5vw, 5rem) clamp(1.5rem, 3vw, 4rem); }
+    .requirements-inner { max-width: 900px; margin: 0 auto; text-align: center; }
+    .requirements-inner h2 { font-family: 'Plus Jakarta Sans', sans-serif; font-size: clamp(1.5rem, 1.3rem + 0.8vw, 2rem); font-weight: 700; color: var(--green); margin-bottom: 12px; letter-spacing: -0.01em; }
+    .requirements-subtitle { font-size: clamp(0.9rem, 0.88rem + 0.15vw, 1rem); color: var(--gray-600); max-width: 640px; margin: 0 auto 2rem; line-height: 1.6; }
+    .requirements-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; max-width: 750px; margin: 0 auto; text-align: left; }
+    .requirements-col h3 { font-size: 1rem; font-weight: 700; color: var(--green); margin-bottom: 1rem; }
+    .requirements-list { list-style: none; padding: 0; margin: 0; }
+    .requirements-list li { display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.9rem; color: #444; line-height: 1.5; margin-bottom: 0.75rem; }
+    .requirements-list li svg { flex-shrink: 0; width: 18px; height: 18px; margin-top: 2px; }
+    .req-check { color: #2b8a3e; }
+    .req-x { color: #c92a2a; }
+    @media (max-width: 768px) { .requirements-grid { grid-template-columns: 1fr; gap: 1.5rem; } }
+
     /* ── Solution Section ── */
     .solution-section { background: var(--cream); padding: clamp(3.5rem, 4.5vw, 5rem) clamp(1.5rem, 3vw, 4rem); }
     .solution-inner { max-width: 800px; margin: 0 auto; }
@@ -720,6 +734,43 @@ document.addEventListener("click", function(e) {
       <div class="scroll-indicator">
         <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
         <span>See how it works</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Requirements ── -->
+  <section class="requirements-section" id="requirements">
+    <div class="requirements-inner">
+      <p class="section-label">Eligibility</p>
+      <h2>Construction Loan Requirements for First-Time Builders</h2>
+      <p class="requirements-subtitle">Wondering how to qualify for a construction loan with no prior builds? Here's exactly what you need, and what disqualifies a project.</p>
+      <div class="requirements-grid">
+        <div class="requirements-col">
+          <h3>Eligible</h3>
+          <ul class="requirements-list">
+            <li><svg class="req-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>680+ FICO (700+ unlocks 90% LTC)</li>
+            <li><svg class="req-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Licensed, insured general contractor with completed builds</li>
+            <li><svg class="req-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Single-family, duplex, triplex, fourplex, townhome new construction</li>
+            <li><svg class="req-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Spec homes and build-to-rent projects</li>
+            <li><svg class="req-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Loans from $150K to $5M (residential only)</li>
+            <li><svg class="req-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Entity borrowers (LLC, LP, Corp)</li>
+            <li><svg class="req-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>Lot owned or under contract with budget and plans</li>
+            <li><svg class="req-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>First-time builders paired with an experienced GC</li>
+          </ul>
+        </div>
+        <div class="requirements-col">
+          <h3>Not Eligible</h3>
+          <ul class="requirements-list">
+            <li><svg class="req-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Owner-occupied or primary residence</li>
+            <li><svg class="req-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>DIY builds without a licensed GC</li>
+            <li><svg class="req-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Borrower in personal name (must be entity)</li>
+            <li><svg class="req-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>FICO below 680</li>
+            <li><svg class="req-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Commercial, mixed-use, or hospitality</li>
+            <li><svg class="req-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Apartments or projects over $5M</li>
+            <li><svg class="req-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Mobile or manufactured homes</li>
+            <li><svg class="req-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Raw land with no build plan</li>
+          </ul>
+        </div>
       </div>
     </div>
   </section>
