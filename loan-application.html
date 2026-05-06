@@ -27,6 +27,17 @@ if (window.location.hostname === 'ledgertc.com') {
   gtag('config','AW-17993082803');
 }
 </script>
+<script>
+/* sGTM companion: routes AW remarketing pixel through tag.ledgertc.com
+   for ITP-resistant first-party cookies. Additive only -- existing
+   gtag tracking remains the source of truth for conversions/GA4. */
+if (window.location.hostname === 'ledgertc.com') {
+  gtag('event', 'page_view', {
+    send_to: 'AW-17993082803',
+    transport_url: 'https://tag.ledgertc.com'
+  });
+}
+</script>
 <link rel="icon" href="favicon.ico" type="image/x-icon">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="192x192" href="favicon-192.png">

@@ -42,6 +42,17 @@
       gtag('config', 'AW-17993082803');
     }
   </script>
+<script>
+/* sGTM companion: routes AW remarketing pixel through tag.ledgertc.com
+   for ITP-resistant first-party cookies. Additive only -- existing
+   gtag tracking remains the source of truth for conversions/GA4. */
+if (window.location.hostname === 'ledgertc.com') {
+  gtag('event', 'page_view', {
+    send_to: 'AW-17993082803',
+    transport_url: 'https://tag.ledgertc.com'
+  });
+}
+</script>
   <script>
   document.addEventListener("click", function(e) {
     var link = e.target.closest && e.target.closest('a[href^="tel:"]');
