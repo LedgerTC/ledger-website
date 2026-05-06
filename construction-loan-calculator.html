@@ -1278,8 +1278,10 @@ function getExperienceCount(expStr) {
 function determineLoanProgram(projectType, rehabBudget, purchasePrice, asIsValue) {
   if (projectType === 'Bridge') return 'Bridge';
   if (projectType === 'Ground Up') return 'GUC';
-  // Fix and Flip: determine Light vs Heavy by rehab ratio
-  const baseValue = Math.min(purchasePrice, asIsValue);
+  // Fix and Flip: determine Light vs Heavy by rehab ratio.
+  // asIsValue here is the effective AIV from getEffectiveAIV() — already the right
+  // basis for both purchases (= purchasePrice) and refis (= AIV when seasoned >6mo).
+  const baseValue = asIsValue;
   const rehabRatio = baseValue > 0 ? rehabBudget / baseValue : 0;
   if (rehabRatio > 0.5) return 'FnF - Heavy';
   return 'FnF - Light';
@@ -1494,7 +1496,7 @@ function calculateRTL() {
     day1 = tla;
     holdback = 0;
   } else {
-    const baseVal = Math.min(purchasePrice, asIsValue);
+    const baseVal = asIsValue;
 
     // GUC permits override: 70% LTAIV with permits, 60% without
     let maxLTAIV = lev.ltaiv;
@@ -1539,7 +1541,7 @@ function calculateRTL() {
   }
 
   // Leverage ratios
-  const baseVal = Math.min(purchasePrice, asIsValue);
+  const baseVal = asIsValue;
   const ltaivRatio = baseVal > 0 ? day1 / baseVal : 0;
   const totalCost = baseVal + bufferedCost;
   const ltcRatio = totalCost > 0 ? tla / totalCost : 0;
