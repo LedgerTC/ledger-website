@@ -111,11 +111,11 @@ const SIGNATURE_FIELDS = new Set([
   "Co-Guarantor Signature", "Co-Guarantor Sign Date",
 ]);
 
-// Required fields
+// Required fields. Kept intentionally minimal: SSN, DOB, phone, email, and
+// address are collected when available but no longer block submission, so a
+// borrower can finish the application and we chase the rest during underwriting.
 const REQUIRED = [
-  "entity_name", "property_address",
-  "guarantor_name", "guarantor_ssn", "guarantor_dob",
-  "guarantor_phone", "guarantor_email", "guarantor_address",
+  "entity_name", "property_address", "guarantor_name",
 ];
 
 // ─── Main handler ────────────────────────────────────────────────
@@ -219,6 +219,15 @@ exports.handler = async function (event) {
     };
 
     console.log("Creating DocuSeal submission for:", data.guarantor_name, data.guarantor_email);
+
+    // The DocuSeal template (ID 3326505) only has two signer slots (Guarantor +
+    // Co-Guarantor). Guarantors beyond the first two arrive as additional_guarantors
+    // and are NOT on the signed PDF yet — log them so they aren't lost. TODO: add
+    // extra signer fields to the template (loan-app/setup_template.py) to put 3+ on
+    // the executed document, and forward this to HubSpot.
+    if (data.additional_guarantors) {
+      console.log("Additional guarantors (not on signed doc):", data.additional_guarantors);
+    }
 
     const dsRes = await fetch(`${DOCUSEAL_API}/submissions`, {
       method: "POST",

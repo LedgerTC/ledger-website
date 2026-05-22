@@ -495,6 +495,117 @@ if (window.location.hostname === 'ledgertc.com') {
     .review-label { flex: none; margin-bottom: 0.1rem; }
     .loan-progress-num { width: 30px; height: 30px; font-size: 0.75rem; }
   }
+
+  /* ─── Repeatable guarantor cards (v2) ─── */
+  .step-hint {
+    font-size: 0.85rem;
+    color: var(--gray-600);
+    line-height: 1.5;
+    margin: 0 0 1rem;
+  }
+  .optional-tag {
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: #8a9590;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-left: 0.35rem;
+  }
+  .guarantor-card {
+    border: 1px solid #e0ddd6;
+    border-radius: 10px;
+    padding: 1rem 1.1rem 1.25rem;
+    margin-bottom: 1.1rem;
+    background: #fcfcfb;
+  }
+  .guarantor-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.85rem;
+  }
+  .guarantor-card-title {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--green);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .guarantor-badge {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--gold);
+    color: var(--white);
+    font-size: 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .guarantor-primary-tag {
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: var(--gold-dark);
+    background: #f9f0d8;
+    border-radius: 999px;
+    padding: 0.1rem 0.55rem;
+  }
+  .btn-remove-guarantor {
+    background: none;
+    border: none;
+    color: #b3261e;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0.25rem 0.4rem;
+    border-radius: 6px;
+  }
+  .btn-remove-guarantor:hover { background: #fdecec; }
+  .btn-add-guarantor {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--green);
+    background: var(--white);
+    border: 1.5px dashed var(--green);
+    border-radius: 8px;
+    padding: 0.7rem 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+    justify-content: center;
+  }
+  .btn-add-guarantor:hover { background: #f0f7f5; }
+  .guarantor-decl-toggle {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--green);
+    cursor: pointer;
+    margin: 0.75rem 0 0.25rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    user-select: none;
+  }
+  .guarantor-decl-body { margin-top: 0.5rem; }
+  .doc-cap-note {
+    font-size: 0.78rem;
+    line-height: 1.45;
+    color: #7a5b00;
+    background: #fcf6e6;
+    border: 1px solid #ecdcae;
+    border-radius: 8px;
+    padding: 0.6rem 0.85rem;
+    margin: 0.75rem 0 0;
+    display: none;
+  }
+  .doc-cap-note.visible { display: block; }
 </style>
 </head>
 <body>
@@ -635,193 +746,22 @@ if (window.location.hostname === 'ledgertc.com') {
         </div>
       </div>
 
-      <div class="form-section-bar"><span class="form-section-num">III</span> Guarantor</div>
-      <div class="form-grid">
-        <div class="form-group">
-          <label for="guarantor_name">Full Name *</label>
-          <input type="text" id="guarantor_name" name="guarantor_name" required>
-        </div>
-        <div class="form-group">
-          <label for="guarantor_ownership">% Ownership</label>
-          <input type="text" id="guarantor_ownership" name="guarantor_ownership" placeholder="e.g. 100">
-        </div>
-        <div class="form-group">
-          <label for="guarantor_ssn">Social Security # *</label>
-          <input type="password" id="guarantor_ssn" name="guarantor_ssn" required inputmode="numeric" maxlength="11" placeholder="XXX-XX-XXXX" autocomplete="off">
-        </div>
-        <div class="form-group">
-          <label for="guarantor_dob">Date of Birth *</label>
-          <input type="date" id="guarantor_dob" name="guarantor_dob" required>
-        </div>
-        <div class="form-group">
-          <label for="guarantor_credit">Credit Score</label>
-          <input type="text" id="guarantor_credit" name="guarantor_credit" placeholder="e.g. 720" inputmode="numeric">
-        </div>
-        <div class="form-group">
-          <label for="guarantor_phone">Primary Phone *</label>
-          <input type="tel" id="guarantor_phone" name="guarantor_phone" required placeholder="(201) 555-1234">
-        </div>
-        <div class="form-group">
-          <label for="guarantor_email">Primary Email *</label>
-          <input type="email" id="guarantor_email" name="guarantor_email" required>
-        </div>
-        <div class="form-group full">
-          <label for="guarantor_address">Primary Address *</label>
-          <input type="text" id="guarantor_address" name="guarantor_address" required placeholder="Street, City, State, Zip">
-        </div>
-      </div>
-
-      <!-- Co-Guarantor Gate -->
-      <div class="coguarantor-gate">
-        Will there be a co-guarantor on this loan?
-        <div class="radio-pill">
-          <input type="radio" name="has_co_guarantor" id="cg_yes" value="Yes"><label for="cg_yes">Yes</label>
-          <input type="radio" name="has_co_guarantor" id="cg_no" value="No" checked><label for="cg_no">No</label>
-        </div>
-      </div>
-
-      <div class="coguarantor-section" id="coGuarantorInfo">
-        <div class="form-section-bar" style="margin-top:0"><span class="form-section-num">III</span> Co-Guarantor</div>
-        <div class="form-grid">
-          <div class="form-group">
-            <label for="co_guarantor_name">Full Name</label>
-            <input type="text" id="co_guarantor_name" name="co_guarantor_name">
-          </div>
-          <div class="form-group">
-            <label for="co_guarantor_ownership">% Ownership</label>
-            <input type="text" id="co_guarantor_ownership" name="co_guarantor_ownership">
-          </div>
-          <div class="form-group">
-            <label for="co_guarantor_ssn">Social Security #</label>
-            <input type="password" id="co_guarantor_ssn" name="co_guarantor_ssn" inputmode="numeric" maxlength="11" placeholder="XXX-XX-XXXX" autocomplete="off">
-          </div>
-          <div class="form-group">
-            <label for="co_guarantor_dob">Date of Birth</label>
-            <input type="date" id="co_guarantor_dob" name="co_guarantor_dob">
-          </div>
-          <div class="form-group">
-            <label for="co_guarantor_credit">Credit Score</label>
-            <input type="text" id="co_guarantor_credit" name="co_guarantor_credit" inputmode="numeric">
-          </div>
-          <div class="form-group">
-            <label for="co_guarantor_phone">Primary Phone</label>
-            <input type="tel" id="co_guarantor_phone" name="co_guarantor_phone" placeholder="(201) 555-1234">
-          </div>
-          <div class="form-group">
-            <label for="co_guarantor_email">Primary Email</label>
-            <input type="email" id="co_guarantor_email" name="co_guarantor_email">
-          </div>
-          <div class="form-group full">
-            <label for="co_guarantor_address">Primary Address</label>
-            <input type="text" id="co_guarantor_address" name="co_guarantor_address">
-          </div>
-        </div>
-      </div>
-
       <div class="loan-nav">
         <span></span>
-        <button type="button" class="btn-next" onclick="loanWizard.next()">Next: Declarations &rarr;</button>
+        <button type="button" class="btn-next" onclick="loanWizard.next()">Next: Guarantors &rarr;</button>
       </div>
     </div>
 
-    <!-- ═══════════ STEP 2: Declarations ═══════════ -->
+    <!-- ═══════════ STEP 2: Guarantors (repeatable) ═══════════ -->
     <div class="loan-step" data-step="2">
-      <div class="form-section-bar"><span class="form-section-num">IV</span> Guarantor Declarations</div>
+      <div class="form-section-bar"><span class="form-section-num">III</span> Guarantors</div>
+      <p class="step-hint">Add everyone who will personally guarantee this loan. Most deals have one or two, but you can add as many partners as the deal requires. Only a name is required to add someone, the rest can follow.</p>
 
-      <!-- Citizenship -->
-      <div class="decl-standalone">
-        Are you a U.S. citizen?
-        <div class="radio-pill">
-          <input type="radio" name="g_us_citizen" id="g_cit_y" value="Yes"><label for="g_cit_y">Yes</label>
-          <input type="radio" name="g_us_citizen" id="g_cit_n" value="No"><label for="g_cit_n">No</label>
-        </div>
-      </div>
-      <div class="decl-standalone">
-        Are you a permanent resident alien?
-        <div class="radio-pill">
-          <input type="radio" name="g_permanent_resident" id="g_pr_y" value="Yes"><label for="g_pr_y">Yes</label>
-          <input type="radio" name="g_permanent_resident" id="g_pr_n" value="No"><label for="g_pr_n">No</label>
-        </div>
-      </div>
+      <div id="guarantorContainer"></div>
 
-      <!-- Confirm All No -->
-      <div class="decl-confirm-bar" onclick="this.querySelector('input').click()">
-        <input type="checkbox" name="g_confirm_all_no" id="g_confirm_all_no" onclick="event.stopPropagation()">
-        <div>
-          I confirm that the answer to all of the following declarations is "No."
-          <span class="decl-confirm-hint">If any answer is "Yes," leave this unchecked and select Yes on the individual items below.</span>
-        </div>
-      </div>
+      <button type="button" class="btn-add-guarantor" id="addGuarantorBtn">+ Add another guarantor</button>
 
-      <div id="gDeclList">
-        <div class="decl-section-label">Personal</div>
-        <div class="decl-row"><span class="decl-num">1</span><span class="decl-text">Have you, your borrowing entity, or any entity that you are a member of been declared bankrupt within the past 5 years?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="g_bankrupt_5yr" id="g_b5_y" value="Yes"><label for="g_b5_y">Y</label><input type="radio" name="g_bankrupt_5yr" id="g_b5_n" value="No"><label for="g_b5_n">N</label></div></span></div>
-        <div class="decl-row"><span class="decl-num">2</span><span class="decl-text">Have you, your borrowing entity, or any entity that you are a member of had property foreclosed upon or given title or deed in lieu thereof in the last 4 years?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="g_foreclosed_4yr" id="g_f4_y" value="Yes"><label for="g_f4_y">Y</label><input type="radio" name="g_foreclosed_4yr" id="g_f4_n" value="No"><label for="g_f4_n">N</label></div></span></div>
-        <div class="decl-row"><span class="decl-num">3</span><span class="decl-text">Have you, your borrowing entity, or any entity that you are a member of been a party to a lawsuit?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="g_lawsuit" id="g_ls_y" value="Yes"><label for="g_ls_y">Y</label><input type="radio" name="g_lawsuit" id="g_ls_n" value="No"><label for="g_ls_n">N</label></div></span></div>
-        <div class="decl-row"><span class="decl-num">4</span><span class="decl-text">Have you, your borrowing entity, or any entity that you are a member of, directly or indirectly been obligated on any loan which resulted in foreclosure, transfer of title in lieu of foreclosure, or judgment?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="g_loan_default" id="g_ld_y" value="Yes"><label for="g_ld_y">Y</label><input type="radio" name="g_loan_default" id="g_ld_n" value="No"><label for="g_ld_n">N</label></div></span></div>
-        <div class="decl-row"><span class="decl-num">5</span><span class="decl-text">Are you presently delinquent or in default on any Federal debt or any other loan, mortgage, financial obligation, bond, or loan guarantee?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="g_federal_debt" id="g_fd_y" value="Yes"><label for="g_fd_y">Y</label><input type="radio" name="g_federal_debt" id="g_fd_n" value="No"><label for="g_fd_n">N</label></div></span></div>
-        <div class="decl-row"><span class="decl-num">6</span><span class="decl-text">Have you ever been charged with, or convicted of a felony?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="g_felony" id="g_fe_y" value="Yes"><label for="g_fe_y">Y</label><input type="radio" name="g_felony" id="g_fe_n" value="No"><label for="g_fe_n">N</label></div></span></div>
-        <div class="decl-row"><span class="decl-num">7</span><span class="decl-text">Do you, your borrowing entity, or any entity that you are a member of have any outstanding judgments against you?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="g_judgments" id="g_jg_y" value="Yes"><label for="g_jg_y">Y</label><input type="radio" name="g_judgments" id="g_jg_n" value="No"><label for="g_jg_n">N</label></div></span></div>
-
-        <div class="decl-section-label">Property</div>
-        <div class="decl-row"><span class="decl-num">8</span><span class="decl-text">Do you currently occupy, or do you intend to occupy, the subject property?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="g_occupy_property" id="g_op_y" value="Yes"><label for="g_op_y">Y</label><input type="radio" name="g_occupy_property" id="g_op_n" value="No"><label for="g_op_n">N</label></div></span></div>
-        <div class="decl-row"><span class="decl-num">9</span><span class="decl-text">Have you ever occupied the subject property?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="g_ever_occupied" id="g_eo_y" value="Yes"><label for="g_eo_y">Y</label><input type="radio" name="g_ever_occupied" id="g_eo_n" value="No"><label for="g_eo_n">N</label></div></span></div>
-        <div class="decl-row"><span class="decl-num">10</span><span class="decl-text">Is the subject property currently under construction?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="g_under_construction" id="g_uc_y" value="Yes"><label for="g_uc_y">Y</label><input type="radio" name="g_under_construction" id="g_uc_n" value="No"><label for="g_uc_n">N</label></div></span></div>
-        <div class="decl-row"><span class="decl-num">11</span><span class="decl-text">Are there any known hazards or safety issues (mold, foundation, structural, etc.)?<span class="note">Remediation costs must be included in your rehab budget</span></span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="g_hazards" id="g_hz_y" value="Yes"><label for="g_hz_y">Y</label><input type="radio" name="g_hazards" id="g_hz_n" value="No"><label for="g_hz_n">N</label></div></span></div>
-        <div class="decl-row"><span class="decl-num">12</span><span class="decl-text">Do you have a relationship or business affiliation with a seller, closing agent, or title agent that pre-dates this transaction?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="g_seller_relationship" id="g_sr_y" value="Yes"><label for="g_sr_y">Y</label><input type="radio" name="g_seller_relationship" id="g_sr_n" value="No"><label for="g_sr_n">N</label></div></span></div>
-        <div class="decl-row"><span class="decl-num">13</span><span class="decl-text">Is the subject property being purchased from a wholesaler?<span class="note">Assignment fees cannot be financed</span></span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="g_wholesaler" id="g_wh_y" value="Yes"><label for="g_wh_y">Y</label><input type="radio" name="g_wholesaler" id="g_wh_n" value="No"><label for="g_wh_n">N</label></div></span></div>
-        <div class="decl-row"><span class="decl-num">14</span><span class="decl-text">Will any part of the down payment be borrowed?<span class="note">Secondary liens are prohibited. Funds from equity/JV partners are allowed</span></span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="g_down_payment" id="g_dp_y" value="Yes"><label for="g_dp_y">Y</label><input type="radio" name="g_down_payment" id="g_dp_n" value="No"><label for="g_dp_n">N</label></div></span></div>
-        <div class="decl-row"><span class="decl-num">15</span><span class="decl-text">Is this transaction subject to a short sale approval by the existing lender?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="g_short_sale" id="g_ss_y" value="Yes"><label for="g_ss_y">Y</label><input type="radio" name="g_short_sale" id="g_ss_n" value="No"><label for="g_ss_n">N</label></div></span></div>
-      </div>
-
-      <!-- Co-Guarantor Declarations (conditional) -->
-      <div class="coguarantor-section" id="coGuarantorDecl">
-        <div class="form-section-bar"><span class="form-section-num">IV</span> Co-Guarantor Declarations</div>
-
-        <div class="decl-standalone">
-          Are you a U.S. citizen?
-          <div class="radio-pill">
-            <input type="radio" name="cg_us_citizen" id="cg_cit_y" value="Yes"><label for="cg_cit_y">Yes</label>
-            <input type="radio" name="cg_us_citizen" id="cg_cit_n" value="No"><label for="cg_cit_n">No</label>
-          </div>
-        </div>
-        <div class="decl-standalone">
-          Are you a permanent resident alien?
-          <div class="radio-pill">
-            <input type="radio" name="cg_permanent_resident" id="cg_pr_y" value="Yes"><label for="cg_pr_y">Yes</label>
-            <input type="radio" name="cg_permanent_resident" id="cg_pr_n" value="No"><label for="cg_pr_n">No</label>
-          </div>
-        </div>
-
-        <div class="decl-confirm-bar" onclick="this.querySelector('input').click()">
-          <input type="checkbox" name="cg_confirm_all_no" id="cg_confirm_all_no" onclick="event.stopPropagation()">
-          <div>
-            I confirm that the answer to all of the following declarations is "No."
-            <span class="decl-confirm-hint">If any answer is "Yes," leave this unchecked and select Yes on the individual items below.</span>
-          </div>
-        </div>
-
-        <div id="cgDeclList">
-          <div class="decl-section-label">Personal</div>
-          <div class="decl-row"><span class="decl-num">1</span><span class="decl-text">Declared bankrupt within the past 5 years?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="cg_bankrupt_5yr" id="cg_b5_y" value="Yes"><label for="cg_b5_y">Y</label><input type="radio" name="cg_bankrupt_5yr" id="cg_b5_n" value="No"><label for="cg_b5_n">N</label></div></span></div>
-          <div class="decl-row"><span class="decl-num">2</span><span class="decl-text">Property foreclosed upon in the last 4 years?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="cg_foreclosed_4yr" id="cg_f4_y" value="Yes"><label for="cg_f4_y">Y</label><input type="radio" name="cg_foreclosed_4yr" id="cg_f4_n" value="No"><label for="cg_f4_n">N</label></div></span></div>
-          <div class="decl-row"><span class="decl-num">3</span><span class="decl-text">Been a party to a lawsuit?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="cg_lawsuit" id="cg_ls_y" value="Yes"><label for="cg_ls_y">Y</label><input type="radio" name="cg_lawsuit" id="cg_ls_n" value="No"><label for="cg_ls_n">N</label></div></span></div>
-          <div class="decl-row"><span class="decl-num">4</span><span class="decl-text">Obligated on a loan resulting in foreclosure or judgment?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="cg_loan_default" id="cg_ld_y" value="Yes"><label for="cg_ld_y">Y</label><input type="radio" name="cg_loan_default" id="cg_ld_n" value="No"><label for="cg_ld_n">N</label></div></span></div>
-          <div class="decl-row"><span class="decl-num">5</span><span class="decl-text">Delinquent or in default on any Federal debt?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="cg_federal_debt" id="cg_fd_y" value="Yes"><label for="cg_fd_y">Y</label><input type="radio" name="cg_federal_debt" id="cg_fd_n" value="No"><label for="cg_fd_n">N</label></div></span></div>
-          <div class="decl-row"><span class="decl-num">6</span><span class="decl-text">Charged with or convicted of a felony?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="cg_felony" id="cg_fe_y" value="Yes"><label for="cg_fe_y">Y</label><input type="radio" name="cg_felony" id="cg_fe_n" value="No"><label for="cg_fe_n">N</label></div></span></div>
-          <div class="decl-row"><span class="decl-num">7</span><span class="decl-text">Outstanding judgments against you?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="cg_judgments" id="cg_jg_y" value="Yes"><label for="cg_jg_y">Y</label><input type="radio" name="cg_judgments" id="cg_jg_n" value="No"><label for="cg_jg_n">N</label></div></span></div>
-
-          <div class="decl-section-label">Property</div>
-          <div class="decl-row"><span class="decl-num">8</span><span class="decl-text">Occupy or intend to occupy the subject property?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="cg_occupy_property" id="cg_op_y" value="Yes"><label for="cg_op_y">Y</label><input type="radio" name="cg_occupy_property" id="cg_op_n" value="No"><label for="cg_op_n">N</label></div></span></div>
-          <div class="decl-row"><span class="decl-num">9</span><span class="decl-text">Ever occupied the subject property?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="cg_ever_occupied" id="cg_eo_y" value="Yes"><label for="cg_eo_y">Y</label><input type="radio" name="cg_ever_occupied" id="cg_eo_n" value="No"><label for="cg_eo_n">N</label></div></span></div>
-          <div class="decl-row"><span class="decl-num">10</span><span class="decl-text">Subject property currently under construction?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="cg_under_construction" id="cg_uc_y" value="Yes"><label for="cg_uc_y">Y</label><input type="radio" name="cg_under_construction" id="cg_uc_n" value="No"><label for="cg_uc_n">N</label></div></span></div>
-          <div class="decl-row"><span class="decl-num">11</span><span class="decl-text">Known hazards or safety issues?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="cg_hazards" id="cg_hz_y" value="Yes"><label for="cg_hz_y">Y</label><input type="radio" name="cg_hazards" id="cg_hz_n" value="No"><label for="cg_hz_n">N</label></div></span></div>
-          <div class="decl-row"><span class="decl-num">12</span><span class="decl-text">Relationship with seller, closing agent, or title agent?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="cg_seller_relationship" id="cg_sr_y" value="Yes"><label for="cg_sr_y">Y</label><input type="radio" name="cg_seller_relationship" id="cg_sr_n" value="No"><label for="cg_sr_n">N</label></div></span></div>
-          <div class="decl-row"><span class="decl-num">13</span><span class="decl-text">Property purchased from a wholesaler?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="cg_wholesaler" id="cg_wh_y" value="Yes"><label for="cg_wh_y">Y</label><input type="radio" name="cg_wholesaler" id="cg_wh_n" value="No"><label for="cg_wh_n">N</label></div></span></div>
-          <div class="decl-row"><span class="decl-num">14</span><span class="decl-text">Any part of the down payment borrowed?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="cg_down_payment" id="cg_dp_y" value="Yes"><label for="cg_dp_y">Y</label><input type="radio" name="cg_down_payment" id="cg_dp_n" value="No"><label for="cg_dp_n">N</label></div></span></div>
-          <div class="decl-row"><span class="decl-num">15</span><span class="decl-text">Transaction subject to short sale approval?</span><span class="decl-yn"><div class="radio-pill"><input type="radio" name="cg_short_sale" id="cg_ss_y" value="Yes"><label for="cg_ss_y">Y</label><input type="radio" name="cg_short_sale" id="cg_ss_n" value="No"><label for="cg_ss_n">N</label></div></span></div>
-        </div>
-      </div>
+      <div class="doc-cap-note" id="docCapNote">Heads up: the e-signed application holds two signers. Any guarantors beyond the first two are recorded for our underwriting team and we will collect their signatures separately.</div>
 
       <div class="loan-nav">
         <button type="button" class="btn-back" onclick="loanWizard.prev()">&larr; Back</button>
@@ -942,271 +882,360 @@ if (window.location.hostname === 'ledgertc.com') {
 </footer>
 
 <script>
-// ─── Loan Application Wizard ─────────────────────────────────────
-var loanWizard = (function() {
-  var currentStep = 1;
-  var totalSteps = 4;
-  var form = document.getElementById('loanAppForm');
-  var errorEl = document.getElementById('loanError');
+// ─── Loan Application Wizard (v2 — repeatable guarantors) ─────────
+(function () {
 
-  // Set form load timestamp
+  // Declaration items (shared by every guarantor card)
+  var DECLS = [
+    { group: 'Personal' },
+    { k: 'bankrupt_5yr',       t: 'Have you, your borrowing entity, or any entity that you are a member of been declared bankrupt within the past 5 years?' },
+    { k: 'foreclosed_4yr',     t: 'Have you, your borrowing entity, or any entity that you are a member of had property foreclosed upon or given title or deed in lieu thereof in the last 4 years?' },
+    { k: 'lawsuit',            t: 'Have you, your borrowing entity, or any entity that you are a member of been a party to a lawsuit?' },
+    { k: 'loan_default',       t: 'Have you, your borrowing entity, or any entity that you are a member of, directly or indirectly been obligated on any loan which resulted in foreclosure, transfer of title in lieu of foreclosure, or judgment?' },
+    { k: 'federal_debt',       t: 'Are you presently delinquent or in default on any Federal debt or any other loan, mortgage, financial obligation, bond, or loan guarantee?' },
+    { k: 'felony',             t: 'Have you ever been charged with, or convicted of a felony?' },
+    { k: 'judgments',          t: 'Do you, your borrowing entity, or any entity that you are a member of have any outstanding judgments against you?' },
+    { group: 'Property' },
+    { k: 'occupy_property',    t: 'Do you currently occupy, or do you intend to occupy, the subject property?' },
+    { k: 'ever_occupied',      t: 'Have you ever occupied the subject property?' },
+    { k: 'under_construction', t: 'Is the subject property currently under construction?' },
+    { k: 'hazards',            t: 'Are there any known hazards or safety issues (mold, foundation, structural, etc.)?', note: 'Remediation costs must be included in your rehab budget' },
+    { k: 'seller_relationship',t: 'Do you have a relationship or business affiliation with a seller, closing agent, or title agent that pre-dates this transaction?' },
+    { k: 'wholesaler',         t: 'Is the subject property being purchased from a wholesaler?', note: 'Assignment fees cannot be financed' },
+    { k: 'down_payment',       t: 'Will any part of the down payment be borrowed?', note: 'Secondary liens are prohibited. Funds from equity/JV partners are allowed' },
+    { k: 'short_sale',         t: 'Is this transaction subject to a short sale approval by the existing lender?' }
+  ];
+
+  // Personal fields per guarantor. Only name is required; everything else is optional.
+  var PERSONAL = [
+    { k: 'name',      label: 'Full Name',       type: 'text',     req: true },
+    { k: 'ownership', label: '% Ownership',     type: 'text',     ph: 'e.g. 100' },
+    { k: 'ssn',       label: 'Social Security #',type: 'password', ph: 'XXX-XX-XXXX' },
+    { k: 'dob',       label: 'Date of Birth',   type: 'date' },
+    { k: 'credit',    label: 'Credit Score',    type: 'text',     ph: 'e.g. 720' },
+    { k: 'phone',     label: 'Primary Phone',   type: 'tel',      ph: '(201) 555-1234' },
+    { k: 'email',     label: 'Primary Email',   type: 'email' },
+    { k: 'address',   label: 'Primary Address', type: 'text',     ph: 'Street, City, State, Zip', full: true }
+  ];
+
+  var PERSONAL_KEYS = []; PERSONAL.forEach(function (f) { PERSONAL_KEYS.push(f.k); });
+  var DECL_KEYS = ['us_citizen', 'permanent_resident', 'confirm_all_no'];
+  DECLS.forEach(function (d) { if (d.k) DECL_KEYS.push(d.k); });
+
+  var uidCounter = 0;
+  var container = document.getElementById('guarantorContainer');
+  var addBtn    = document.getElementById('addGuarantorBtn');
+  var capNote   = document.getElementById('docCapNote');
+  var form      = document.getElementById('loanAppForm');
+  var errorEl   = document.getElementById('loanError');
+
+  // ── Card markup ──
+  function fieldHTML(prefix, f) {
+    var id = prefix + f.k;
+    var attrs = 'id="' + id + '" name="' + id + '"';
+    if (f.ph) attrs += ' placeholder="' + f.ph + '"';
+    if (f.k === 'ssn') attrs += ' inputmode="numeric" maxlength="11" autocomplete="off"';
+    if (f.k === 'credit') attrs += ' inputmode="numeric"';
+    return '<div class="form-group' + (f.full ? ' full' : '') + '">'
+      + '<label for="' + id + '">' + f.label + (f.req ? ' *' : ' <span class="optional-tag">optional</span>') + '</label>'
+      + '<input type="' + f.type + '" ' + attrs + '>'
+      + '</div>';
+  }
+
+  function declHTML(prefix) {
+    var rows = '';
+    DECLS.forEach(function (d) {
+      if (d.group) { rows += '<div class="decl-section-label">' + d.group + '</div>'; return; }
+      var note = d.note ? '<span class="note">' + d.note + '</span>' : '';
+      rows += '<div class="decl-row"><span class="decl-text">' + d.t + note + '</span>'
+        + '<span class="decl-yn"><div class="radio-pill">'
+        + '<input type="radio" name="' + prefix + d.k + '" id="' + prefix + d.k + '_y" value="Yes"><label for="' + prefix + d.k + '_y">Y</label>'
+        + '<input type="radio" name="' + prefix + d.k + '" id="' + prefix + d.k + '_n" value="No"><label for="' + prefix + d.k + '_n">N</label>'
+        + '</div></span></div>';
+    });
+    return rows;
+  }
+
+  function cardHTML(uid) {
+    var p = 'g' + uid + '_';
+    var info = '';
+    PERSONAL.forEach(function (f) { info += fieldHTML(p, f); });
+    return ''
+      + '<div class="guarantor-card-head">'
+      +   '<span class="guarantor-card-title"><span class="guarantor-badge"></span><span class="gnum-label"></span></span>'
+      +   '<button type="button" class="btn-remove-guarantor">Remove</button>'
+      + '</div>'
+      + '<div class="form-grid">' + info + '</div>'
+      + '<div class="decl-standalone">Are you a U.S. citizen?<div class="radio-pill">'
+      +   '<input type="radio" name="' + p + 'us_citizen" id="' + p + 'cit_y" value="Yes"><label for="' + p + 'cit_y">Yes</label>'
+      +   '<input type="radio" name="' + p + 'us_citizen" id="' + p + 'cit_n" value="No"><label for="' + p + 'cit_n">No</label>'
+      + '</div></div>'
+      + '<div class="decl-standalone">Are you a permanent resident alien?<div class="radio-pill">'
+      +   '<input type="radio" name="' + p + 'permanent_resident" id="' + p + 'pr_y" value="Yes"><label for="' + p + 'pr_y">Yes</label>'
+      +   '<input type="radio" name="' + p + 'permanent_resident" id="' + p + 'pr_n" value="No"><label for="' + p + 'pr_n">No</label>'
+      + '</div></div>'
+      + '<div class="decl-confirm-bar">'
+      +   '<input type="checkbox" name="' + p + 'confirm_all_no" id="' + p + 'confirm_all_no">'
+      +   '<div>I confirm that the answer to all of the following declarations is "No."'
+      +     '<span class="decl-confirm-hint">If any answer is "Yes," leave this unchecked and select Yes on the individual items below.</span>'
+      +   '</div>'
+      + '</div>'
+      + '<div class="decl-list">' + declHTML(p) + '</div>';
+  }
+
+  function renumber() {
+    var cards = container.querySelectorAll('.guarantor-card');
+    Array.prototype.forEach.call(cards, function (card, i) {
+      card.querySelector('.guarantor-badge').textContent = (i + 1);
+      var lbl = card.querySelector('.gnum-label');
+      if (i === 0)      lbl.innerHTML = 'Primary Guarantor <span class="guarantor-primary-tag">signs the application</span>';
+      else if (i === 1) lbl.innerHTML = 'Co-Guarantor <span class="guarantor-primary-tag">signs the application</span>';
+      else              lbl.textContent = 'Additional Guarantor';
+      card.querySelector('.btn-remove-guarantor').style.display = (i === 0 ? 'none' : '');
+    });
+    capNote.classList.toggle('visible', cards.length > 2);
+  }
+
+  function addGuarantor() {
+    var div = document.createElement('div');
+    div.className = 'guarantor-card';
+    div.setAttribute('data-uid', uidCounter);
+    div.innerHTML = cardHTML(uidCounter);
+    container.appendChild(div);
+    uidCounter++;
+    renumber();
+    return div;
+  }
+
+  addBtn.addEventListener('click', function () {
+    var card = addGuarantor();
+    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+
+  // Remove (delegated)
+  container.addEventListener('click', function (e) {
+    var btn = e.target.closest ? e.target.closest('.btn-remove-guarantor') : null;
+    if (!btn) return;
+    var card = btn.closest('.guarantor-card');
+    if (card) { card.remove(); renumber(); }
+  });
+
+  // Confirm-all-no + individual-Yes interplay (delegated)
+  container.addEventListener('change', function (e) {
+    var t = e.target;
+    if (t.type === 'checkbox' && /_confirm_all_no$/.test(t.name)) {
+      var card = t.closest('.guarantor-card');
+      var list = card.querySelector('.decl-list');
+      Array.prototype.forEach.call(list.querySelectorAll('input[type="radio"][value="No"]'), function (r) { r.checked = t.checked; });
+      if (!t.checked) {
+        Array.prototype.forEach.call(list.querySelectorAll('input[type="radio"][value="Yes"]'), function (r) { r.checked = false; });
+      }
+    }
+    if (t.type === 'radio' && t.value === 'Yes') {
+      var card2 = t.closest('.guarantor-card');
+      var list2 = card2 && card2.querySelector('.decl-list');
+      if (list2 && list2.contains(t)) {
+        var cb = card2.querySelector('input[type="checkbox"][name$="_confirm_all_no"]');
+        if (cb) cb.checked = false;
+      }
+    }
+  });
+
+  // SSN + phone formatting (delegated input)
+  container.addEventListener('input', function (e) {
+    var t = e.target;
+    if (/_ssn$/.test(t.name)) {
+      var raw = t.value.replace(/\D/g, '').substring(0, 9);
+      if (raw.length > 5) t.value = raw.slice(0, 3) + '-' + raw.slice(3, 5) + '-' + raw.slice(5);
+      else if (raw.length > 3) t.value = raw.slice(0, 3) + '-' + raw.slice(3);
+      else t.value = raw;
+    } else if (/_phone$/.test(t.name)) {
+      var d = t.value.replace(/\D/g, '');
+      if (d.length > 0 && d[0] === '1') d = d.substring(1);
+      d = d.substring(0, 10);
+      if (d.length >= 7) t.value = '(' + d.slice(0, 3) + ') ' + d.slice(3, 6) + '-' + d.slice(6);
+      else if (d.length >= 4) t.value = '(' + d.slice(0, 3) + ') ' + d.slice(3);
+      else if (d.length > 0) t.value = '(' + d;
+      else t.value = '';
+    }
+  });
+
+  // ── Wizard navigation ──
+  var currentStep = 1, totalSteps = 4;
   document.getElementById('form_loaded_at').value = Date.now();
 
-  function showError(msg) {
-    errorEl.textContent = msg;
-    errorEl.style.display = 'block';
-    window.scrollTo({ top: errorEl.offsetTop - 120, behavior: 'smooth' });
-  }
+  function showError(msg) { errorEl.textContent = msg; errorEl.style.display = 'block'; window.scrollTo({ top: errorEl.offsetTop - 120, behavior: 'smooth' }); }
   function hideError() { errorEl.style.display = 'none'; }
 
   function showStep(n) {
-    document.querySelectorAll('.loan-step').forEach(function(el) { el.classList.remove('active'); });
+    Array.prototype.forEach.call(document.querySelectorAll('.loan-step'), function (el) { el.classList.remove('active'); });
     document.querySelector('.loan-step[data-step="' + n + '"]').classList.add('active');
-    // Update progress bar
-    document.querySelectorAll('.loan-progress-num').forEach(function(el) {
+    Array.prototype.forEach.call(document.querySelectorAll('.loan-progress-num'), function (el) {
       var s = parseInt(el.getAttribute('data-step'));
       el.classList.remove('active', 'done');
-      if (s === n) el.classList.add('active');
-      else if (s < n) el.classList.add('done');
+      if (s === n) el.classList.add('active'); else if (s < n) el.classList.add('done');
     });
-    document.querySelectorAll('.loan-progress-line').forEach(function(el) {
-      var l = parseInt(el.getAttribute('data-line'));
-      el.classList.toggle('done', l < n);
+    Array.prototype.forEach.call(document.querySelectorAll('.loan-progress-line'), function (el) {
+      var l = parseInt(el.getAttribute('data-line')); el.classList.toggle('done', l < n);
     });
     window.scrollTo({ top: document.querySelector('.loan-app-wrap').offsetTop - 100, behavior: 'smooth' });
     hideError();
   }
 
+  function isEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v); }
+
   function validateStep(n) {
     if (n === 1) {
-      var req = ['entity_name', 'property_address', 'guarantor_name', 'guarantor_ssn', 'guarantor_dob', 'guarantor_phone', 'guarantor_email', 'guarantor_address'];
+      var req = ['entity_name', 'property_address'];
       for (var i = 0; i < req.length; i++) {
         var el = document.getElementById(req[i]);
-        if (!el || !el.value.trim()) {
-          showError('Please fill in all required fields (marked with *).');
-          el && el.focus();
-          return false;
-        }
-      }
-      // Validate SSN format
-      var ssn = document.getElementById('guarantor_ssn').value.replace(/\D/g, '');
-      if (ssn.length !== 9) {
-        showError('Please enter a valid 9-digit Social Security Number.');
-        document.getElementById('guarantor_ssn').focus();
-        return false;
-      }
-      // Validate email
-      var email = document.getElementById('guarantor_email');
-      if (email.value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
-        showError('Please enter a valid email address.');
-        email.focus();
-        return false;
+        if (!el || !el.value.trim()) { showError('Please enter the borrowing entity name and the property address.'); el && el.focus(); return false; }
       }
     }
-    // Step 4: build review before showing
+    if (n === 2) {
+      var cards = container.querySelectorAll('.guarantor-card');
+      if (cards.length === 0) { showError('Please add at least one guarantor.'); return false; }
+      for (var c = 0; c < cards.length; c++) {
+        var p = 'g' + cards[c].getAttribute('data-uid') + '_';
+        var nameEl = form.elements[p + 'name'];
+        if (!nameEl || !nameEl.value.trim()) { showError('Each guarantor needs at least a full name.'); nameEl && nameEl.focus(); return false; }
+        var ssnEl = form.elements[p + 'ssn'];
+        if (ssnEl && ssnEl.value.trim() && ssnEl.value.replace(/\D/g, '').length !== 9) {
+          showError('Please enter a valid 9-digit SSN for ' + nameEl.value.trim() + ', or leave it blank.'); ssnEl.focus(); return false;
+        }
+        var emEl = form.elements[p + 'email'];
+        if (emEl && emEl.value.trim() && !isEmail(emEl.value.trim())) {
+          showError('Please enter a valid email for ' + nameEl.value.trim() + ', or leave it blank.'); emEl.focus(); return false;
+        }
+        if (c === 0) {
+          var ph = form.elements[p + 'phone'], em2 = form.elements[p + 'email'];
+          if ((!ph || !ph.value.trim()) && (!em2 || !em2.value.trim())) {
+            showError('Please give the primary guarantor a phone number or email so we can reach them.'); return false;
+          }
+        }
+      }
+    }
     if (n === 3) { buildReview(); }
     return true;
   }
 
-  function next() {
-    if (!validateStep(currentStep)) return;
-    if (currentStep < totalSteps) { currentStep++; showStep(currentStep); }
-  }
-  function prev() {
-    if (currentStep > 1) { currentStep--; showStep(currentStep); }
-  }
+  function next() { if (!validateStep(currentStep)) return; if (currentStep < totalSteps) { currentStep++; showStep(currentStep); } }
+  function prev() { if (currentStep > 1) { currentStep--; showStep(currentStep); } }
 
-  // ── Review builder ──
-  function val(name) {
+  // ── Field readers ──
+  function valByName(name) {
     var el = form.elements[name];
     if (!el) return '';
-    if (el.type === 'checkbox') return el.checked ? 'Yes' : 'No';
-    if (el.length) { // radio
+    if (el.length && el[0] && el[0].type === 'radio') {
       for (var i = 0; i < el.length; i++) { if (el[i].checked) return el[i].value; }
       return '';
     }
+    if (el.type === 'checkbox') return el.checked ? 'Yes' : 'No';
     return el.value || '';
   }
   function maskSSN(v) { return v ? '***-**-' + v.replace(/\D/g, '').slice(-4) : ''; }
+  function reviewRow(l, v) { return '<div class="review-row"><span class="review-label">' + l + '</span><span class="review-value">' + (v || '-') + '</span></div>'; }
 
   function buildReview() {
-    var hasCG = val('has_co_guarantor') === 'Yes';
     var html = '';
-
-    html += '<div class="review-section"><h3>Entity & Property</h3>';
-    html += reviewRow('Entity Name', val('entity_name'));
-    html += reviewRow('EIN', val('ein'));
-    html += reviewRow('Property Address', val('property_address'));
-    html += reviewRow('Cross-Collateralized', val('cross_collateralized'));
+    html += '<div class="review-section"><h3>Entity &amp; Property</h3>';
+    html += reviewRow('Entity Name', valByName('entity_name'));
+    html += reviewRow('EIN', valByName('ein'));
+    html += reviewRow('Property Address', valByName('property_address'));
+    html += reviewRow('Cross-Collateralized', valByName('cross_collateralized'));
     html += '</div>';
 
-    html += '<div class="review-section"><h3>Guarantor</h3>';
-    html += reviewRow('Name', val('guarantor_name'));
-    html += reviewRow('Ownership %', val('guarantor_ownership'));
-    html += reviewRow('SSN', maskSSN(val('guarantor_ssn')));
-    html += reviewRow('DOB', val('guarantor_dob'));
-    html += reviewRow('Credit Score', val('guarantor_credit'));
-    html += reviewRow('Phone', val('guarantor_phone'));
-    html += reviewRow('Email', val('guarantor_email'));
-    html += reviewRow('Address', val('guarantor_address'));
-    html += '</div>';
-
-    if (hasCG) {
-      html += '<div class="review-section"><h3>Co-Guarantor</h3>';
-      html += reviewRow('Name', val('co_guarantor_name'));
-      html += reviewRow('SSN', maskSSN(val('co_guarantor_ssn')));
-      html += reviewRow('Phone', val('co_guarantor_phone'));
-      html += reviewRow('Email', val('co_guarantor_email'));
+    var cards = container.querySelectorAll('.guarantor-card');
+    Array.prototype.forEach.call(cards, function (card, i) {
+      var p = 'g' + card.getAttribute('data-uid') + '_';
+      var title = i === 0 ? 'Primary Guarantor' : (i === 1 ? 'Co-Guarantor' : 'Additional Guarantor ' + (i - 1));
+      html += '<div class="review-section"><h3>' + title + '</h3>';
+      html += reviewRow('Name', valByName(p + 'name'));
+      if (valByName(p + 'ownership')) html += reviewRow('Ownership %', valByName(p + 'ownership'));
+      if (valByName(p + 'ssn'))       html += reviewRow('SSN', maskSSN(valByName(p + 'ssn')));
+      if (valByName(p + 'dob'))       html += reviewRow('DOB', valByName(p + 'dob'));
+      if (valByName(p + 'credit'))    html += reviewRow('Credit Score', valByName(p + 'credit'));
+      if (valByName(p + 'phone'))     html += reviewRow('Phone', valByName(p + 'phone'));
+      if (valByName(p + 'email'))     html += reviewRow('Email', valByName(p + 'email'));
+      if (valByName(p + 'address'))   html += reviewRow('Address', valByName(p + 'address'));
+      if (valByName(p + 'us_citizen')) html += reviewRow('U.S. Citizen', valByName(p + 'us_citizen'));
+      var cb = form.elements[p + 'confirm_all_no'];
+      if (cb && cb.checked) html += reviewRow('Declarations', 'All confirmed "No"');
       html += '</div>';
-    }
+    });
 
-    html += '<div class="review-section"><h3>Declarations</h3>';
-    html += reviewRow('US Citizen', val('g_us_citizen'));
-    html += reviewRow('Permanent Resident', val('g_permanent_resident'));
-    if (val('g_confirm_all_no') === 'Yes') {
-      html += reviewRow('All declarations', 'Confirmed No');
-    }
-    html += '</div>';
-
-    html += '<div class="review-section"><h3>Title & Insurance</h3>';
-    if (val('title_first_integrity') === 'Yes') html += reviewRow('Title', 'First Integrity Title Company');
-    if (val('title_own_choice') === 'Yes') html += reviewRow('Title', val('title_company_name'));
-    if (val('insurance_company')) html += reviewRow('Insurance', val('insurance_company'));
+    html += '<div class="review-section"><h3>Title &amp; Insurance</h3>';
+    if (valByName('title_first_integrity') === 'Yes') html += reviewRow('Title', 'First Integrity Title Company');
+    if (form.elements['title_own_choice'] && form.elements['title_own_choice'].checked) html += reviewRow('Title', valByName('title_company_name'));
+    if (valByName('insurance_company')) html += reviewRow('Insurance', valByName('insurance_company'));
     html += '</div>';
 
     document.getElementById('reviewContent').innerHTML = html;
   }
 
-  function reviewRow(label, value) {
-    return '<div class="review-row"><span class="review-label">' + label + '</span><span class="review-value">' + (value || '-') + '</span></div>';
-  }
+  // ── Title company toggle ──
+  (function () {
+    var cb = document.getElementById('title_own');
+    var fields = document.getElementById('titleOwnFields');
+    if (cb && fields) cb.addEventListener('change', function () { fields.classList.toggle('visible', cb.checked); });
+  })();
 
-  return { next: next, prev: prev, showError: showError };
-})();
-
-// ─── Co-Guarantor Toggle ─────────────────────────────────────────
-(function() {
-  var radios = document.querySelectorAll('input[name="has_co_guarantor"]');
-  var infoSection = document.getElementById('coGuarantorInfo');
-  var declSection = document.getElementById('coGuarantorDecl');
-  radios.forEach(function(r) {
-    r.addEventListener('change', function() {
-      var show = this.value === 'Yes';
-      infoSection.classList.toggle('visible', show);
-      declSection.classList.toggle('visible', show);
-    });
-  });
-})();
-
-// ─── Confirm All No ──────────────────────────────────────────────
-(function() {
-  function setupConfirmAll(checkboxId, declListId) {
-    var cb = document.getElementById(checkboxId);
-    var list = document.getElementById(declListId);
-    if (!cb || !list) return;
-    cb.addEventListener('change', function() {
-      var noRadios = list.querySelectorAll('input[type="radio"][value="No"]');
-      noRadios.forEach(function(r) { r.checked = cb.checked; });
-      if (!cb.checked) {
-        // Also uncheck Yes radios when unchecking confirm-all
-        var yesRadios = list.querySelectorAll('input[type="radio"][value="Yes"]');
-        yesRadios.forEach(function(r) { r.checked = false; });
-      }
-    });
-    // If user clicks any individual Yes, uncheck the confirm-all
-    list.addEventListener('change', function(e) {
-      if (e.target.type === 'radio' && e.target.value === 'Yes') {
-        cb.checked = false;
-      }
-    });
-  }
-  setupConfirmAll('g_confirm_all_no', 'gDeclList');
-  setupConfirmAll('cg_confirm_all_no', 'cgDeclList');
-})();
-
-// ─── Title Company Toggle ────────────────────────────────────────
-(function() {
-  var cb = document.getElementById('title_own');
-  var fields = document.getElementById('titleOwnFields');
-  if (cb && fields) {
-    cb.addEventListener('change', function() {
-      fields.classList.toggle('visible', cb.checked);
-    });
-  }
-})();
-
-// ─── SSN Formatting ──────────────────────────────────────────────
-(function() {
-  function formatSSN(input) {
-    var raw = input.value.replace(/\D/g, '').substring(0, 9);
-    if (raw.length > 5) input.value = raw.slice(0,3) + '-' + raw.slice(3,5) + '-' + raw.slice(5);
-    else if (raw.length > 3) input.value = raw.slice(0,3) + '-' + raw.slice(3);
-    else input.value = raw;
-  }
-  ['guarantor_ssn', 'co_guarantor_ssn'].forEach(function(id) {
-    var el = document.getElementById(id);
-    if (el) el.addEventListener('input', function() { formatSSN(el); });
-  });
-})();
-
-// ─── Phone Formatting ────────────────────────────────────────────
-(function() {
-  function formatPhone(input) {
-    var digits = input.value.replace(/\D/g, '');
-    if (digits.length > 0 && digits[0] === '1') digits = digits.substring(1);
-    digits = digits.substring(0, 10);
-    if (digits.length >= 7) input.value = '(' + digits.slice(0,3) + ') ' + digits.slice(3,6) + '-' + digits.slice(6);
-    else if (digits.length >= 4) input.value = '(' + digits.slice(0,3) + ') ' + digits.slice(3);
-    else if (digits.length > 0) input.value = '(' + digits;
-    else input.value = '';
-  }
-  ['guarantor_phone', 'co_guarantor_phone', 'title_company_phone'].forEach(function(id) {
-    var el = document.getElementById(id);
-    if (el) el.addEventListener('input', function() { formatPhone(el); });
-  });
-})();
-
-// ─── Form Submission ─────────────────────────────────────────────
-(function() {
-  var form = document.getElementById('loanAppForm');
+  // ── Submit ──
+  function getHubspotCookie() { var m = document.cookie.match(/hubspotutk=([^;]+)/); return m ? m[1] : ''; }
   var submitBtn = document.getElementById('submitBtn');
 
-  function getHubspotCookie() {
-    var match = document.cookie.match(/hubspotutk=([^;]+)/);
-    return match ? match[1] : '';
-  }
-
-  form.addEventListener('submit', function(e) {
+  form.addEventListener('submit', function (e) {
     e.preventDefault();
-
     submitBtn.disabled = true;
     submitBtn.textContent = 'Submitting...';
 
-    // Collect all form data
+    // Base (non-guarantor) fields straight from the form
     var data = {};
     var fd = new FormData(form);
-    fd.forEach(function(v, k) { data[k] = v; });
+    fd.forEach(function (v, k) { data[k] = v; });
 
-    // Checkboxes need special handling (unchecked = not in FormData)
-    ['g_confirm_all_no', 'cg_confirm_all_no', 'title_first_integrity', 'title_own_choice'].forEach(function(name) {
-      var el = form.elements[name];
-      data[name] = el && el.checked ? 'true' : 'false';
+    // Strip the indexed guarantor fields; we re-map them to legacy names below
+    Object.keys(data).forEach(function (k) { if (/^g\d+_/.test(k)) delete data[k]; });
+
+    // Title checkboxes (unchecked boxes are absent from FormData)
+    data.title_first_integrity = (form.elements['title_first_integrity'] && form.elements['title_first_integrity'].checked) ? 'true' : 'false';
+    data.title_own_choice      = (form.elements['title_own_choice'] && form.elements['title_own_choice'].checked) ? 'true' : 'false';
+
+    // Map guarantors → legacy DocuSeal field names.
+    // Card 0 → Guarantor, Card 1 → Co-Guarantor, Card 2+ → additional_guarantors (captured, not on the 2-signer doc).
+    var cards = container.querySelectorAll('.guarantor-card');
+    var extras = [];
+    Array.prototype.forEach.call(cards, function (card, i) {
+      var p = 'g' + card.getAttribute('data-uid') + '_';
+      var rec = {};
+      PERSONAL_KEYS.forEach(function (k) { rec[k] = valByName(p + k); });
+      DECL_KEYS.forEach(function (k) {
+        if (k === 'confirm_all_no') { var cb = form.elements[p + k]; rec[k] = (cb && cb.checked) ? 'true' : 'false'; }
+        else rec[k] = valByName(p + k);
+      });
+      if (i === 0) {
+        PERSONAL_KEYS.forEach(function (k) { if (rec[k]) data['guarantor_' + k] = rec[k]; });
+        DECL_KEYS.forEach(function (k) { if (rec[k] && rec[k] !== 'false') data['g_' + k] = rec[k]; });
+      } else if (i === 1) {
+        data['has_co_guarantor'] = 'Yes';
+        PERSONAL_KEYS.forEach(function (k) { if (rec[k]) data['co_guarantor_' + k] = rec[k]; });
+        DECL_KEYS.forEach(function (k) { if (rec[k] && rec[k] !== 'false') data['cg_' + k] = rec[k]; });
+      } else {
+        extras.push(rec);
+      }
     });
+    if (cards.length < 2) data['has_co_guarantor'] = 'No';
+    if (extras.length) data['additional_guarantors'] = JSON.stringify(extras);
 
-    // Add tracking data
+    // Tracking + anti-spam
     data.page_url = window.location.href;
     data.hutk = getHubspotCookie();
     data.page_name = document.title;
-
-    // Get Turnstile token
-    var turnstileInput = form.querySelector('[name="cf-turnstile-response"]');
-    if (turnstileInput) data['cf-turnstile-response'] = turnstileInput.value;
-
-    // UTM params
+    var ti = form.querySelector('[name="cf-turnstile-response"]');
+    if (ti) data['cf-turnstile-response'] = ti.value;
     var params = new URLSearchParams(window.location.search);
-    ['gclid','gbraid','wbraid','utm_source','utm_medium','utm_campaign','utm_term','utm_content'].forEach(function(k) {
-      var v = params.get(k);
-      if (v) data[k] = v;
+    ['gclid', 'gbraid', 'wbraid', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'].forEach(function (k) {
+      var v = params.get(k); if (v) data[k] = v;
     });
 
     fetch('/.netlify/functions/submit-loan-app', {
@@ -1214,37 +1243,33 @@ var loanWizard = (function() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     })
-    .then(function(res) { return res.json(); })
-    .then(function(result) {
+    .then(function (res) { return res.json(); })
+    .then(function (result) {
       if (result.success && result.embed_src) {
-        // Track conversion
         if (typeof gtag === 'function') {
           gtag('event', 'loan_app_submit', { 'event_category': 'form', 'event_label': 'loan_application' });
         }
-
-        // Hide form, show signature embed
         form.style.display = 'none';
         document.getElementById('loanProgress').style.display = 'none';
-
         var embedDiv = document.getElementById('signatureEmbed');
         embedDiv.classList.add('active');
-
-        var container = document.getElementById('signatureFormContainer');
-        container.innerHTML = '<docuseal-form data-src="' + result.embed_src + '" data-expand="true" data-with-title="false" data-logo="https://ledgertc.com/logo-color.png" data-background-color="#ffffff" data-custom-css="#submit_form_button { background-color: #c49a3c !important; font-weight: 700 !important; font-size: 1.05rem !important; padding: 0.75rem 2rem !important; border-radius: 6px !important; } #submit_form_button:hover { background-color: #b08832 !important; }"></docuseal-form>';
-
+        document.getElementById('signatureFormContainer').innerHTML =
+          '<docuseal-form data-src="' + result.embed_src + '" data-expand="true" data-with-title="false" data-logo="https://ledgertc.com/logo-color.png" data-background-color="#ffffff" data-custom-css="#submit_form_button { background-color: #c49a3c !important; font-weight: 700 !important; font-size: 1.05rem !important; padding: 0.75rem 2rem !important; border-radius: 6px !important; } #submit_form_button:hover { background-color: #b08832 !important; }"></docuseal-form>';
         window.scrollTo({ top: embedDiv.offsetTop - 100, behavior: 'smooth' });
       } else {
-        loanWizard.showError(result.error || 'Something went wrong. Please try again.');
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Submit & Sign';
+        showError(result.error || 'Something went wrong. Please try again.');
+        submitBtn.disabled = false; submitBtn.textContent = 'Submit & Sign';
       }
     })
-    .catch(function() {
-      loanWizard.showError('A network error occurred. Please check your connection and try again.');
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'Submit & Sign';
+    .catch(function () {
+      showError('A network error occurred. Please check your connection and try again.');
+      submitBtn.disabled = false; submitBtn.textContent = 'Submit & Sign';
     });
   });
+
+  // Expose for inline nav buttons + render the first (primary) guarantor
+  window.loanWizard = { next: next, prev: prev, showError: showError };
+  addGuarantor();
 })();
 </script>
 
