@@ -946,6 +946,19 @@ document.addEventListener("click", function(e) {
           </div>
           <div class="form-group"><label for="email">Email</label><input type="email" id="email" name="email" placeholder="you@email.com" required></div>
           <div class="form-group"><label for="phone">Phone</label><input type="tel" id="phone" name="phone" placeholder="(555) 000-0000" required></div>
+          <div class="form-group">
+            <label for="build_purpose">Loan Purpose <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--gray-500);">(required)</span></label>
+            <select id="build_purpose" name="build_purpose" required>
+              <option value="">Select...</option>
+              <option value="Spec - build to sell">Build to sell (spec home)</option>
+              <option value="Build to rent">Build to rent / hold long-term</option>
+              <option value="Custom for buyer under contract">Custom build for a buyer under contract</option>
+              <option value="Primary residence">My own primary residence (live in)</option>
+            </select>
+            <div id="build_purpose_warning" style="display:none; margin-top:10px; padding:12px 14px; background:#fdf6e3; border:1px solid #d4ad52; border-radius:8px; font-size:0.85rem; color:#1e3830; line-height:1.5;">
+              <strong>Heads up:</strong> Ledger only finances business-purpose construction (build-to-sell, build-to-rent, or build-for-buyer). For owner-occupied home construction, a local bank or credit union will serve you better. We can't quote owner-occupied projects.
+            </div>
+          </div>
           <div class="form-row">
             <div class="form-group">
               <label for="property_state">State <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--gray-500);">(optional)</span></label>
@@ -1187,9 +1200,32 @@ if (window.location.hostname === 'ledgertc.com') {
       });
     }
 
+    // Show/hide the owner-occupied disqualifier inline when user picks "Primary residence"
+    var bpSel = document.getElementById('build_purpose');
+    var bpWarn = document.getElementById('build_purpose_warning');
+    var bpSubmitBtn = null;
+    if (bpSel && bpWarn) {
+      bpSel.addEventListener('change', function() {
+        var isOwner = bpSel.value === 'Primary residence';
+        bpWarn.style.display = isOwner ? 'block' : 'none';
+        if (!bpSubmitBtn) bpSubmitBtn = document.querySelector('#ftbLPForm .form-submit');
+        if (bpSubmitBtn) {
+          bpSubmitBtn.disabled = isOwner;
+          bpSubmitBtn.style.opacity = isOwner ? '0.5' : '1';
+          bpSubmitBtn.style.cursor = isOwner ? 'not-allowed' : 'pointer';
+        }
+      });
+    }
+
     document.getElementById('ftbLPForm').addEventListener('submit', function(e) {
       e.preventDefault();
       if (this.querySelector('[name="website"]').value) return;
+
+      // Hard guard: if somehow they got past the disabled button, still block.
+      if (bpSel && bpSel.value === 'Primary residence') {
+        if (bpWarn) bpWarn.style.display = 'block';
+        return;
+      }
 
       var submitBtn = this.querySelector('.form-submit');
       submitBtn.disabled = true;
