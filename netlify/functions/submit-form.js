@@ -1209,6 +1209,11 @@ exports.handler = async function (event) {
     return { statusCode: 403, headers, body: JSON.stringify({ error: "Forbidden" }) };
   }
 
+  // Context captured for the Slack error alert in the catch block (formData
+  // is const-scoped to try; this lets the alert include identifying info
+  // even when the error fires before/after formData is built).
+  const errorCtx = { email: "?", formSource: "?" };
+
   try {
     // Parse URL-encoded form data
     const params = new URLSearchParams(event.body);
@@ -1257,6 +1262,10 @@ exports.handler = async function (event) {
     // Campaign attribution from form_source and/or UTMs
     formData.formSource = raw.form_source || "";
     formData.adCampaign = deriveAdCampaign(formData.formSource, formData.utmCampaign, formData.adsLp, formData.isGoogleAds);
+
+    // Capture context for the catch-block Slack alert
+    errorCtx.email = formData.email || "?";
+    errorCtx.formSource = formData.formSource || "?";
 
     // Calculator results and project details -> project_details contact property
     const calcSummary = formatCalculatorResults(raw["calculator-results"] || "");
@@ -1562,6 +1571,22 @@ exports.handler = async function (event) {
 
   } catch (err) {
     console.error("Error processing form submission:", err);
+
+    // Real-time error alert to #nervo_ops Slack channel.
+    // Marker text "submit-form ERROR" is what scripts/audit-submissions.js
+    // greps for via Slack conversations.history API in the weekly report.
+    // Fire-and-forget — wrapped in catch() so a Slack outage never affects
+    // the user response.
+    if (process.env.SLACK_WEBHOOK_URL) {
+      fetch(process.env.SLACK_WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          text: `:rotating_light: *submit-form ERROR* — \`${errorCtx.formSource}\` — ${errorCtx.email} — ${err && err.message ? err.message : String(err)}`,
+        }),
+      }).catch(slackErr => console.error("Slack error alert failed:", slackErr));
+    }
+
     return {
       statusCode: 500,
       headers,

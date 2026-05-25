@@ -1,1 +1,13 @@
 nul
+
+# Environment variables (never commit)
+.env
+.env.*
+!.env.example
+
+# OS / editor
+.DS_Store
+Thumbs.db
+
+# Node (in case anything ever gets npm-installed)
+node_modules/
