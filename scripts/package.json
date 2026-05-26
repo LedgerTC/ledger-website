@@ -1,0 +1,8 @@
+{
+  "name": "ledgertc-ops-scripts",
+  "private": true,
+  "description": "Local-only operational scripts (audits, exports). Not deployed to Netlify.",
+  "dependencies": {
+    "exceljs": "^4.4.0"
+  }
+}

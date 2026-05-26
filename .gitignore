@@ -11,3 +11,6 @@ Thumbs.db
 
 # Node (in case anything ever gets npm-installed)
 node_modules/
+
+# Local audit script output
+reports/
