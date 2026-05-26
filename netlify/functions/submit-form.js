@@ -338,6 +338,34 @@ async function sendDailyCapAlert() {
   }
 }
 
+// ─── Per-attempt submission logger (Slack → #nervo_raw_subs) ──────
+// Posts a single structured line to a muted Slack channel for every
+// submission attempt that reaches the handler, regardless of outcome.
+// scripts/audit-submissions.js parses these messages weekly to compute
+// "attempts → contacts → tickets" funnel. Each message is:
+//   submission_attempt {"outcome":"...","formSource":"...","email":"..."}
+// Fire-and-forget — wrapped in catch() so a Slack outage never affects
+// the user response.
+async function logRawSubmission(outcome, ctx) {
+  const url = process.env.SLACK_RAW_WEBHOOK_URL;
+  if (!url) return;
+  try {
+    const payload = {
+      outcome,
+      formSource: (ctx && ctx.formSource) || "-",
+      email: (ctx && ctx.email) || "-",
+    };
+    if (ctx && ctx.err) payload.err = String(ctx.err).slice(0, 200);
+    await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text: `submission_attempt ${JSON.stringify(payload)}` }),
+    });
+  } catch (err) {
+    console.warn("Raw submission log failed:", err.message);
+  }
+}
+
 // ─── Helper: make HubSpot API request ─────────────────────────────
 async function hubspot(method, path, body) {
   const opts = {
@@ -1209,10 +1237,17 @@ exports.handler = async function (event) {
     return { statusCode: 403, headers, body: JSON.stringify({ error: "Forbidden" }) };
   }
 
-  // Context captured for the Slack error alert in the catch block (formData
-  // is const-scoped to try; this lets the alert include identifying info
-  // even when the error fires before/after formData is built).
+  // Context captured for the catch-block Slack alert AND for the per-attempt
+  // logger (errorCtx is hoisted because formData is const-scoped to try).
   const errorCtx = { email: "?", formSource: "?" };
+
+  // Wraps every return inside the try block so that the outcome is logged to
+  // #nervo_raw_subs before the response goes back to the caller. Adds ~50-100ms
+  // per request; that's fine compared to the HubSpot round-trip already happening.
+  const finishWith = async (outcome, response) => {
+    await logRawSubmission(outcome, errorCtx);
+    return response;
+  };
 
   try {
     // Parse URL-encoded form data
@@ -1283,22 +1318,22 @@ exports.handler = async function (event) {
     // ── Honeypot check ──────────────────────────────────────────
     if (formData.website) {
       console.log("Honeypot triggered — rejecting silently");
-      return {
+      return finishWith("honeypot_blocked", {
         statusCode: 200,
         headers,
         body: JSON.stringify({ success: true, message: "Thank you for your submission." }),
-      };
+      });
     }
 
     // ── Cloudflare Turnstile verification ───────────────────────
     const turnstileToken = raw["cf-turnstile-response"] || "";
     if (!turnstileToken) {
       console.log("Missing Turnstile token — rejecting");
-      return {
+      return finishWith("turnstile_missing", {
         statusCode: 403,
         headers,
         body: JSON.stringify({ error: "Security verification failed. Please refresh the page and try again." }),
-      };
+      });
     }
 
     const turnstileRes = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
@@ -1314,22 +1349,22 @@ exports.handler = async function (event) {
 
     if (!turnstileData.success) {
       console.log("Turnstile verification failed:", turnstileData);
-      return {
+      return finishWith("turnstile_failed", {
         statusCode: 403,
         headers,
         body: JSON.stringify({ error: "Security verification failed. Please refresh the page and try again." }),
-      };
+      });
     }
 
     // ── Timestamp check (reject if present and under 3 seconds) ─
     const formLoadedAt = raw.form_loaded_at;
     if (!formLoadedAt || isNaN(Number(formLoadedAt)) || (Date.now() - Number(formLoadedAt)) < 3000) {
       console.log("Timestamp check failed — submission too fast");
-      return {
+      return finishWith("timestamp_too_fast", {
         statusCode: 400,
         headers,
         body: JSON.stringify({ error: "Submission too fast" }),
-      };
+      });
     }
 
     // ── IP rate limiting (5 per hour) ───────────────────────────
@@ -1340,11 +1375,11 @@ exports.handler = async function (event) {
       const recentCount = pruneAndCount(clientIp);
       if (recentCount >= IP_MAX) {
         console.warn(`Rate limit exceeded for IP ${clientIp} (${recentCount} in last hour)`);
-        return {
+        return finishWith("rate_limited", {
           statusCode: 429,
           headers,
           body: JSON.stringify({ error: "Too many submissions. Please try again later." }),
-        };
+        });
       }
       recordIp(clientIp);
     }
@@ -1356,11 +1391,11 @@ exports.handler = async function (event) {
         await sendDailyCapAlert();
       }
       console.warn(`Daily cap exceeded: ${todayTotal} submissions today`);
-      return {
+      return finishWith("daily_cap_exceeded", {
         statusCode: 503,
         headers,
         body: JSON.stringify({ error: "We've received a high volume of inquiries today. Please try again tomorrow or email us directly at Info@ledgertc.com." }),
-      };
+      });
     }
 
     // Calculator forms (rtl-calculator, dscr-calculator) accept email OR phone,
@@ -1373,27 +1408,27 @@ exports.handler = async function (event) {
       : ["firstName", "lastName", "email", "phone"];
     const missing = required.filter((f) => !formData[f] || formData[f].trim() === "");
     if (missing.length > 0) {
-      return {
+      return finishWith("validation_missing_fields", {
         statusCode: 400,
         headers,
         body: JSON.stringify({ error: `Missing required fields: ${missing.join(", ")}` }),
-      };
+      });
     }
     if (isCalcForm && !formData.email && !formData.phone) {
-      return {
+      return finishWith("validation_no_email_or_phone", {
         statusCode: 400,
         headers,
         body: JSON.stringify({ error: "Please provide either an email address or phone number." }),
-      };
+      });
     }
 
     // Basic email validation (only when email is provided)
     if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      return {
+      return finishWith("validation_invalid_email", {
         statusCode: 400,
         headers,
         body: JSON.stringify({ error: "Invalid email address" }),
-      };
+      });
     }
 
     // ── Disposable / spam email domain blocking ───────────────
@@ -1401,11 +1436,11 @@ exports.handler = async function (event) {
       const emailDomain = formData.email.split("@")[1].toLowerCase();
       if (DISPOSABLE_EMAIL_DOMAINS.has(emailDomain)) {
         console.log(`Disposable email domain blocked: ${emailDomain} (${formData.email})`);
-        return {
+        return finishWith("disposable_email_blocked", {
           statusCode: 200,
           headers,
           body: JSON.stringify({ success: true, message: "Thank you for your submission." }),
-        };
+        });
       }
     }
 
@@ -1474,7 +1509,7 @@ exports.handler = async function (event) {
       // Step 7: Fire Meta CAPI Lead event (highest match quality from server)
       await sendMetaCapiLead(formData, event);
 
-      return {
+      return finishWith("success_broker", {
         statusCode: 200,
         headers,
         body: JSON.stringify({
@@ -1482,7 +1517,7 @@ exports.handler = async function (event) {
           message: "Your broker partner inquiry has been submitted. Our team will follow up within one business day.",
           ticketId: ticket.id,
         }),
-      };
+      });
 
     // ── Standard contact form flow ──────────────────────────────
     } else {
@@ -1558,7 +1593,7 @@ exports.handler = async function (event) {
       // Step 7: Fire Meta CAPI Lead event (highest match quality from server)
       await sendMetaCapiLead(formData, event);
 
-      return {
+      return finishWith("success", {
         statusCode: 200,
         headers,
         body: JSON.stringify({
@@ -1566,17 +1601,15 @@ exports.handler = async function (event) {
           message: "Your application has been submitted. Our team will follow up within one business day.",
           ticketId: ticket.id,
         }),
-      };
+      });
     }
 
   } catch (err) {
     console.error("Error processing form submission:", err);
 
-    // Real-time error alert to #nervo_ops Slack channel.
-    // Marker text "submit-form ERROR" is what scripts/audit-submissions.js
-    // greps for via Slack conversations.history API in the weekly report.
-    // Fire-and-forget — wrapped in catch() so a Slack outage never affects
-    // the user response.
+    // Real-time error alert to #nervo_ops (high-visibility, for on-call).
+    // The per-attempt logger below also captures this in #nervo_raw_subs
+    // for the weekly audit count.
     if (process.env.SLACK_WEBHOOK_URL) {
       fetch(process.env.SLACK_WEBHOOK_URL, {
         method: "POST",
@@ -1586,6 +1619,10 @@ exports.handler = async function (event) {
         }),
       }).catch(slackErr => console.error("Slack error alert failed:", slackErr));
     }
+
+    // Per-attempt log (same channel as every other outcome)
+    errorCtx.err = err && err.message ? err.message : String(err);
+    await logRawSubmission("error", errorCtx);
 
     return {
       statusCode: 500,
