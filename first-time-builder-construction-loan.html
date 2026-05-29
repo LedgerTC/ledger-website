@@ -786,7 +786,7 @@ document.addEventListener("click", function(e) {
             <li><svg class="req-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>FICO below 680</li>
             <li><svg class="req-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Commercial, mixed-use, or hospitality</li>
             <li><svg class="req-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Apartments or projects over $5M</li>
-            <li><svg class="req-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Mobile or manufactured homes</li>
+            <li><svg class="req-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Modular, prefab, manufactured, mobile, tiny, barndominium, kit, or container homes (stick-built only)</li>
             <li><svg class="req-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Raw land with no build plan</li>
           </ul>
         </div>
@@ -957,6 +957,19 @@ document.addEventListener("click", function(e) {
             </select>
             <div id="build_purpose_warning" style="display:none; margin-top:10px; padding:12px 14px; background:#fdf6e3; border:1px solid #d4ad52; border-radius:8px; font-size:0.85rem; color:#1e3830; line-height:1.5;">
               <strong>Heads up:</strong> Ledger only finances business-purpose construction (build-to-sell, build-to-rent, or build-for-buyer). For owner-occupied home construction, a local bank or credit union will serve you better. We can't quote owner-occupied projects.
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="construction_type">Construction Type <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--gray-500);">(required)</span></label>
+            <select id="construction_type" name="construction_type" required>
+              <option value="">Select...</option>
+              <option value="Site-built / stick-built">Site-built / stick-built</option>
+              <option value="Modular / prefab / panelized">Modular, prefab, or panelized</option>
+              <option value="Manufactured / mobile / trailer">Manufactured, mobile, or trailer</option>
+              <option value="Barndominium / shed / kit / container">Barndominium, shed, kit, or container home</option>
+            </select>
+            <div id="construction_type_warning" style="display:none; margin-top:10px; padding:12px 14px; background:#fdf6e3; border:1px solid #d4ad52; border-radius:8px; font-size:0.85rem; color:#1e3830; line-height:1.5;">
+              <strong>Not eligible:</strong> Ledger finances stick-built residential construction only. Modular, prefab, manufactured, mobile, barndominium, shed, kit, and container homes don't fit our program. We can't quote these projects.
             </div>
           </div>
           <div class="form-row">
@@ -1200,22 +1213,30 @@ if (window.location.hostname === 'ledgertc.com') {
       });
     }
 
-    // Show/hide the owner-occupied disqualifier inline when user picks "Primary residence"
+    // Show/hide inline disqualifiers based on user's selections.
     var bpSel = document.getElementById('build_purpose');
     var bpWarn = document.getElementById('build_purpose_warning');
+    var ctSel = document.getElementById('construction_type');
+    var ctWarn = document.getElementById('construction_type_warning');
     var bpSubmitBtn = null;
-    if (bpSel && bpWarn) {
-      bpSel.addEventListener('change', function() {
-        var isOwner = bpSel.value === 'Primary residence';
-        bpWarn.style.display = isOwner ? 'block' : 'none';
-        if (!bpSubmitBtn) bpSubmitBtn = document.querySelector('#ftbLPForm .form-submit');
-        if (bpSubmitBtn) {
-          bpSubmitBtn.disabled = isOwner;
-          bpSubmitBtn.style.opacity = isOwner ? '0.5' : '1';
-          bpSubmitBtn.style.cursor = isOwner ? 'not-allowed' : 'pointer';
-        }
-      });
+    function isCtIneligible(v) {
+      return v && v !== 'Site-built / stick-built';
     }
+    function refreshDisqualifiers() {
+      var isOwner = bpSel && bpSel.value === 'Primary residence';
+      var isBadCt = ctSel && isCtIneligible(ctSel.value);
+      if (bpWarn) bpWarn.style.display = isOwner ? 'block' : 'none';
+      if (ctWarn) ctWarn.style.display = isBadCt ? 'block' : 'none';
+      var blocked = isOwner || isBadCt;
+      if (!bpSubmitBtn) bpSubmitBtn = document.querySelector('#ftbLPForm .form-submit');
+      if (bpSubmitBtn) {
+        bpSubmitBtn.disabled = blocked;
+        bpSubmitBtn.style.opacity = blocked ? '0.5' : '1';
+        bpSubmitBtn.style.cursor = blocked ? 'not-allowed' : 'pointer';
+      }
+    }
+    if (bpSel) bpSel.addEventListener('change', refreshDisqualifiers);
+    if (ctSel) ctSel.addEventListener('change', refreshDisqualifiers);
 
     document.getElementById('ftbLPForm').addEventListener('submit', function(e) {
       e.preventDefault();
@@ -1224,6 +1245,10 @@ if (window.location.hostname === 'ledgertc.com') {
       // Hard guard: if somehow they got past the disabled button, still block.
       if (bpSel && bpSel.value === 'Primary residence') {
         if (bpWarn) bpWarn.style.display = 'block';
+        return;
+      }
+      if (ctSel && isCtIneligible(ctSel.value)) {
+        if (ctWarn) ctWarn.style.display = 'block';
         return;
       }
 

@@ -1315,7 +1315,7 @@ document.addEventListener("click", function(e) {
             <li><svg class="req-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Commercial, mixed-use, or hospitality</li>
             <li><svg class="req-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Apartments or projects over $5M</li>
             <li><svg class="req-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Raw land with no build plan</li>
-            <li><svg class="req-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Mobile or manufactured homes</li>
+            <li><svg class="req-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Modular, prefab, manufactured, mobile, tiny, barndominium, kit, or container homes (stick-built only)</li>
             <li><svg class="req-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Credit score below 680</li>
             <li><svg class="req-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>No exit strategy or budget</li>
           </ul>
@@ -1406,6 +1406,20 @@ document.addEventListener("click", function(e) {
             <label for="phone">Phone</label>
             <input type="tel" id="phone" name="phone" placeholder="(555) 000-0000" required>
             <div id="phoneError" style="display:none; color:#dc2626; font-size:0.8rem; margin-top:0.25rem;">Please enter a valid phone number</div>
+          </div>
+
+          <div class="form-group">
+            <label for="construction_type">Construction Type <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--gray-500);">(required)</span></label>
+            <select id="construction_type" name="construction_type" required>
+              <option value="">Select...</option>
+              <option value="Site-built / stick-built">Site-built / stick-built</option>
+              <option value="Modular / prefab / panelized">Modular, prefab, or panelized</option>
+              <option value="Manufactured / mobile / trailer">Manufactured, mobile, or trailer</option>
+              <option value="Barndominium / shed / kit / container">Barndominium, shed, kit, or container home</option>
+            </select>
+            <div id="construction_type_warning" style="display:none; margin-top:10px; padding:12px 14px; background:#fdf6e3; border:1px solid #d4ad52; border-radius:8px; font-size:0.85rem; color:#1e3830; line-height:1.5;">
+              <strong>Not eligible:</strong> Ledger finances stick-built residential construction only. Modular, prefab, manufactured, mobile, barndominium, shed, kit, and container homes don't fit our program. We can't quote these projects.
+            </div>
           </div>
 
           <div class="form-row">
@@ -1726,11 +1740,33 @@ if (window.location.hostname === 'ledgertc.com') {
     var form = document.getElementById('constructionLPForm');
     var submitBtn = form.querySelector('.form-submit');
 
+    // Construction-type disqualifier gate
+    var ctSel = document.getElementById('construction_type');
+    var ctWarn = document.getElementById('construction_type_warning');
+    function isCtIneligible(v) {
+      return v && v !== 'Site-built / stick-built';
+    }
+    if (ctSel) {
+      ctSel.addEventListener('change', function() {
+        var bad = isCtIneligible(ctSel.value);
+        if (ctWarn) ctWarn.style.display = bad ? 'block' : 'none';
+        submitBtn.disabled = bad;
+        submitBtn.style.opacity = bad ? '0.5' : '1';
+        submitBtn.style.cursor = bad ? 'not-allowed' : 'pointer';
+      });
+    }
+
     form.addEventListener('submit', function(e) {
       e.preventDefault();
 
       // Honeypot check
       if (form.querySelector('[name="website"]').value) return;
+
+      // Hard guard: ineligible construction type
+      if (ctSel && isCtIneligible(ctSel.value)) {
+        if (ctWarn) ctWarn.style.display = 'block';
+        return;
+      }
 
       // Validate phone
       if (!window._ledgerValidation.validatePhone()) return;

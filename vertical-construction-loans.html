@@ -398,6 +398,19 @@ document.addEventListener("click", function(e) {
             <input type="tel" id="c_phone" name="phone" placeholder="(555) 000-0000" required>
           </div>
           <div class="form-group">
+            <label for="c_construction_type">Construction Type</label>
+            <select id="c_construction_type" name="construction_type" required>
+              <option value="">Select...</option>
+              <option value="Site-built / stick-built">Site-built / stick-built</option>
+              <option value="Modular / prefab / panelized">Modular, prefab, or panelized</option>
+              <option value="Manufactured / mobile / trailer">Manufactured, mobile, or trailer</option>
+              <option value="Barndominium / shed / kit / container">Barndominium, shed, kit, or container home</option>
+            </select>
+            <div id="c_construction_type_warning" style="display:none; margin-top:10px; padding:12px 14px; background:#fdf6e3; border:1px solid #d4ad52; border-radius:8px; font-size:0.85rem; color:#1e3830; line-height:1.5;">
+              <strong>Not eligible:</strong> Ledger finances stick-built residential construction only. Modular, prefab, manufactured, mobile, barndominium, shed, kit, and container homes don't fit our program. We can't quote these projects.
+            </div>
+          </div>
+          <div class="form-group">
             <label for="c_message">Project Overview</label>
             <textarea id="c_message" name="message" placeholder="Tell us about your project — location, scope, timeline, and anything else relevant." rows="4" required></textarea>
           </div>
@@ -481,7 +494,7 @@ document.addEventListener("click", function(e) {
         <li><svg viewBox="0 0 24 24" fill="none" stroke="#b34040" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Commercial, mixed-use, or hospitality</li>
         <li><svg viewBox="0 0 24 24" fill="none" stroke="#b34040" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Apartments or projects over $5M</li>
         <li><svg viewBox="0 0 24 24" fill="none" stroke="#b34040" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Raw land with no build plan</li>
-        <li><svg viewBox="0 0 24 24" fill="none" stroke="#b34040" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Mobile or manufactured homes</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="#b34040" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Modular, prefab, manufactured, mobile, tiny, barndominium, kit, or container homes (stick-built only)</li>
         <li><svg viewBox="0 0 24 24" fill="none" stroke="#b34040" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>Credit score below 680</li>
         <li><svg viewBox="0 0 24 24" fill="none" stroke="#b34040" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>No exit strategy or budget</li>
       </ul>
@@ -656,8 +669,31 @@ if (window.location.hostname === 'ledgertc.com') {
     else this.value = '(' + digits.slice(0,3) + ') ' + digits.slice(3,6) + '-' + digits.slice(6);
   });
 
+  // Construction-type disqualifier gate
+  var ctSel = document.getElementById('c_construction_type');
+  var ctWarn = document.getElementById('c_construction_type_warning');
+  function isCtIneligible(v) {
+    return v && v !== 'Site-built / stick-built';
+  }
+  if (ctSel) {
+    ctSel.addEventListener('change', function () {
+      var bad = isCtIneligible(ctSel.value);
+      if (ctWarn) ctWarn.style.display = bad ? 'block' : 'none';
+      submitBtn.disabled = bad;
+      submitBtn.style.opacity = bad ? '0.5' : '1';
+      submitBtn.style.cursor = bad ? 'not-allowed' : 'pointer';
+    });
+  }
+
   form.addEventListener('submit', function (e) {
     e.preventDefault();
+
+    // Hard guard: ineligible construction type
+    if (ctSel && isCtIneligible(ctSel.value)) {
+      if (ctWarn) ctWarn.style.display = 'block';
+      return;
+    }
+
     submitBtn.textContent = 'Submitting…';
     submitBtn.disabled = true;
 

@@ -594,6 +594,7 @@ async function patchContactWithFormFields(contactId, formData) {
     property_state: formData.propertyState,
     loan_amount_range: formData.loanAmountRange,
     deal_timeline: formData.dealTimeline,
+    construction_type: formData.constructionType,
   };
   const props = Object.fromEntries(
     Object.entries(candidates).filter(([_, v]) => v && String(v).trim() !== "")
@@ -1271,6 +1272,7 @@ exports.handler = async function (event) {
       propertyState: raw.property_state || "",
       loanAmountRange: raw.loan_amount_range || "",
       dealTimeline: raw.deal_timeline || "",
+      constructionType: raw.construction_type || "",
       website: raw.website || "",
       pageUrl: raw.page_url || "",
       gclid: raw.gclid || "",
