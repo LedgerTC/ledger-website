@@ -356,6 +356,14 @@ async function logRawSubmission(outcome, ctx) {
       email: (ctx && ctx.email) || "-",
     };
     if (ctx && ctx.err) payload.err = String(ctx.err).slice(0, 200);
+    // Errors carry the full lead identity + message so a dropped submission
+    // can be reconstructed from this channel alone (the 6/10 INVALID_EMAIL
+    // drop lost the phone/message because only the email was logged).
+    if (outcome === "error") {
+      if (ctx && ctx.name) payload.name = ctx.name;
+      if (ctx && ctx.phone) payload.phone = ctx.phone;
+      if (ctx && ctx.projectOverview) payload.details = String(ctx.projectOverview).slice(0, 500);
+    }
     await fetch(url, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -523,6 +531,43 @@ async function findOrCreateContact(formData) {
         return { contact: existing, isNew: false };
       }
     }
+
+    // HubSpot rejected the email (typo like "gmail.comg" passes our regex but
+    // fails HubSpot's stricter validation). Salvage the lead as a phone-only
+    // contact — same shape as calculator submissions — with the rejected email
+    // noted in project_details so the team can correct it manually.
+    if (created.status === 400 && JSON.stringify(created.data).includes("INVALID_EMAIL") && formData.phone) {
+      console.warn(`HubSpot rejected email "${formData.email}" as invalid — retrying as phone-only contact`);
+      const phoneSearch = await hubspot("POST", "/crm/v3/objects/contacts/search", {
+        filterGroups: [{ filters: [{ propertyName: "phone", operator: "EQ", value: formData.phone }] }],
+        properties: searchProps,
+      });
+      const badEmailNote = `[Submitted email rejected by HubSpot as invalid: ${formData.email}]`;
+      if (phoneSearch.total > 0) {
+        const existing = phoneSearch.results[0];
+        console.log(`Contact found by phone after invalid email: ${existing.id} (${formData.phone})`);
+        formData.invalidEmail = formData.email;
+        formData.email = "";
+        await backfillTracking(existing, formData);
+        return { contact: existing, isNew: false };
+      }
+      const retryProps = { ...contactProps };
+      delete retryProps.email;
+      retryProps.project_details = retryProps.project_details
+        ? `${retryProps.project_details} | ${badEmailNote}`
+        : badEmailNote;
+      const retried = await hubspot("POST", "/crm/v3/objects/contacts", { properties: retryProps });
+      if (!retried.error) {
+        console.log(`Contact created phone-only after invalid email: ${retried.id} (${formData.phone})`);
+        // Blank the email so downstream email-keyed calls (hutk association,
+        // Forms API, contact search on resubmit) don't re-send the bad address.
+        formData.invalidEmail = formData.email;
+        formData.email = "";
+        return { contact: retried, isNew: true };
+      }
+      console.error(`Phone-only retry also failed for ${formData.phone}:`, retried.data);
+    }
+
     throw new Error(`Failed to create contact: ${JSON.stringify(created.data)}`);
   }
 
@@ -748,7 +793,7 @@ function buildBrokerTicketDescription(formData) {
   const lines = [
     "━━━ Contact Information ━━━",
     `Name: ${formData.firstName} ${formData.lastName}`,
-    `Email: ${formData.email}`,
+    `Email: ${formData.email || (formData.invalidEmail ? `${formData.invalidEmail} (rejected as invalid — verify with lead)` : "—")}`,
     `Phone: ${formData.phone}`,
     `Company: ${formData.company}`,
     "",
@@ -936,7 +981,7 @@ function buildTicketSummary(formData) {
   const lines = [
     "━━━ Contact Information ━━━",
     `Name: ${formData.firstName} ${formData.lastName}`,
-    `Email: ${formData.email}`,
+    `Email: ${formData.email || (formData.invalidEmail ? `${formData.invalidEmail} (rejected as invalid — verify with lead)` : "—")}`,
     `Phone: ${formData.phone}`,
   ];
 
@@ -1303,6 +1348,9 @@ exports.handler = async function (event) {
     // Capture context for the catch-block Slack alert
     errorCtx.email = formData.email || "?";
     errorCtx.formSource = formData.formSource || "?";
+    errorCtx.name = `${formData.firstName} ${formData.lastName}`.trim();
+    errorCtx.phone = formData.phone;
+    errorCtx.projectOverview = formData.projectOverview;
 
     // Calculator results and project details -> project_details contact property
     const calcSummary = formatCalculatorResults(raw["calculator-results"] || "");
@@ -1617,7 +1665,11 @@ exports.handler = async function (event) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          text: `:rotating_light: *submit-form ERROR* — \`${errorCtx.formSource}\` — ${errorCtx.email} — ${err && err.message ? err.message : String(err)}`,
+          text: [
+            `:rotating_light: *submit-form ERROR* — \`${errorCtx.formSource}\` — ${errorCtx.email} — ${err && err.message ? err.message : String(err)}`,
+            `Name: ${errorCtx.name || "?"} — Phone: ${errorCtx.phone || "?"}`,
+            ...(errorCtx.projectOverview ? [`> ${String(errorCtx.projectOverview).slice(0, 500)}`] : []),
+          ].join("\n"),
         }),
       }).catch(slackErr => console.error("Slack error alert failed:", slackErr));
     }
