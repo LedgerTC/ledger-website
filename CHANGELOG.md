@@ -35,6 +35,18 @@ Working-tree changes not yet committed/deployed.
 - **#inbounds notification gap** — Slack alert fires on HubSpot "Contact Created", so
   submissions from existing contacts create a ticket but no #inbounds ping.
 
+## 2026-06-17
+
+### Added
+- `form-validation.js` — shared, light-touch client-side input guardrails wired into
+  22 lead forms via one `<script src="/form-validation.js" defer>` line. Two structural
+  rules: email (single `@`, text both sides, real `.tld` ≥2 letters, no spaces/edge/
+  double dots) on every form; phone format-as-you-type + 10-digit check added only on
+  forms that don't already validate phone (detects `window._ledgerValidation` /
+  `window._brokerPhoneValidation`). Validates a field only when it has a value, so no
+  form's required set changes. Submit gate runs at the document level in the capture
+  phase, before each page's own handler. `loan-application.html` excluded (own flow).
+
 ## 2026-06-12
 
 ### Fixed
