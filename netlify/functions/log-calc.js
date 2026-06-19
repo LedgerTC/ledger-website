@@ -73,6 +73,7 @@ function buildDscrNoteBody(p) {
   lines.push(`<b>DSCR Calculator — ${rate} on ${amt} loan</b>`);
   lines.push("");
   lines.push("<u>Inputs</u>");
+  if (p.property_address) lines.push(`• Address: ${p.property_address}`);
   if (p.property_type) lines.push(`• Property: ${p.property_type}${p.state ? " (" + p.state + ")" : ""}`);
   if (p.loan_purpose) lines.push(`• Purpose: ${p.loan_purpose}`);
   if (p.arv != null) lines.push(`• Property Value: ${fmtMoney(p.arv)}`);
@@ -104,6 +105,7 @@ function buildRtlNoteBody(p) {
   lines.push(`<b>Construction Calculator — ${rate} on ${tla} TLA</b>`);
   lines.push("");
   lines.push("<u>Inputs</u>");
+  if (p.property_address) lines.push(`• Address: ${p.property_address}`);
   if (p.program) lines.push(`• Program: ${p.program}`);
   if (p.asset_type) lines.push(`• Asset: ${p.asset_type}`);
   if (p.deal_type) lines.push(`• Deal: ${p.deal_type}`);

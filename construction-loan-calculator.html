@@ -642,6 +642,12 @@ document.addEventListener("click", function(e) {
     </div>
 
     <div class="field-group">
+      <label>Property Address <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--gray-500);">(optional)</span></label>
+      <p class="field-hint">Street address, or city and state if you don't have one yet.</p>
+      <input type="text" id="propertyAddress" placeholder="123 Main St, Austin, TX 78701" autocomplete="off">
+    </div>
+
+    <div class="field-group">
       <label>What are you doing?</label>
       <select id="dealType" aria-required="true">
         <option value="">Select...</option>
@@ -1416,6 +1422,7 @@ function calculateRTL() {
   const rehabBudget = projectType === 'Bridge' ? 0 : parseCurrency('rehabBudget');
   const arv = projectType === 'Bridge' ? asIsValue : parseCurrency('arv');
   const loanTerm = parseInt(document.getElementById('loanTerm').value);
+  const propertyAddress = document.getElementById('propertyAddress').value.trim();
 
   const experience = getExperienceLevel(expStr);
   const expCount = getExperienceCount(expStr);
@@ -1693,7 +1700,7 @@ function calculateRTL() {
     ltc: (ltcRatio*100).toFixed(1)+'%',
     ltv: (ltvRatio*100).toFixed(1)+'%',
     experience, fico, foreignNational, assetType, dealType,
-    purchasePrice, asIsValue, rehabBudget, arv, loanTerm
+    purchasePrice, asIsValue, rehabBudget, arv, loanTerm, propertyAddress
   });
   const editHidden = document.getElementById('hidden-results-edit');
   if (editHidden) editHidden.value = document.getElementById('hidden-results').value;
@@ -1701,6 +1708,7 @@ function calculateRTL() {
   const calcPayload = {
     calculator: 'rtl',
     program: programDisplay,
+    property_address: propertyAddress,
     asset_type: assetType,
     deal_type: dealType,
     project_type: projectType,

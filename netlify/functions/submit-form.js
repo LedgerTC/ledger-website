@@ -213,6 +213,8 @@ function formatCalculatorResults(jsonStr) {
   try {
     const d = JSON.parse(jsonStr);
     const parts = [];
+    // Property address leads the line so the team sees the location at a glance
+    if (d.propertyAddress) parts.push(d.propertyAddress);
     // DSCR calculator fields
     if (d.program) parts.push(d.program);
     if (d.loanAmt) parts.push("Loan $" + Number(d.loanAmt).toLocaleString());
@@ -1091,6 +1093,7 @@ function buildDscrCalcNote(p) {
   lines.push(`<b>DSCR Calculator — ${rate} on ${amt} loan</b>`);
   lines.push("");
   lines.push("<u>Inputs</u>");
+  if (p.property_address) lines.push(`• Address: ${p.property_address}`);
   if (p.property_type) lines.push(`• Property: ${p.property_type}${p.state ? " (" + p.state + ")" : ""}`);
   if (p.loan_purpose) lines.push(`• Purpose: ${p.loan_purpose}`);
   if (p.arv != null) lines.push(`• Property Value: ${calcFmtMoney(p.arv)}`);
@@ -1122,6 +1125,7 @@ function buildRtlCalcNote(p) {
   lines.push(`<b>Construction Calculator — ${rate} on ${tla} TLA</b>`);
   lines.push("");
   lines.push("<u>Inputs</u>");
+  if (p.property_address) lines.push(`• Address: ${p.property_address}`);
   if (p.program) lines.push(`• Program: ${p.program}`);
   if (p.asset_type) lines.push(`• Asset: ${p.asset_type}`);
   if (p.deal_type) lines.push(`• Deal: ${p.deal_type}`);

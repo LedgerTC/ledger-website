@@ -520,6 +520,12 @@ document.addEventListener("click", function(e) {
     </div>
 
     <div class="field-group">
+      <label>Property Address <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--gray-500);">(optional)</span></label>
+      <p class="field-hint">Street address, or city and state if you'd rather not share the exact address.</p>
+      <input type="text" id="propertyAddress" placeholder="123 Main St, Austin, TX 78701" autocomplete="off">
+    </div>
+
+    <div class="field-group">
       <label>State</label>
       <select id="state" aria-required="true">
         <option value="">Select...</option>
@@ -1631,7 +1637,8 @@ function renderResults(r) {
     dscr: r.finalDSCR.toFixed(2), ltv: (r.ltv*100)+'%', loanPurpose: r.loanPurpose, io: r.io, prepay: r.prepay,
     state: stateEl.value, stateName: stateName,
     propertyType: document.getElementById('propertyType').value,
-    propertyValue: parseCurrency('arv')
+    propertyValue: parseCurrency('arv'),
+    propertyAddress: (document.getElementById('propertyAddress') || {}).value ? document.getElementById('propertyAddress').value.trim() : ''
   });
   const editHidden = document.getElementById('hidden-results-edit');
   if (editHidden) editHidden.value = document.getElementById('hidden-results').value;
@@ -1702,9 +1709,11 @@ function calculateDSCR() {
   renderResults(result);
 
   const stateVal = document.getElementById('state').value;
+  const propertyAddress = (document.getElementById('propertyAddress') || {}).value ? document.getElementById('propertyAddress').value.trim() : '';
   const calcPayload = {
     calculator: 'dscr',
     property_type: propType,
+    property_address: propertyAddress,
     loan_purpose: loanPurpose,
     state: stateVal,
     fico: fico,
