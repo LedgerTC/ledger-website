@@ -1,6 +1,15 @@
 [functions]
   included_files = ["netlify/functions/documents/**"]
 
+# HubSpot cookie-keeper (ITP mitigation). Clean first-party path so the cookie
+# is set on the apex domain and is harder for ad blockers to target than
+# /.netlify/functions/*. See netlify/functions/hsk.js.
+[[redirects]]
+  from = "/hsk"
+  to = "/.netlify/functions/hsk"
+  status = 200
+  force = true
+
 [build]
   ignore = "[ \"$SITE_NAME\" = 'ledgertc-co' ] && exit 0 || exit 1"
   command = "if [ \"$IS_PRODUCTION\" != 'true' ]; then echo 'User-agent: *' > robots.txt && echo 'Disallow: /' >> robots.txt; fi"

@@ -1651,14 +1651,25 @@ document.addEventListener("click", function(e) {
   </footer>
 
   <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
-<!-- HubSpot tracking – production only -->
+<!-- HubSpot tracking – production only (ITP cookie-keeper restores hubspotutk first) -->
 <script>
 if (window.location.hostname === 'ledgertc.com') {
-  var hs = document.createElement('script');
-  hs.type = 'text/javascript';
-  hs.defer = true;
-  hs.src = '//js.hs-scripts.com/46107229.js';
-  document.body.appendChild(hs);
+  var loadHs = function () {
+    var hs = document.createElement('script');
+    hs.type = 'text/javascript';
+    hs.defer = true;
+    hs.src = '//js.hs-scripts.com/46107229.js';
+    document.body.appendChild(hs);
+  };
+  // Restore the durable first-party hubspotutk (survives Safari ITP's 7-day cap)
+  // before HubSpot's script reads the cookie, so returning visitors keep their
+  // original first-touch attribution instead of being re-stamped Direct.
+  var hsLoaded = false;
+  var go = function () { if (hsLoaded) return; hsLoaded = true; loadHs(); };
+  try {
+    fetch('/hsk', { credentials: 'same-origin', cache: 'no-store' }).then(go, go);
+    setTimeout(go, 1500); // never let a slow/failed keeper block HubSpot
+  } catch (e) { go(); }
 }
 </script>
 
