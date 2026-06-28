@@ -2,6 +2,21 @@
 
 > Ledger Trade & Capital is a private residential construction lender serving licensed builders and experienced real estate developers across 42 states and Washington, D.C. The company provides ground-up construction loans, DSCR rental loans, fix-and-flip loans, bridge loans, spec home construction loans, and build-to-rent financing for investment properties up to $5M. Ledger is a B2B lender (not a consumer lender) with a builder-focused approach, offering up to 90% loan-to-cost, flexible draw schedules, no prepayment penalties, and fast closings.
 
+## Key Facts
+
+- Lender type: Private, business-purpose construction and investment-property lender. Loans are for business/investment use only, not consumer or owner-occupied mortgages.
+- Borrowers: Licensed builders and experienced real estate developers and investors. Entity borrowers only (LLC, LP, or Corp), not individuals.
+- Geographic coverage: 42 states plus Washington, D.C. Top markets include North Carolina, South Carolina, Virginia, Ohio, Florida, and Texas.
+- Construction loan size: $150,000 to $5,000,000 per loan; multi-loan structures available up to $10MM ($20MM case by case).
+- DSCR rental loan size: $100,000 to $3,000,000, 30-year term, qualified on property cash flow (no personal income or tax returns required).
+- Maximum leverage: Up to 90% loan-to-cost (LTC) on ground-up construction (700+ FICO unlocks 90%).
+- Minimum FICO: 680.
+- Construction loan term: 15 to 18 months with extension options. Interest-only during the build, charged only on funds drawn.
+- Draw turnaround: As fast as 48 hours; closings as fast as 21 days.
+- No prepayment penalties.
+- Eligible property types: Single-family, duplex/triplex/fourplex, townhomes, spec homes, and build-to-rent. Stick-built construction only (no modular, manufactured, mobile, or mixed-use).
+- Contact: 201-749-1691, Info@ledgertc.com, 60 Broad Street, Suite 2428, New York, NY 10004.
+
 ## Loan Products
 
 - [Ground-Up Construction Loans](https://ledgertc.com/vertical-construction-loans): Draw-based financing for builders constructing new residential properties from the ground up, covering land and vertical build costs with flexible draw schedules.
@@ -19,10 +34,10 @@
 
 ## Educational Content
 
+- [Construction Loan Draw Schedule](https://ledgertc.com/construction-loan-draws): Guide to the construction draw process with a sample draw schedule by percentage (foundation 15%, framing 30%, dry-in 12%, MEP 18%, finishes 18%, final/CO 7%), interest-only math, Schedule of Values rules, inspections, and fund disbursement timelines.
 - [What is DSCR?](https://ledgertc.com/what-is-dscr): Explanation of the debt service coverage ratio, how it is calculated, and why lenders use it to qualify rental property loans.
 - [LTC vs LTV](https://ledgertc.com/ltc-vs-ltv): Comparison of loan-to-cost and loan-to-value metrics, explaining when each applies in construction and investment lending.
 - [BRRRR Strategy](https://ledgertc.com/brrrr-strategy): Overview of the Buy, Rehab, Rent, Refinance, Repeat investment strategy and how financing supports each step.
-- [How Construction Loan Draws Work](https://ledgertc.com/construction-loan-draws): Guide to the construction draw process, including inspection schedules, draw requests, and fund disbursement.
 
 ## Company
 
