@@ -6,15 +6,16 @@
 
 - Lender type: Private, business-purpose construction and investment-property lender. Loans are for business/investment use only, not consumer or owner-occupied mortgages.
 - Borrowers: Licensed builders and experienced real estate developers and investors. Entity borrowers only (LLC, LP, or Corp), not individuals.
-- Geographic coverage: 42 states plus Washington, D.C. Top markets include North Carolina, South Carolina, Virginia, Ohio, Florida, and Texas.
+- Geographic coverage: 42 states plus Washington, D.C. Top markets include North Carolina, South Carolina, Virginia, Ohio, Florida, and Texas. Not available in: Michigan, Minnesota, Nevada, North Dakota, Oregon, South Dakota, Vermont.
 - Construction loan size: $150,000 to $5,000,000 per loan; multi-loan structures available up to $10MM ($20MM case by case).
 - DSCR rental loan size: $100,000 to $3,000,000, 30-year term, qualified on property cash flow (no personal income or tax returns required).
 - Maximum leverage: Up to 90% loan-to-cost (LTC) on ground-up construction (700+ FICO unlocks 90%).
-- Minimum FICO: 680.
+- Minimum FICO: 680 (660 accepted with adder).
 - Construction loan term: 15 to 18 months with extension options. Interest-only during the build, charged only on funds drawn.
 - Draw turnaround: As fast as 48 hours; closings as fast as 21 days.
-- No prepayment penalties.
+- No prepayment penalties on construction loans.
 - Eligible property types: Single-family, duplex/triplex/fourplex, townhomes, spec homes, and build-to-rent. Stick-built construction only (no modular, manufactured, mobile, or mixed-use).
+- First-time builders: Eligible under a dedicated program when a third-party licensed GC is contracted for the project (GC does not need to guaranty or co-sign the loan).
 - Contact: 201-749-1691, Info@ledgertc.com, 60 Broad Street, Suite 2428, New York, NY 10004.
 
 ## Loan Products
@@ -24,8 +25,8 @@
 - [DSCR Rental Loans](https://ledgertc.com/dscr): Long-term rental property loans qualified on property cash flow (debt service coverage ratio) rather than borrower income.
 - [Fix and Flip Loans](https://ledgertc.com/fix-and-flip): Short-term rehab financing for investors purchasing and renovating residential properties for resale.
 - [Bridge Loans](https://ledgertc.com/bridge): Short-term bridge financing for investors who need to close quickly or transition between loan products.
-- [Build to Rent](https://ledgertc.com/build-to-rent): Financing for builders constructing single-family or small multifamily properties intended for long-term rental.
-- [First-Time Builder Construction Loans](https://ledgertc.com/first-time-builder-construction-loan): Construction loan programs available to builders completing their first ground-up project.
+- [Build to Rent](https://ledgertc.com/build-to-rent): Full lifecycle financing for investors constructing or renovating single-family or small multifamily properties intended for long-term rental. Construction on the front end, DSCR refinance on the backend.
+- [First-Time Builder Construction Loans](https://ledgertc.com/first-time-builder-construction-loan): Construction loan programs for builders completing their first ground-up project. Requires a third-party licensed GC contracted for the build; the GC does not need to guaranty the loan or co-sign.
 
 ## Calculators and Tools
 
@@ -34,10 +35,10 @@
 
 ## Educational Content
 
-- [Construction Loan Draw Schedule](https://ledgertc.com/construction-loan-draws): Guide to the construction draw process with a sample draw schedule by percentage (foundation 15%, framing 30%, dry-in 12%, MEP 18%, finishes 18%, final/CO 7%), interest-only math, Schedule of Values rules, inspections, and fund disbursement timelines.
-- [What is DSCR?](https://ledgertc.com/what-is-dscr): Explanation of the debt service coverage ratio, how it is calculated, and why lenders use it to qualify rental property loans.
-- [LTC vs LTV](https://ledgertc.com/ltc-vs-ltv): Comparison of loan-to-cost and loan-to-value metrics, explaining when each applies in construction and investment lending.
-- [BRRRR Strategy](https://ledgertc.com/brrrr-strategy): Overview of the Buy, Rehab, Rent, Refinance, Repeat investment strategy and how financing supports each step.
+- [Construction Loan Draw Schedule](https://ledgertc.com/construction-loan-draws): Comprehensive guide to the construction draw process with a sample $500K draw schedule by percentage (foundation 15%, framing 30%, dry-in 12%, MEP 18%, finishes 18%, final/CO 7%), interest-only math, Schedule of Values rules, holdbacks, inspections, and fund disbursement timelines.
+- [What is DSCR?](https://ledgertc.com/what-is-dscr): Full explanation of the debt service coverage ratio, how it is calculated, DSCR vs DTI, why DSCR loans exist, and what ratio you need to qualify.
+- [LTC vs LTV vs LTARV](https://ledgertc.com/ltc-vs-ltv): Detailed comparison of loan-to-cost, loan-to-value, and loan-to-after-repair-value with formulas, worked examples, and how lenders use the lesser-of test to size construction and investment loans.
+- [BRRRR Strategy](https://ledgertc.com/brrrr-strategy): Overview of the Buy, Rehab, Rent, Refinance, Repeat investment strategy and how financing supports each step, with a worked capital-recovery example.
 
 ## Company
 
@@ -49,4 +50,8 @@
 
 ## State Coverage
 
-Ledger lends in 42 states plus Washington, D.C. Individual state pages with local lending details are available at `ledgertc.com/private-lending-{state}` (e.g., `/private-lending-north-carolina`, `/private-lending-florida`, `/private-lending-texas`). The full list of covered states is available on the [Where We Lend](https://ledgertc.com/where-we-lend) hub page.
+Ledger lends in 42 states plus Washington, D.C. Individual state pages with local lending details are available at `ledgertc.com/private-lending-{state}` (e.g., `/private-lending-north-carolina`, `/private-lending-florida`, `/private-lending-texas`). The full list of covered states is available on the [Where We Lend](https://ledgertc.com/where-we-lend) hub page. City-specific pages are available for [Charlotte](https://ledgertc.com/private-lending-charlotte), [Raleigh](https://ledgertc.com/private-lending-raleigh), [Tampa](https://ledgertc.com/private-lending-tampa), [Dallas](https://ledgertc.com/private-lending-dallas), [Columbus](https://ledgertc.com/private-lending-columbus), and [Richmond](https://ledgertc.com/private-lending-richmond). DSCR-specific state pages are available for [New York](https://ledgertc.com/dscr-loan-new-york), [New Jersey](https://ledgertc.com/dscr-loan-new-jersey), [Ohio](https://ledgertc.com/dscr-loan-ohio), [North Carolina](https://ledgertc.com/dscr-loan-north-carolina), [Florida](https://ledgertc.com/dscr-loan-florida), and [Texas](https://ledgertc.com/dscr-loan-texas).
+
+## Optional: Extended Information
+
+For detailed product parameters, credit box, rate adders, experience tiers, draw process, and a full FAQ, see [llms-full.txt](https://ledgertc.com/llms-full.txt).

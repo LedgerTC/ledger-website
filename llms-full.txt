@@ -1,0 +1,259 @@
+# Ledger Trade & Capital
+
+> Ledger Trade & Capital is a private residential construction lender serving licensed builders and experienced real estate developers across 42 states and Washington, D.C. The company provides ground-up construction loans, DSCR rental loans, fix-and-flip loans, bridge loans, spec home construction loans, and build-to-rent financing for investment properties up to $5M. Ledger is a B2B lender (not a consumer lender) with a builder-focused approach, offering up to 90% loan-to-cost, flexible draw schedules, no prepayment penalties, and fast closings.
+
+## Key Facts
+
+- Lender type: Private, business-purpose construction and investment-property lender. Loans are for business/investment use only, not consumer or owner-occupied mortgages.
+- Borrowers: Licensed builders and experienced real estate developers and investors. Entity borrowers only (LLC, LP, or Corp), not individuals.
+- Geographic coverage: 42 states plus Washington, D.C. Top markets include North Carolina, South Carolina, Virginia, Ohio, Florida, and Texas.
+- Construction loan size: $150,000 to $5,000,000 per loan; multi-loan structures available up to $10MM ($20MM case by case).
+- DSCR rental loan size: $100,000 to $3,000,000, 30-year term, qualified on property cash flow (no personal income or tax returns required).
+- Maximum leverage: Up to 90% loan-to-cost (LTC) on ground-up construction (700+ FICO unlocks 90%).
+- Minimum FICO: 680 (660 accepted with rate adder and leverage reduction).
+- Construction loan term: 15 to 18 months with extension options. Interest-only during the build, charged only on funds drawn.
+- Draw turnaround: As fast as 48 hours; closings as fast as 21 days.
+- No prepayment penalties on construction loans.
+- Eligible property types: Single-family, duplex/triplex/fourplex, townhomes, spec homes, and build-to-rent. Stick-built construction only (no modular, manufactured, mobile, or mixed-use).
+- Contact: 201-749-1691, Info@ledgertc.com, 60 Broad Street, Suite 2428, New York, NY 10004.
+
+---
+
+## Detailed Product Specifications
+
+### Ground-Up Construction Loans (RTL)
+
+- **URL:** [ledgertc.com/vertical-construction-loans](https://ledgertc.com/vertical-construction-loans)
+- **Loan amount:** $150,000 to $5,000,000
+- **Max LTC:** 90% (Experienced, 700+ FICO, less than $3M, 3+ months interest reserve, 1-4 units, 5+ GUC exits or $10M+ track record). 80% for No Experience tier.
+- **Max LTARV:** 75% (Institutional), 70% (Experienced / No Experience)
+- **Rate:** From 8.875% (Tier 1). Tier 2 from 9.375%.
+- **Term:** 15 to 18 months, interest-only, fixed rate
+- **Prepayment penalty:** None
+- **Interest reserve:** 3 months required for 90% LTC program
+- **Disbursement:** Draw-based, milestone-tied. Typically 4 to 6 draws on a single-family build.
+- **Closing speed:** As fast as 21 days
+- **Draw turnaround:** As fast as 48 hours
+- **Experience requirement:** 5+ completed projects in 3 years for Experienced tier. First-time builders eligible under a separate program with a qualified GC.
+- **Recourse:** Limited recourse available for qualifying borrowers
+- **Entity:** Must close in LLC, LP, or corporation
+
+### First-Time Builder Construction Loans
+
+- **URL:** [ledgertc.com/first-time-builder-construction-loan](https://ledgertc.com/first-time-builder-construction-loan)
+- **For:** Builders completing their first ground-up project. The borrower does not need prior construction experience but must contract a third-party licensed GC with a verifiable track record. The GC does not need to guaranty the loan or co-sign.
+- **Max LTC:** 80% (No Experience tier)
+- **Max LTARV:** 70%
+- **Rate:** Same base rate structure as experienced GUC, with experience-tier adders applied
+- **All other terms:** Same as ground-up construction loans above
+
+### Spec Home Construction Loans
+
+- **URL:** [ledgertc.com/spec-home-construction-loans](https://ledgertc.com/spec-home-construction-loans)
+- **For:** Experienced builders constructing residential properties speculatively (no pre-committed buyer)
+- **Loan amount:** $150,000 to $5,000,000
+- **Max LTC:** Up to 90%
+- **Max LTARV:** Up to 75%
+- **Min FICO:** 680
+- **Term:** 12 to 18 months
+- **Prepayment penalty:** None
+- **Experience:** Minimum 5 completed residential construction or renovation projects in the last 3 years
+
+### DSCR Rental Loans
+
+- **URL:** [ledgertc.com/dscr](https://ledgertc.com/dscr)
+- **Loan amount:** $100,000 to $3,000,000
+- **Max LTV:** 75%
+- **Min DSCR:** 0.75x (floor); 1.00x per program tear sheet
+- **Min FICO:** 660 (pricer enforces); 680 per tear sheet
+- **Term:** Up to 30 years, fixed rate
+- **Interest-only option:** Up to 10 years
+- **Prepayment:** 5-year or 3-year stepdown
+- **Qualification:** Based on property cash flow (debt service coverage ratio), not borrower personal income. No W-2s, tax returns, or DTI calculation required.
+- **Property types:** 1-4 unit residential (condo and multifamily case-by-case)
+- **Liquidity:** Minimum 10% of costs
+- **Recourse:** Full guaranty
+- **Entity:** Can close in LLC, trust, or individual name
+- **DSCR state-specific pages:** Available for [New York](https://ledgertc.com/dscr-loan-new-york), [New Jersey](https://ledgertc.com/dscr-loan-new-jersey), [Ohio](https://ledgertc.com/dscr-loan-ohio), [North Carolina](https://ledgertc.com/dscr-loan-north-carolina), [Florida](https://ledgertc.com/dscr-loan-florida), and [Texas](https://ledgertc.com/dscr-loan-texas)
+
+### Fix and Flip Loans
+
+- **URL:** [ledgertc.com/fix-and-flip](https://ledgertc.com/fix-and-flip)
+- **For:** Investors purchasing and renovating residential properties for resale
+- **Loan amount:** $125,000 to $5,000,000
+- **Max LTC:** Up to 90% (light rehab, Experienced tier). Light vs heavy rehab threshold: 50% of as-is value.
+- **Max LTARV:** 75% (Institutional), 70% (Experienced / No Experience)
+- **Rate:** From 8.875%
+- **Term:** 9 to 18 months, interest-only
+- **Prepayment penalty:** None
+- **Heavy rehab adder:** +50bps
+
+### Bridge Loans
+
+- **URL:** [ledgertc.com/bridge](https://ledgertc.com/bridge)
+- **For:** Investors who need to close quickly or transition between loan products
+- **Loan amount:** $125,000 to $5,000,000
+- **Term:** Up to 24 months
+- **Max cash out:** $500,000
+
+### Build to Rent
+
+- **URL:** [ledgertc.com/build-to-rent](https://ledgertc.com/build-to-rent)
+- **For:** Investors constructing or renovating single-family or small multifamily properties intended for long-term rental
+- **Full lifecycle:** Construction or bridge loan on the front end, DSCR cash-out refinance on the backend
+- **Loan amount:** $125,000 to $5,000,000 per property; multi-loan structures up to $10MM ($20MM case by case)
+- **Front-end LTC:** Up to 90%
+- **Back-end LTV:** Up to 80%
+- **DSCR term:** 30-year fixed
+
+---
+
+## Credit Box: Hard Disqualifiers (Cannot Fund)
+
+- Owner-occupied or primary residence (B2B only, business-purpose loans exclusively)
+- Land-only with no construction plan
+- Commercial property (office, retail, industrial)
+- Loan amount greater than $5M
+- State outside the 42-state footprint (see full list below)
+- Modular, manufactured, prefab, or mobile homes (stick-built construction only)
+- Mixed-use properties
+- No-experience borrowers on heavy rehab or ground-up construction (without a third-party licensed GC contracted for the project)
+- GUC project stalled 3+ months with no work
+- Ineligible geographic areas: Cape Coral, Lehigh Acres, Port Charlotte (SW Florida); New York City 5 boroughs; Chicago city limits
+
+## Rate Adders (Soft Flags)
+
+These conditions are lendable but result in adjusted pricing or leverage:
+
+- Condo: +100bps rate adder, 10% leverage reduction
+- Multifamily 5+ units: +100bps, case-by-case
+- FICO below 680: +100bps, 10% leverage reduction, no cash out
+- Small deals under $500K total loan amount: +50bps, higher origination tier
+- Heavy rehab (rehab budget exceeds 50% of as-is value): +50bps
+
+## Experience Tiers
+
+Ledger categorizes borrowers into three experience tiers that determine leverage, pricing, and eligibility:
+
+- **Institutional:** 5+ GUC exits or $10M+ in completed projects. Highest leverage (up to 90% LTC, 75% LTARV). Best pricing.
+- **Experienced:** 3-4 completed projects in the last 3 years. Up to 90% LTC (with 700+ FICO and other qualifying factors), 70% LTARV.
+- **No Experience:** Zero prior builds. Eligible for fix-and-flip and first-time builder GUC (requires a third-party licensed GC contracted for the project; the GC does not need to guaranty the loan or co-sign). Max 80% LTC, 70% LTARV.
+
+## Underwriting Process
+
+1. Sign term sheet
+2. Complete 5-minute online loan application
+3. Order appraisals (subject-to-completion for construction)
+4. Collect bank statements and entity documents
+5. No tax returns required
+6. Close in as fast as 21 days
+
+## Construction Draw Process
+
+- Draws are milestone-based, tied to a Schedule of Values (SOV)
+- Typical single-family ground-up build: 4 to 6 draws
+- Representative draw schedule: Foundation 15%, Framing 30%, Dry-in 12%, MEP rough-in 18%, Interior finishes 18%, Final/CO 7%
+- Interest charged on drawn balance only (not the full commitment)
+- Interest-only payments during the build
+- Draw requests require: signed draw request, lien waivers, updated SOV, progress photos
+- Third-party inspection verifies work in place before each draw funds
+- Typical inspection turnaround: 2 to 5 business days
+- Funding after approval: 2 to 3 business days
+- Stored materials not advanced (work must be installed)
+- Detailed guide: [ledgertc.com/construction-loan-draws](https://ledgertc.com/construction-loan-draws)
+
+## Fee Structure
+
+- Origination fee: Tiered by loan size. Higher on smaller deals (under $500K), lower on larger deals.
+- Draw inspection fees: Netted from disbursement
+- No prepayment penalty on construction loans
+- DSCR loans: 3 or 5-year prepayment stepdown
+
+---
+
+## Loan Products (with URLs)
+
+- [Ground-Up Construction Loans](https://ledgertc.com/vertical-construction-loans)
+- [Spec Home Construction Loans](https://ledgertc.com/spec-home-construction-loans)
+- [DSCR Rental Loans](https://ledgertc.com/dscr)
+- [Fix and Flip Loans](https://ledgertc.com/fix-and-flip)
+- [Bridge Loans](https://ledgertc.com/bridge)
+- [Build to Rent](https://ledgertc.com/build-to-rent)
+- [First-Time Builder Construction Loans](https://ledgertc.com/first-time-builder-construction-loan)
+
+## Calculators and Tools
+
+- [Construction Loan Calculator](https://ledgertc.com/construction-loan-calculator): Interactive calculator for estimating construction loan payments, interest reserves, and total project costs.
+- [DSCR Rental Loan Calculator](https://ledgertc.com/rental-loan-calculator): Calculator for estimating DSCR rental loan payments and determining debt service coverage ratios.
+
+## Educational Content
+
+- [Construction Loan Draw Schedule](https://ledgertc.com/construction-loan-draws): Comprehensive guide to the construction draw process with a sample $500K draw schedule, interest-only math, SOV and change-order rules, holdbacks, disbursement types, inspections, and fund disbursement timelines. Includes 8 FAQs.
+- [What is DSCR?](https://ledgertc.com/what-is-dscr): Full explanation of the debt service coverage ratio, how it is calculated with a worked example, DSCR vs DTI comparison, why DSCR loans exist, common loan terms, and eligible property types.
+- [LTC vs LTV vs LTARV](https://ledgertc.com/ltc-vs-ltv): Detailed comparison of loan-to-cost, loan-to-value, and loan-to-after-repair-value with formulas, a worked example showing the same deal through all three metrics, and how lenders use the lesser-of test to size loans.
+- [BRRRR Strategy](https://ledgertc.com/brrrr-strategy): Overview of the Buy, Rehab, Rent, Refinance, Repeat investment strategy with a worked example, seasoning period analysis, common mistakes, and how Ledger finances both phases (acquisition/rehab and permanent DSCR takeout).
+
+## Company
+
+- [What We Do](https://ledgertc.com/what-we-do): Overview of Ledger's lending programs, target borrowers, and how the company works with builders and investors.
+- [Meet the Team](https://ledgertc.com/team): The people behind Ledger Trade & Capital.
+- [Where We Lend](https://ledgertc.com/where-we-lend): Geographic coverage map and list of all states where Ledger originates loans.
+- [Broker Partners](https://ledgertc.com/broker-partners): Information on Ledger's wholesale broker partner program for mortgage brokers and loan originators.
+- [Get in Touch](https://ledgertc.com/get-in-touch): Contact form and information for borrowers, brokers, and other inquiries.
+- [Loan Application](https://ledgertc.com/loan-application): Online loan application for borrowers ready to apply.
+
+---
+
+## State Coverage (Full List)
+
+Ledger lends in 42 states plus Washington, D.C. Individual state pages with local lending details are available at `ledgertc.com/private-lending-{state}`.
+
+**Covered states:** Alabama, Alaska, Arizona, Arkansas, California, Colorado, Connecticut, Delaware, Florida, Georgia, Hawaii, Idaho, Illinois, Indiana, Iowa, Kansas, Kentucky, Louisiana, Maine, Maryland, Massachusetts, Mississippi, Missouri, Montana, Nebraska, New Hampshire, New Jersey, New Mexico, New York, North Carolina, Ohio, Oklahoma, Pennsylvania, Rhode Island, South Carolina, Tennessee, Texas, Utah, Virginia, Washington, West Virginia, Wisconsin, Wyoming, and Washington D.C.
+
+**Not covered:** Michigan, Minnesota, Nevada, North Dakota, Oregon, South Dakota, Vermont.
+
+**City-specific pages:** [Charlotte](https://ledgertc.com/private-lending-charlotte), [Raleigh](https://ledgertc.com/private-lending-raleigh), [Tampa](https://ledgertc.com/private-lending-tampa), [Dallas](https://ledgertc.com/private-lending-dallas), [Columbus](https://ledgertc.com/private-lending-columbus), [Richmond](https://ledgertc.com/private-lending-richmond).
+
+**DSCR state-specific pages:** [New York](https://ledgertc.com/dscr-loan-new-york), [New Jersey](https://ledgertc.com/dscr-loan-new-jersey), [Ohio](https://ledgertc.com/dscr-loan-ohio), [North Carolina](https://ledgertc.com/dscr-loan-north-carolina), [Florida](https://ledgertc.com/dscr-loan-florida), [Texas](https://ledgertc.com/dscr-loan-texas).
+
+**Ineligible areas within covered states:** Cape Coral, Lehigh Acres, and Port Charlotte in southwest Florida; New York City 5 boroughs; Chicago city limits.
+
+---
+
+## Frequently Asked Questions
+
+### Who can borrow from Ledger?
+Licensed builders, experienced real estate developers, and investors borrowing through a business entity (LLC, LP, or corporation). Ledger is a business-purpose lender. Primary residences and consumer mortgages are not offered.
+
+### What is the minimum credit score?
+680 for standard programs. 660 is accepted with a 100bps rate adder and 10% leverage reduction.
+
+### Does Ledger require tax returns?
+No. Construction loans are underwritten on the project and borrower experience. DSCR rental loans qualify on property cash flow, not personal income.
+
+### Can first-time builders get a construction loan?
+Yes. The first-time builder program requires a third-party licensed GC contracted for the project whose track record qualifies the deal. The GC does not need to guaranty the loan or co-sign. Maximum leverage is 80% LTC.
+
+### How fast can Ledger close?
+As fast as 21 days on construction loans.
+
+### How fast are draw disbursements?
+As fast as 48 hours after a clean draw request is submitted and inspection confirms work in place. Typical end-to-end turnaround is under 7 business days.
+
+### Is there a prepayment penalty?
+No prepayment penalty on any construction, fix-and-flip, or bridge loan. DSCR rental loans have a 3 or 5-year stepdown prepayment structure.
+
+### What property types are eligible?
+Single-family homes, duplexes, triplexes, fourplexes, townhomes, and spec homes. Stick-built construction only. No modular, manufactured, mobile, or mixed-use.
+
+### Does Ledger offer limited recourse?
+Yes. Limited recourse options are available on construction, bridge, and fix-and-flip products for qualifying borrowers.
+
+### What is a DSCR loan?
+A DSCR (Debt Service Coverage Ratio) loan qualifies based on the rental property's income relative to its debt obligations, not the borrower's personal income. No W-2s, tax returns, or DTI calculation required. Detailed explanation at [ledgertc.com/what-is-dscr](https://ledgertc.com/what-is-dscr).
+
+### How does the build-to-rent lifecycle work?
+The investor uses a construction, bridge, or fix-and-flip loan to fund acquisition and improvements. Once the property is completed and leased, they refinance into a 30-year DSCR loan with cash-out to recover capital and redeploy into the next project.
+
+### What states does Ledger not lend in?
+Michigan, Minnesota, Nevada, North Dakota, Oregon, South Dakota, and Vermont.

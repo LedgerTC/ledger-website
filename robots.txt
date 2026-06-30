@@ -32,3 +32,4 @@ Sitemap: https://ledgertc.com/sitemap.xml
 
 # AI context
 # https://ledgertc.com/llms.txt
+# https://ledgertc.com/llms-full.txt
