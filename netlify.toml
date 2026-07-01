@@ -10,6 +10,16 @@
   status = 200
   force = true
 
+# First-party attribution capture (ITP mitigation for our OWN click IDs).
+# Edge function stamps a durable, server-set cookie (ltc_attr) from
+# gclid/fbclid/utm on the landing URL so it survives Safari's 7-day cap.
+# Scoped to page requests; static assets and functions are excluded.
+# See netlify/edge-functions/capture.js.
+[[edge_functions]]
+  function = "capture"
+  path = "/*"
+  excludedPath = ["/*.css", "/*.js", "/*.mjs", "/*.svg", "/*.png", "/*.jpg", "/*.jpeg", "/*.gif", "/*.ico", "/*.webp", "/*.avif", "/*.woff", "/*.woff2", "/*.ttf", "/*.xml", "/*.txt", "/*.pdf", "/*.json", "/*.map", "/.netlify/*"]
+
 [build]
   ignore = "[ \"$SITE_NAME\" = 'ledgertc-co' ] && exit 0 || exit 1"
   command = "if [ \"$IS_PRODUCTION\" != 'true' ]; then echo 'User-agent: *' > robots.txt && echo 'Disallow: /' >> robots.txt; fi"

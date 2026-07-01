@@ -1200,6 +1200,26 @@ function normalizePhone(p) {
   const digits = String(p || "").replace(/\D/g, "");
   return digits ? sha256Lower(digits) : null;
 }
+// Minimal cookie-header parser. Lets us read first-party cookies the browser
+// sends with the same-origin form POST (e.g. Meta's _fbc/_fbp) server-side,
+// so no per-page JS change is needed to collect them.
+function parseCookieHeader(header) {
+  const out = {};
+  if (!header) return out;
+  for (const part of String(header).split(";")) {
+    const i = part.indexOf("=");
+    if (i < 0) continue;
+    const k = part.slice(0, i).trim();
+    if (k) out[k] = part.slice(i + 1).trim();
+  }
+  return out;
+}
+// Build Meta's fbc value (fb.1.<ts>.<fbclid>) from a captured fbclid when the
+// _fbc cookie is absent. The cookie is preferred (it carries the real click
+// time); this is an approximate fallback using now().
+function buildFbcFromClickId(fbclid) {
+  return fbclid ? `fb.1.${Date.now()}.${fbclid}` : "";
+}
 async function sendMetaCapiLead(formData, eventReq) {
   const token = process.env.FB_CAPI_TOKEN;
   if (!token) {
@@ -1219,13 +1239,26 @@ async function sendMetaCapiLead(formData, eventReq) {
     if (clientIp) user_data.client_ip_address = clientIp;
     const ua = eventReq.headers["user-agent"] || eventReq.headers["User-Agent"];
     if (ua) user_data.client_user_agent = ua;
-    // fbp/fbc not collected in v1 — visitors aren't Meta-sourced yet (campaigns
-    // still drafts). Add when draft campaigns publish: read _fbp cookie + build
-    // fbc from fbclid query param, post both as hidden form fields.
+    // fbc/fbp are Meta's strongest match keys and the dedup anchor against the
+    // browser pixel. Read the first-party cookies the Meta pixel already set
+    // (sent with the same-origin form POST); fall back to building fbc from a
+    // captured fbclid. These are NOT hashed — sent as-is.
+    const cookies = parseCookieHeader(eventReq.headers.cookie || eventReq.headers.Cookie || "");
+    const fbc = cookies._fbc || buildFbcFromClickId(formData.fbclid);
+    const fbp = cookies._fbp || "";
+    if (fbc) user_data.fbc = fbc;
+    if (fbp) user_data.fbp = fbp;
+
+    // Shared event_id lets this server Lead dedupe against a same-named browser
+    // Lead. Prefer a client-posted id; else generate one. Cross-feed dedup
+    // wiring is pending the event-model decision (see
+    // docs/ledger-growth-proposal-and-questions-for-russell.md, Q-C).
+    const eventId = formData.eventId || crypto.randomUUID();
 
     const body = {
       data: [{
         event_name: "Lead",
+        event_id: eventId,
         event_time: Math.floor(Date.now() / 1000),
         action_source: "website",
         event_source_url: formData.pageUrl || "https://ledgertc.com/",
@@ -1327,6 +1360,7 @@ exports.handler = async function (event) {
       gclid: raw.gclid || "",
       gbraid: raw.gbraid || "",
       wbraid: raw.wbraid || "",
+      fbclid: raw.fbclid || "",
       gadSource: raw.gad_source || "",
       gadCampaignId: raw.gad_campaignid || "",
       utmSource: raw.utm_source || "",
@@ -1335,9 +1369,30 @@ exports.handler = async function (event) {
       utmTerm: raw.utm_term || "",
       utmContent: raw.utm_content || "",
       hutk: raw.hutk || "",
+      eventId: raw.event_id || "",
       pageName: raw.page_name || "",
       pendingCalcLog: raw.pending_calc_log || "",
     };
+
+    // Durable-cookie fallback: recover click IDs / UTMs from the first-party
+    // `ltc_attr` cookie (set server-side by the capture edge function) when the
+    // form POST didn't carry them — e.g. the visitor converted on a later,
+    // param-free session, or ITP wiped the live URL params. POST values win;
+    // the cookie only fills blanks.
+    try {
+      const attrRaw = parseCookieHeader(event.headers.cookie || event.headers.Cookie || "").ltc_attr;
+      if (attrRaw) {
+        const a = JSON.parse(decodeURIComponent(attrRaw));
+        const COOKIE_TO_FORM = {
+          gclid: "gclid", gbraid: "gbraid", wbraid: "wbraid", fbclid: "fbclid",
+          utm_source: "utmSource", utm_medium: "utmMedium", utm_campaign: "utmCampaign",
+          utm_term: "utmTerm", utm_content: "utmContent",
+        };
+        for (const [ck, fk] of Object.entries(COOKIE_TO_FORM)) {
+          if (!formData[fk] && a[ck]) formData[fk] = a[ck];
+        }
+      }
+    } catch (_e) { /* additive: never let cookie parsing break a submission */ }
 
     // Resolve Google click ID: gclid > gbraid > wbraid
     formData.googleClickId = formData.gclid || formData.gbraid || formData.wbraid || "";
