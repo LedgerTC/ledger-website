@@ -77,7 +77,7 @@ document.addEventListener("click", function(e) {
 <meta property="og:image:width" content="900">
 <meta property="og:image:height" content="900">
 <link rel="canonical" href="https://ledgertc.com/bridge">
-<meta property="article:modified_time" content="2026-04-22T00:00:00-04:00">
+<meta property="article:modified_time" content="2026-06-30T00:00:00-04:00">
 <link rel="stylesheet" href="style.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -87,7 +87,7 @@ document.addEventListener("click", function(e) {
 {
   "@context": "https://schema.org",
   "@type": "LoanOrCredit",
-  "dateModified": "2026-04-22",
+  "dateModified": "2026-06-30",
   "name": "Bridge Loan",
   "description": "Short-term bridge financing for real estate investors. Rates from 8.875%, up to 85% LTV, close in 14 days. $125K to $5M.",
   "provider": {
@@ -209,6 +209,22 @@ document.addEventListener("click", function(e) {
         "@type": "Answer",
         "text": "No. Ledger bridge loans carry no prepayment penalty. You can pay off the loan the day after closing if your exit comes together faster than expected. This matters for investors whose timing shifts (earlier sale, faster refinance) during the loan term."
       }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I use a bridge loan to refinance an existing property?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Bridge loans are frequently used to refinance, not just to purchase. Common cases include paying off a maturing or ballooning loan, replacing expensive hard-money debt with a rate-and-term bridge, or a cash-out bridge refinance to pull equity for the next deal. Rate-and-term refinances carry the highest available leverage; cash-out is available at slightly lower LTV."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do you offer bridge loans for a 1031 exchange?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Our 14-day closing speed is built for 1031 exchange timelines, where the 45-day identification and 180-day closing deadlines leave no room for slow financing. A bridge loan lets you close the replacement property inside the IRS window, then refinance into long-term debt or sell once the exchange is complete."
+      }
     }
   ]
 }
@@ -309,7 +325,7 @@ document.addEventListener("click", function(e) {
     <div class="content-block">
       <div class="section-label">Overview</div>
       <h2>Bridge to Your Next Move</h2>
-      <p>Transitional financing when timing matters most. Bridge loans are the most flexible tool in a real estate investor's toolkit. They provide short-term leverage based on the property's current value for an investor to seek best execution — whether that be by market timing, stabilizing an asset, or simply capital to close.</p>
+      <p>Transitional financing when timing matters most. Bridge loans are the most flexible tool in a real estate investor's toolkit. They provide short-term leverage based on the property's current value for an investor to seek best execution, whether that be by market timing, stabilizing an asset, or simply capital to close.</p>
       <p>Our bridge loans are built for speed. We underwrite the deal, not just the borrower, and structure terms that match your strategy.</p>
     </div>
     <div>
@@ -386,6 +402,41 @@ document.addEventListener("click", function(e) {
       <h3>Value-Add Repositioning</h3>
       <p>Acquiring a property that needs operational improvements before it qualifies for permanent financing. Bridge holds the asset through the repositioning period.</p>
     </div>
+  </div>
+</section>
+
+<!-- BRIDGE REFINANCE DEEP DIVE -->
+<section class="content-section">
+  <div style="max-width: 900px; margin: 0 auto; text-align: center;">
+    <div class="section-label">Refinance</div>
+    <h2>Using a Bridge Loan to Refinance</h2>
+    <p style="color: var(--text-secondary); line-height: 1.7; max-width: 720px; margin: 0 auto 2rem;">Refinancing is one of the most common reasons investors reach for a bridge loan, not just buying. When a maturing note, a stalled take-out, or trapped equity is the problem, a short-term bridge refinance buys the runway to execute on your timeline instead of your current lender's.</p>
+  </div>
+  <div style="max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+    <div class="info-card">
+      <h3>Maturing Debt Takeout</h3>
+      <p>Your existing loan is about to balloon and the permanent take-out is not ready. A bridge refinance pays off the maturing note and holds the asset for 15 to 18 months while you stabilize, season, or line up long-term financing. No forced sale into a soft market.</p>
+    </div>
+    <div class="info-card">
+      <h3>Rate-and-Term Bridge Refi</h3>
+      <p>Swap high-cost or hard-money debt for cleaner short-term financing while you finish a business plan. Rate-and-term bridge refinances carry the highest available leverage because no cash is pulled out of the deal.</p>
+    </div>
+    <div class="info-card">
+      <h3>Cash-Out Bridge Refi</h3>
+      <p>Equity trapped in a stabilized property you would rather not sell? A cash-out bridge refinance unlocks that capital short-term so you can fund the next acquisition, then exit into a <a href="dscr" style="color:var(--gold);text-decoration:underline;">DSCR loan</a> or sale when the timing is right.</p>
+    </div>
+  </div>
+</section>
+
+<!-- BRIDGE LEVERAGE -->
+<section class="content-section" style="background: var(--white);">
+  <div style="max-width: 820px; margin: 0 auto;">
+    <div style="text-align:center;">
+      <div class="section-label">Leverage</div>
+      <h2>How High Can Bridge Leverage Go?</h2>
+    </div>
+    <p style="color: var(--text-secondary); line-height: 1.75; margin: 1.5rem 0 1rem;">Ledger bridge loans go up to <strong>85% loan-to-value (LTV)</strong> on the property's current as-is value. Where you land inside that ceiling depends on four things: borrower experience, credit, property type, and how clean and near-term your exit is. Repeat investors with a signed sale contract or committed take-out get the top of the range; a first-time investor on a speculative exit sits lower.</p>
+    <p style="color: var(--text-secondary); line-height: 1.75; margin: 0;">Some investors search for a "90% LTV bridge." Candidly, that is above where responsible bridge capital prices on residential investment property, and a lender quoting 90% is usually measuring against a number other than as-is value. We would rather structure real leverage you can actually exit than dress up a rate sheet. On value-add deals we can also look at <a href="ltc-vs-ltv" style="color:var(--gold);text-decoration:underline;">loan-to-cost</a>, which can put more total dollars in the deal than an LTV figure alone suggests.</p>
   </div>
 </section>
 
@@ -526,6 +577,14 @@ document.addEventListener("click", function(e) {
     <div class="faq-item">
       <button class="faq-question">Is there a prepayment penalty on a bridge loan?<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
       <div class="faq-answer"><div class="faq-answer-inner">No. Ledger bridge loans carry no prepayment penalty. You can pay off the loan the day after closing if your exit comes together faster than expected. This matters for investors whose timing shifts (earlier sale, faster refinance) during the loan term.</div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">Can I use a bridge loan to refinance an existing property?<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
+      <div class="faq-answer"><div class="faq-answer-inner">Yes. Bridge loans are frequently used to refinance, not just to purchase. Common cases include paying off a maturing or ballooning loan, replacing expensive hard-money debt with a rate-and-term bridge, or a cash-out bridge refinance to pull equity for the next deal. Rate-and-term refinances carry the highest available leverage; cash-out is available at slightly lower LTV.</div></div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-question">Do you offer bridge loans for a 1031 exchange?<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
+      <div class="faq-answer"><div class="faq-answer-inner">Yes. Our 14-day closing speed is built for 1031 exchange timelines, where the 45-day identification and 180-day closing deadlines leave no room for slow financing. A bridge loan lets you close the replacement property inside the IRS window, then refinance into long-term debt or sell once the exchange is complete.</div></div>
     </div>
   </div>
 </section>

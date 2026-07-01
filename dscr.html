@@ -77,7 +77,7 @@ document.addEventListener("click", function(e) {
 <meta property="og:image:width" content="900">
 <meta property="og:image:height" content="900">
 <link rel="canonical" href="https://ledgertc.com/dscr">
-<meta property="article:modified_time" content="2026-04-14T00:00:00-04:00">
+<meta property="article:modified_time" content="2026-06-30T00:00:00-04:00">
 <link rel="stylesheet" href="style.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -87,7 +87,7 @@ document.addEventListener("click", function(e) {
 {
   "@context": "https://schema.org",
   "@type": "LoanOrCredit",
-  "dateModified": "2026-04-14",
+  "dateModified": "2026-06-30",
   "name": "DSCR Rental Loans",
   "description": "DSCR loans based on property cash flow, not personal income. Ideal for investors building or holding rental portfolios.",
   "provider": {
@@ -183,7 +183,7 @@ document.addEventListener("click", function(e) {
       "name": "What is a DSCR loan?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "A DSCR (Debt Service Coverage Ratio) loan qualifies borrowers based on the rental income of the investment property rather than personal income. If the property's rental income covers the monthly mortgage payment, you can qualify — no tax returns, W-2s, or employment verification needed."
+        "text": "A DSCR (Debt Service Coverage Ratio) loan qualifies borrowers based on the rental income of the investment property rather than personal income. If the property's rental income covers the monthly mortgage payment, you can qualify, no tax returns, W-2s, or employment verification needed."
       }
     },
     {
@@ -212,10 +212,26 @@ document.addEventListener("click", function(e) {
     },
     {
       "@type": "Question",
+      "name": "What is your minimum DSCR?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "We go as low as 1.00 DSCR. Our DSCR is calculated using full PITIA (principal, interest, taxes, insurance, and association fees), so a 1.00 means the property's rental income covers all carrying costs at breakeven. Many lenders require 1.20 or higher, which eliminates otherwise solid deals. Rate adjustments apply at lower DSCR tiers."
+      }
+    },
+    {
+      "@type": "Question",
       "name": "Do you finance short-term rentals, Airbnbs, or vacation homes?",
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "No. We finance long-term rentals only, meaning properties leased on 12-month terms or longer to non-related tenants. Short-term rentals, Airbnbs, VRBOs, vacation homes, hotels, motels, and bed-and-breakfasts are not eligible for our DSCR program."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do you calculate DSCR on a rental property?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Divide the property's gross monthly rent by its monthly PITIA (principal, interest, taxes, insurance, and association dues). For example, $2,400 in rent against a $2,000 payment is a 1.20 DSCR. A result of 1.00 means rent exactly covers the payment, which is our minimum, versus the 1.20 most lenders require."
       }
     }
   ]
@@ -317,7 +333,7 @@ document.addEventListener("click", function(e) {
     <div class="content-block">
       <div class="section-label">Overview</div>
       <h2>Finance Based on Cash Flow</h2>
-      <p>DSCR (<a href="what-is-dscr" style="color:var(--gold);text-decoration:underline;">Debt Service Coverage Ratio</a>) loans provide strategic leverage sized by the property's rental income relative to the mortgage payment. Built for real estate investors, DSCR loans cut through the red tape of traditional lending — no W-2s, no pay stubs, no explaining your portfolio to an underwriter who doesn't understand it. Just the numbers that matter.</p>
+      <p>DSCR (<a href="what-is-dscr" style="color:var(--gold);text-decoration:underline;">Debt Service Coverage Ratio</a>) loans provide strategic leverage sized by the property's rental income relative to the mortgage payment. Built for real estate investors, DSCR loans cut through the red tape of traditional lending, no W-2s, no pay stubs, no explaining your portfolio to an underwriter who doesn't understand it. Just the numbers that matter.</p>
       <p>This is the staple product for investors building or holding a rental portfolio who are seeking stable, predictable, and long-term debt without the friction of traditional bank underwriting.</p>
     </div>
     <div>
@@ -395,6 +411,28 @@ document.addEventListener("click", function(e) {
   <div style="max-width: 900px; margin: 2rem auto 0; color: var(--text-secondary); line-height: 1.75;">
     <p style="margin-bottom: 1rem;"><strong style="color: var(--green);">How Ledger is different:</strong> We are a direct private lender, not a broker. Our capital comes from institutional sources, which means faster decisions, flexible structuring, and no middleman markup. We offer 30-year fully amortizing fixed rates with interest-only options up to 10 years, cash-out refinance with no seasoning requirement, and the ability to close in your LLC or corporate entity for asset protection. No yield maintenance penalty, stepdown prepayment structures only.</p>
     <p><strong style="color: var(--green);">Eligible states:</strong> We lend in 40+ states and DC. Top markets include North Carolina, South Carolina, Virginia, Ohio, Florida, and Texas, but we serve investors nationwide with consistent terms and a streamlined process regardless of location.</p>
+  </div>
+</section>
+
+<!-- HOW TO CALCULATE DSCR -->
+<section class="content-section" style="background: var(--cream);">
+  <div style="max-width: 900px; margin: 0 auto; text-align: center;">
+    <div class="section-label">The Math</div>
+    <h2>How to Calculate DSCR on a Rental Property</h2>
+    <p style="color: var(--text-secondary); line-height: 1.7; max-width: 720px; margin: 0 auto 2rem;">DSCR is a single ratio: the property's income divided by its debt payment. You can run it in about ten seconds once you have the rent and the fully-loaded monthly payment.</p>
+  </div>
+  <div style="max-width: 760px; margin: 0 auto;">
+    <div style="background: var(--white); border-radius: 12px; padding: 1.75rem 2rem; border: 1px solid var(--gray-100); text-align:center; margin-bottom: 1.5rem;">
+      <div style="font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); letter-spacing: 0.05em; text-transform: uppercase; margin-bottom:0.5rem;">The Formula</div>
+      <div style="font-family: 'Plus Jakarta Sans','DM Sans',sans-serif; font-size: clamp(1.05rem,0.95rem+0.6vw,1.45rem); font-weight: 700; color: var(--green); line-height:1.5;">DSCR = Gross Monthly Rent &divide; Monthly PITIA</div>
+      <p style="font-size:0.9rem; color:var(--text-secondary); margin:0.75rem 0 0;">PITIA = Principal + Interest + Taxes + Insurance + Association dues</p>
+    </div>
+    <div style="background: var(--white); border-radius: 12px; padding: 1.75rem 2rem; border: 1px solid var(--gray-100);">
+      <h3 style="color: var(--green); font-family:'Plus Jakarta Sans','DM Sans',sans-serif; font-weight:700; margin:0 0 0.75rem;">Worked Example</h3>
+      <p style="color:var(--text-secondary); line-height:1.7; margin:0 0 0.75rem;">A single-family rental leases for <strong>$2,400 per month</strong>. The fully-loaded monthly payment (principal, interest, taxes, insurance, and any HOA) comes to <strong>$2,000</strong>.</p>
+      <p style="color:var(--green); font-weight:700; font-size:1.1rem; line-height:1.6; margin:0 0 0.75rem;">$2,400 &divide; $2,000 = 1.20 DSCR</p>
+      <p style="color:var(--text-secondary); line-height:1.7; margin:0;">A 1.20 DSCR means the rent covers the payment with 20% to spare. Ledger qualifies deals down to a <strong>1.00 DSCR</strong> (rent exactly covers the payment), while most lenders stop at 1.20. That lower floor is what lets a breakeven property still get financed here. Want to skip the math? <a href="rental-loan-calculator" style="color:var(--gold);text-decoration:underline;">Run it through our DSCR calculator</a>, or read the <a href="what-is-dscr" style="color:var(--gold);text-decoration:underline;">full DSCR explainer</a>.</p>
+    </div>
   </div>
 </section>
 
@@ -490,6 +528,10 @@ document.addEventListener("click", function(e) {
       <button class="faq-question">How are DSCR loan rates calculated?<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
       <div class="faq-answer"><div class="faq-answer-inner">DSCR loan rates are based on credit score, LTV, DSCR ratio, and property type. Stronger credit, lower leverage, and higher cash flow coverage generally result in better rates. <a href="/rental-loan-calculator" target="_blank" style="color:var(--gold);font-weight:600;">Try our DSCR calculator</a> to see your estimated rate.</div></div>
     </div>
+    <div class="faq-item">
+      <button class="faq-question">How do you calculate DSCR on a rental property?<svg viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg></button>
+      <div class="faq-answer"><div class="faq-answer-inner">Divide the property's gross monthly rent by its monthly PITIA (principal, interest, taxes, insurance, and association dues). For example, $2,400 in rent against a $2,000 payment is a 1.20 DSCR. A result of 1.00 means rent exactly covers the payment, which is our minimum, versus the 1.20 most lenders require.</div></div>
+    </div>
   </div>
 </section>
 
@@ -505,6 +547,22 @@ document.addEventListener("click", function(e) {
   });
 })();
 </script>
+
+<!-- DSCR TOP MARKETS -->
+<section class="content-section" style="background: var(--white);">
+  <div style="max-width: 900px; margin: 0 auto; text-align: center;">
+    <div class="section-label">Where Investors Use DSCR</div>
+    <h2 class="section-title" style="font-size: clamp(1.5rem, 1.3rem + 0.8vw, 2rem);">DSCR Loans in Top Rental Markets</h2>
+    <p style="color: var(--text-secondary); line-height: 1.7; max-width: 760px; margin: 0 auto 1.75rem;">We fund DSCR rental loans nationwide, with the same terms whether your property sits in a major metro or a smaller market. Demand runs heaviest in the high-cash-flow Sun Belt and Midwest markets investors target most.</p>
+    <div style="max-width: 780px; margin: 0 auto; text-align:left; color: var(--text-secondary); line-height: 1.9;">
+      <p style="margin:0 0 0.55rem;"><strong style="color:var(--green);">Florida:</strong> DSCR loans on Tampa, Miami, Orlando, and Jacksonville rentals. See <a href="dscr-loan-florida" style="color:var(--gold);text-decoration:underline;">Florida DSCR loans</a>.</p>
+      <p style="margin:0 0 0.55rem;"><strong style="color:var(--green);">Texas:</strong> Austin, Dallas, Houston, and San Antonio investors. See <a href="dscr-loan-texas" style="color:var(--gold);text-decoration:underline;">Texas DSCR loans</a>.</p>
+      <p style="margin:0 0 0.55rem;"><strong style="color:var(--green);">North Carolina:</strong> Charlotte, Raleigh, and Greensboro rentals. See <a href="dscr-loan-north-carolina" style="color:var(--gold);text-decoration:underline;">North Carolina DSCR loans</a>.</p>
+      <p style="margin:0 0 0.55rem;"><strong style="color:var(--green);">Ohio:</strong> Columbus, Cleveland, and Cincinnati cash-flow markets. See <a href="dscr-loan-ohio" style="color:var(--gold);text-decoration:underline;">Ohio DSCR loans</a>.</p>
+      <p style="margin:0;"><strong style="color:var(--green);">New York and New Jersey:</strong> Long Island, the Hudson Valley, Rochester, Buffalo, and North Jersey. See <a href="dscr-loan-new-york" style="color:var(--gold);text-decoration:underline;">New York</a> and <a href="dscr-loan-new-jersey" style="color:var(--gold);text-decoration:underline;">New Jersey DSCR loans</a>. Investing in Nashville, Atlanta, Phoenix, or beyond? We lend in 42 states plus DC. <a href="where-we-lend" style="color:var(--gold);text-decoration:underline;">See where we lend</a>.</p>
+    </div>
+  </div>
+</section>
 
 <section class="content-section">
   <div style="max-width: 900px; margin: 0 auto; text-align: center;">
